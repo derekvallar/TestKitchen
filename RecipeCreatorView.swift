@@ -7,21 +7,28 @@
 
 import SwiftUI
 
-struct RecipeCreatorView: View {
+struct RecipeCreatorView: View, NavigatableView {
+  static var navigationTag = "recipeCreatorView"
+
+  @Environment(\.modelContext) private var modelContext
+  @Environment(\.navigationManager) var navigationManager: NavigationManager
 
   enum Field: Hashable {
     case preparationStep
   }
   @FocusState private var focusedField: Field?
 
-  var recipe: Recipe?
+  var pendingRecipe: Recipe? {
+    return makeRecipe()
+  }
+
+  @State var showSaveAlert: Bool = false
 
   @State private var title: String = ""
   @State private var description: String = "A simple family recipe made with a little bit of love and a lot of fish!"
   @State private var ingredients: String = "4 cod fillets\n1 cup all-purpose flour"
   @State private var preparationSteps: [String] = [""]
   @State private var numberOfPrepSteps = 1
-
 
   var body: some View {
     ScrollView {
@@ -52,13 +59,24 @@ struct RecipeCreatorView: View {
         }
       }
       ToolbarItem(placement: .topBarTrailing) {
-        NavigationLink(
-          destination: {
-            RecipeCreatorView()
-          }, label: {
-            Text("Save")
+        Button("Save") {
+          guard let recipe = pendingRecipe else {
+            showSaveAlert = true
+            return
           }
-        )
+
+          // save recipe
+
+          navigationManager.popLast()
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            navigationManager.path.append(recipe)
+          }
+        }
+      }
+    }
+    .alert("Please enter a recipe title", isPresented: $showSaveAlert) {
+      Button("Okay!", role: .cancel) {
+        showSaveAlert = false
       }
     }
   }
@@ -117,6 +135,27 @@ struct RecipeCreatorView: View {
         .focused($focusedField, equals: .preparationStep)
     }
   }
+
+  private func makeRecipe() -> Recipe? {
+    print("nav name: \(navigationManager.testID)")
+
+    guard !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+
+    return Recipe(
+      title: title,
+      author: "",
+      recipeDescription: description,
+      photos: [],
+      prepTime: 0,
+      cookTime: 0,
+      preparationSteps: preparationSteps,
+      ingredients: ingredients
+    )
+  }
+
+  private func saveRecipe(_ recipe: Recipe) {
+    
+  }
 }
 
 extension View {
@@ -135,30 +174,3 @@ struct RecipeCreatorView_Preview: PreviewProvider {
     RecipeCreatorView()
   }
 }
-
-//struct ContentView: View {
-//  @State var text = "Type here"
-//  var body: some View {
-//    TextEditor(text: self.$text)
-//
-//    // make the color of the placeholder gray
-//      .foregroundColor(self.text == "Type here" ? .gray : .primary)
-//      .onAppear {
-//        // remove the placeholder text when keyboard appears
-//        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { (noti) in
-//          withAnimation {                        if self.text == "Type here" {
-//            self.text = ""
-//          }
-//          }
-//        }
-//        // put back the placeholder text if the user dismisses the keyboard without adding any text
-//        NotificationCenter.default
-//          .addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { (noti) in
-//            withAnimation {                        if self.text == "" {
-//              self.text = "Type here"
-//            }
-//            }
-//          }
-//      }
-//  }
-//}

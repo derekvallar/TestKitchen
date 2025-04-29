@@ -11,7 +11,17 @@ protocol Discussable {
   
 }
 
+protocol NavigatableView {
+  static var navigationTag: String { get }
+}
 
+struct NavigatableViewLink {
+
+}
+
+//extension EnvironmentValues {
+//  @Entry var pushRecipeView: Bool = false
+//}
 
 //protocol CommunityView {
 //  associatedtype T: View

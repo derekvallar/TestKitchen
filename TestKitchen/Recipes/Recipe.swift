@@ -12,6 +12,7 @@ import SwiftData
 final class Recipe {
   var title: String
   var author: String
+  var dateCreated: Date
   var recipeDescription: String
   var photos: [Photo]
   var prepTime: Int
@@ -19,8 +20,8 @@ final class Recipe {
   var totalTime: Int {
     prepTime + cookTime
   }
-  var instructions: [Instruction]
-  var ingredients: [RecipeIngredient]
+  var preparationSteps: [PreparationStep]
+  var ingredients: [Ingredient]
   
   init(
     title: String,
@@ -29,21 +30,48 @@ final class Recipe {
     photos: [Photo],
     prepTime: Int,
     cookTime: Int,
-    instructions: [Instruction],
-    ingredients: [RecipeIngredient]
+    preparationSteps: [PreparationStep],
+    ingredients: [Ingredient]
   ) {
     self.title = title
     self.author = author
+    self.dateCreated = Date()
     self.recipeDescription = recipeDescription
     self.photos = photos
     self.prepTime = prepTime
     self.cookTime = cookTime
-    self.instructions = instructions
+    self.preparationSteps = preparationSteps
     self.ingredients = ingredients
   }
-}
 
-struct Instruction: Codable, Identifiable {
+  init(
+    title: String,
+    author: String,
+    recipeDescription: String,
+    photos: [Photo],
+    prepTime: Int,
+    cookTime: Int,
+    preparationSteps: [String],
+    ingredients: String
+  ) {
+    self.title = title
+    self.author = author
+    self.dateCreated = Date()
+    self.recipeDescription = recipeDescription
+    self.photos = photos
+    self.prepTime = prepTime
+    self.cookTime = cookTime
+    self.preparationSteps = preparationSteps.map {
+      PreparationStep(text: $0)
+    }
+    self.ingredients = ingredients.split(separator: "\n").map {
+      $0.trimmingCharacters(in: .whitespaces)
+    }.compactMap {
+      Ingredient(ingredient: $0)
+    }
+  }}
+
+struct PreparationStep: Codable, Identifiable {
   var id = UUID()
   let text: String
   
@@ -52,10 +80,9 @@ struct Instruction: Codable, Identifiable {
   }
 }
 
-struct RecipeIngredient: Codable {
+struct Ingredient: Codable {
 //  var id = UUID()
-  let name: String
-  let quantity: String
+  let ingredient: String
 }
 
 class Photo: Codable {

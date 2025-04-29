@@ -10,75 +10,36 @@ import SwiftData
 
 struct HomeView: View {
   @Environment(\.modelContext) private var modelContext
-  @Query private var items: [Item]
+
+  @Environment(\.navigationManager) private var navigationManager
   
+  //  @Query private var items: [Item]
+
+  @Query(sort: \Recipe.dateCreated) var recipes2: [Recipe]
   var recipes: [Recipe] = TestExamples.makeRecipes()
-  
+
   init() {
-    
     //Check which fonts available
-    for family: String in UIFont.familyNames
-    {
-       print("\(family)")
-      for names: String in UIFont.fontNames(forFamilyName: family)
-       {
-           print("== \(names)")
-      }
-      
-      let appear = UINavigationBarAppearance()
-      
-      let atters: [NSAttributedString.Key: Any] = [
-        .font: UIFont.TKDisplay
-//        .font: UIFont.TKDisplay2
-      ]
-      
-      appear.largeTitleTextAttributes = atters
-//      appear.titleTextAttributes = atters
-      UINavigationBar.appearance().standardAppearance = appear
-//      UINavigationBar.appearance().compactAppearance = appear
-//      UINavigationBar.appearance().scrollEdgeAppearance = appear
-    }
-  }
-  
-//  var body: some View {
-//    NavigationSplitView {
-//      List {
-//        ForEach(items) { item in
-//          NavigationLink {
-//            RecipeView(recipe: TestExamples.makeRecipes().first!)
-//          } label: {
-//            Text(
-//              item.timestamp,
-//              format: Date.FormatStyle(
-//                date: .numeric,
-//                time: .standard
-//              )
-//            )
-//            .background(Color.green)
-//          }
-//        }
-//        .onDelete(perform: deleteItems)
+//    for family: String in UIFont.familyNames
+//    {
+//       print("\(family)")
+//      for names: String in UIFont.fontNames(forFamilyName: family)
+//       {
+//           print("== \(names)")
 //      }
-//      .background(Color.blue)
-//      .toolbar {
-//        ToolbarItem(placement: .navigationBarTrailing) {
-//          EditButton()
-//        }
-//        ToolbarItem {
-//          Button(action: addItem) {
-//            Label("Add Item", systemImage: "plus")
-//          }
-//        }
-//      }
-//
-//    } detail: {
-//      Text("Select an item")
 //    }
-//    .background(Color.TKBackgroundDefault)
-//  }
+
+    let appear = UINavigationBarAppearance()
+    let atters: [NSAttributedString.Key: Any] = [
+      .font: UIFont.TKDisplay
+    ]
+    appear.largeTitleTextAttributes = atters
+    UINavigationBar.appearance().standardAppearance = appear
+  }
 
   var body: some View {
-    NavigationView {
+    @Bindable var navigationManager = navigationManager
+    NavigationStack(path: $navigationManager.path) {
       ScrollView {
         VStack(alignment: .leading, spacing: .TKSpacingDefault) {
           ForEach(recipes) { recipe in
@@ -94,39 +55,53 @@ struct HomeView: View {
           }
         }
       }
+
       .padding()
+      .background(Color.TKBackgroundDefault)
       .navigationTitle(
         Text("Recipes")
       )
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
-          NavigationLink(
-            destination: {
-              RecipeCreatorView()
-            }, label: {
-              Label("New Recipe", systemImage: "plus")
-            }
-          )
+//          NavigationLink(
+//            value: RecipeCreatorView.navigationTag,
+//            label: {
+//              Label(
+//                "New Recipe",
+//                systemImage: "plus"
+//              )
+//            }
+//          )
+          Button("Test", systemImage: "minus") {
+            print("Test minus")
+            navigationManager.path.append(RecipeCreatorView.navigationTag)
+          }
         }
       }
-      .background(Color.TKBackgroundDefault)
+      .navigationDestination(for: Recipe.self) { recipe in
+          RecipeView(recipe: recipe)
+      }
+      .navigationDestination(for: String.self) { destination in
+        // destination == recipeCreation
+        RecipeCreatorView()
+      }
     }
   }
 
-  private func addItem() {
-    withAnimation {
-      let newItem = Item(timestamp: Date())
-      modelContext.insert(newItem)
-    }
-  }
-  
-  private func deleteItems(offsets: IndexSet) {
-    withAnimation {
-      for index in offsets {
-        modelContext.delete(items[index])
-      }
-    }
-  }
+//  private func addItem() {
+//    withAnimation {
+//      let newItem = Item(timestamp: Date())
+//      modelContext.insert(newItem)
+//    }
+//  }
+//  
+//  private func deleteItems(offsets: IndexSet) {
+//    withAnimation {
+//      for index in offsets {
+//        modelContext.delete(items[index])
+//      }
+//    }
+//  }
 }
 
 #Preview {

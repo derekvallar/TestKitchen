@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct RecipeView: View {
+struct RecipeView: View, NavigatableView {
+  static let navigationTag: String = "recipeView"
   let recipe: Recipe
 
   init(recipe: Recipe) {
@@ -54,23 +55,20 @@ struct RecipeView: View {
   @ViewBuilder
   private var ingredientList: some View {
     ForEach(0..<recipe.ingredients.count, id: \.self) { index in
-      
-      (Text("\(recipe.ingredients[index].quantity) ")
+      Text("\(recipe.ingredients[index].ingredient)")
         .TKFontBody1()
-      + Text(recipe.ingredients[index].name)
-        .TKFontBody1Gray())
         .frame(minHeight: 30)
     }
   }
 
   @ViewBuilder
   private var preparationSteps: some View {
-    ForEach(0..<recipe.instructions.count, id: \.self) { index in
+    ForEach(0..<recipe.preparationSteps.count, id: \.self) { index in
       VStack(alignment: .leading, spacing: 4) {
         Text("Step \(index + 1)")
           .TKFontBody1BoldGray()
 //          .TKFontBody1Gray()
-        Text("\(recipe.instructions[index].text)")
+        Text("\(recipe.preparationSteps[index].text)")
           .TKFontBody1()
           .lineSpacing(4)
       }

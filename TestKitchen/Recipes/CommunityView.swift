@@ -58,6 +58,6 @@ struct CommunityView_Preview: PreviewProvider {
   static var previews: some View {
     let recipe = TestExamples.makeRecipes().first!
     let comments = TestExamples.makeCommunityComments()
-    CommunityView(text: recipe.instructions[0].text, comments: comments)
+    CommunityView(text: recipe.preparationSteps[0].text, comments: comments)
   }
 }

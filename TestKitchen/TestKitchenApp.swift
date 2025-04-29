@@ -10,9 +10,11 @@ import SwiftData
 
 @main
 struct TestKitchenApp: App {
+  @State var navigationManager = NavigationManager(testID: "homeView")
+
   var sharedModelContainer: ModelContainer = {
     let schema = Schema([
-      Item.self,
+      Recipe.self,
     ])
     let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
     
@@ -26,6 +28,7 @@ struct TestKitchenApp: App {
   var body: some Scene {
     WindowGroup {
       HomeView()
+        .environment(\.navigationManager, navigationManager)
     }
     .modelContainer(sharedModelContainer)
   }

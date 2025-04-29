@@ -17,24 +17,24 @@ struct TestExamples {
         photos: [],
         prepTime: 10,
         cookTime: 45,
-        instructions: [
-          Instruction(text: "Heat oil in a large pot over medium heat."),
-          Instruction(text: "Add onions and sauté until soft and translucent."),
-          Instruction(text: "Add carrots and celery and cook for an additional 5 minutes."),
-          Instruction(text: "Add cod fillets and cook until flaky and browned on all sides."),
-          Instruction(text: "Add potatoes and simmer until tender."),
-          Instruction(text: "Add salt and pepper to taste."),
-          Instruction(text: "Serve hot.")
+        preparationSteps: [
+          PreparationStep(text: "Heat oil in a large pot over medium heat."),
+          PreparationStep(text: "Add onions and sauté until soft and translucent."),
+          PreparationStep(text: "Add carrots and celery and cook for an additional 5 minutes."),
+          PreparationStep(text: "Add cod fillets and cook until flaky and browned on all sides."),
+          PreparationStep(text: "Add potatoes and simmer until tender."),
+          PreparationStep(text: "Add salt and pepper to taste."),
+          PreparationStep(text: "Serve hot.")
         ],
         ingredients: [
-          RecipeIngredient(name: "Onion, diced", quantity: "1/2"),
-          RecipeIngredient(name: "Carrots", quantity: "1"),
-          RecipeIngredient(name: "Celery", quantity: "2 stalks"),
-          RecipeIngredient(name: "Black pepper", quantity: "A pinch"),
-          RecipeIngredient(name: "Olive oil", quantity: "3 tablespoons"),
-          RecipeIngredient(name: "Lemon juice", quantity: "2 tablespoons"),
-          RecipeIngredient(name: "Cod fillets (frozen)", quantity: "1 lb"),
-          RecipeIngredient(name: "Russet Potatoes", quantity: "1 lb")
+          Ingredient(ingredient: "1/2 onion, diced"),
+          Ingredient(ingredient: "1 carrot"),
+          Ingredient(ingredient: "2 stalks of celery"),
+          Ingredient(ingredient: "A pinch of black pepper"),
+          Ingredient(ingredient: "3 tablespoons of olive oil"),
+          Ingredient(ingredient: "2 tablespoons of lemon juice"),
+          Ingredient(ingredient: "1 lb of cod fillets (frozen)"),
+          Ingredient(ingredient: "1lb of russet potatoes")
         ]
       ),
       Recipe(
@@ -44,22 +44,22 @@ struct TestExamples {
         photos: [],
         prepTime: 10,
         cookTime: 45,
-        instructions: [
-          Instruction(text: "Heat oil in a large pot over medium heat."),
-          Instruction(text: "Add onions and sauté until soft and translucent."),
-          Instruction(text: "Add carrots and celery and cook for an additional 5 minutes."),
-          Instruction(text: "Add cod fillets and cook until flaky and browned on all sides."),
-          Instruction(text: "Add potatoes and simmer until tender."),
-          Instruction(text: "Add salt and pepper to taste."),
-          Instruction(text: "Serve hot."),
+        preparationSteps: [
+          PreparationStep(text: "Heat oil in a large pot over medium heat."),
+          PreparationStep(text: "Add onions and sauté until soft and translucent."),
+          PreparationStep(text: "Add carrots and celery and cook for an additional 5 minutes."),
+          PreparationStep(text: "Add cod fillets and cook until flaky and browned on all sides."),
+          PreparationStep(text: "Add potatoes and simmer until tender."),
+          PreparationStep(text: "Add salt and pepper to taste."),
+          PreparationStep(text: "Serve hot."),
         ],
         ingredients: [
-          RecipeIngredient(name: "Chocolate chips", quantity: "1 cup"),
-          RecipeIngredient(name: "All purpose flour", quantity: "2 cups"),
-          RecipeIngredient(name: "Granulated sugar", quantity: "1 cup"),
-          RecipeIngredient(name: "Large eggs", quantity: "2"),
-          RecipeIngredient(name: "Unsalted butter", quantity: "1 cup"),
-          RecipeIngredient(name: "Vanilla extract", quantity: "1 teaspoon"),
+          Ingredient(ingredient: "1 cup of chocolate chips"),
+          Ingredient(ingredient: "2 cups of all purpose flour"),
+          Ingredient(ingredient: "1 cup of granulated sugar"),
+          Ingredient(ingredient: "2 large eggs"),
+          Ingredient(ingredient: "1 cup of unsalted butter, melted"),
+          Ingredient(ingredient: "1 teaspoon of vanilla extract"),
         ]
       ),
       Recipe(
@@ -69,18 +69,17 @@ struct TestExamples {
         photos: [],
         prepTime: 10,
         cookTime: 45,
-        instructions: [
-          Instruction(text: "Heat oil in a large pot over medium heat."),
-          Instruction(text: "Add onions and sauté until soft and translucent."),
-          Instruction(text: "Add carrots and celery and cook for an additional 5 minutes."),
-          Instruction(text: "Add cod fillets and cook until flaky and browned on all sides."),
-          Instruction(text: "Add potatoes and simmer until tender."),
-          Instruction(text: "Add salt and pepper to taste."),
-          Instruction(text: "Serve hot.")
+        preparationSteps: [
+          PreparationStep(text: "Heat oil in a large pot over medium heat."),
+          PreparationStep(text: "Add onions and sauté until soft and translucent."),
+          PreparationStep(text: "Add carrots and celery and cook for an additional 5 minutes."),
+          PreparationStep(text: "Add cod fillets and cook until flaky and browned on all sides."),
+          PreparationStep(text: "Add potatoes and simmer until tender."),
+          PreparationStep(text: "Add salt and pepper to taste."),
+          PreparationStep(text: "Serve hot.")
         ],
         ingredients: [
-          RecipeIngredient(name: "Zucchini", quantity: "1"),
-          
+          Ingredient(ingredient: "1 zucchini"),
         ]
       ),
     ]

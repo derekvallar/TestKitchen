@@ -11,23 +11,10 @@ import SwiftData
 struct HomeView: View {
   @Environment(\.modelContext) private var modelContext
   @Environment(\.navigationManager) private var navigationManager
-  
-  //  @Query private var items: [Item]
 
-  @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes2: [Recipe]
   var recipes: [Recipe] = TestExamples.makeRecipes()
 
   init() {
-    //Check which fonts available
-//    for family: String in UIFont.familyNames
-//    {
-//       print("\(family)")
-//      for names: String in UIFont.fontNames(forFamilyName: family)
-//       {
-//           print("== \(names)")
-//      }
-//    }
-
     let appear = UINavigationBarAppearance()
     let atters: [NSAttributedString.Key: Any] = [
       .font: UIFont.TKDisplay
@@ -39,49 +26,12 @@ struct HomeView: View {
   var body: some View {
     @Bindable var navigationManager = navigationManager
     NavigationStack(path: $navigationManager.path) {
-      ScrollView {
-        VStack(alignment: .leading, spacing: .TKSpacingDefault) {
-
-          if recipes2.isEmpty {
-            Spacer(minLength: 160)
-            HStack {
-              Spacer()
-              Text("No recipes found")
-                .TKTitle()
-              Spacer()
-            }
-          } else {
-            ForEach(recipes2) { recipe in
-              NavigationLink(
-                destination: {
-                  RecipeView(recipe: recipe)
-                },
-                label: {
-                  RecipeCardView(recipe: recipe)
-                    .background(Color.TKBackgroundDefault)
-                }
-              )
-            }
-          }
-        }
-      }
-      .padding()
-      .background(Color.TKBackgroundDefault)
-      .animation(.spring, value: recipes2)
+      CardScrollView()
       .navigationTitle(
         Text("Recipes")
       )
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
-//          NavigationLink(
-//            value: RecipeCreatorView.navigationTag,
-//            label: {
-//              Label(
-//                "New Recipe",
-//                systemImage: "plus"
-//              )
-//            }
-//          )
           Button("Test", systemImage: "minus") {
             print("Test minus")
             navigationManager.path.append(RecipeCreatorView.navigationTag)
@@ -97,21 +47,6 @@ struct HomeView: View {
       }
     }
   }
-
-//  private func addItem() {
-//    withAnimation {
-//      let newItem = Item(timestamp: Date())
-//      modelContext.insert(newItem)
-//    }
-//  }
-//  
-//  private func deleteItems(offsets: IndexSet) {
-//    withAnimation {
-//      for index in offsets {
-//        modelContext.delete(items[index])
-//      }
-//    }
-//  }
 }
 
 #Preview {

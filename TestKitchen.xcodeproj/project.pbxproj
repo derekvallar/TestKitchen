@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		583BEBA32DB81D6400D69DE0 /* RecipeCreatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */; };
+		58AD67A92DC41C280077C280 /* CardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD67A82DC41C280077C280 /* CardScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCreatorView.swift; sourceTree = "<group>"; };
+		58AD67A82DC41C280077C280 /* CardScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CardScrollView.swift; path = TestKitchen/Recipes/CardScrollView.swift; sourceTree = "<group>"; };
 		58DF9FFF2D74296A002F98F4 /* TestKitchen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestKitchen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58DFA0122D74296B002F98F4 /* TestKitchenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestKitchenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		58DFA01C2D74296B002F98F4 /* TestKitchenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestKitchenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +95,7 @@
 		58DF9FF62D74296A002F98F4 = {
 			isa = PBXGroup;
 			children = (
+				58AD67A82DC41C280077C280 /* CardScrollView.swift */,
 				583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */,
 				58DFA0012D74296A002F98F4 /* TestKitchen */,
 				58DFA0152D74296B002F98F4 /* TestKitchenTests */,
@@ -255,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58AD67A92DC41C280077C280 /* CardScrollView.swift in Sources */,
 				583BEBA32DB81D6400D69DE0 /* RecipeCreatorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -65,10 +65,16 @@ struct RecipeCreatorView: View, NavigatableView {
             return
           }
 
-          // save recipe
-
           navigationManager.popLast()
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+          // Animate the recipe inserting in the homeview after a brief delay
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.smooth) {
+              modelContext.insert(recipe)
+            }
+            try? modelContext.save()
+          }
+
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
             navigationManager.path.append(recipe)
           }
         }

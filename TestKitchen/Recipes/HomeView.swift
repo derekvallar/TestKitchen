@@ -10,12 +10,11 @@ import SwiftData
 
 struct HomeView: View {
   @Environment(\.modelContext) private var modelContext
-
   @Environment(\.navigationManager) private var navigationManager
   
   //  @Query private var items: [Item]
 
-  @Query(sort: \Recipe.dateCreated) var recipes2: [Recipe]
+  @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes2: [Recipe]
   var recipes: [Recipe] = TestExamples.makeRecipes()
 
   init() {
@@ -42,22 +41,33 @@ struct HomeView: View {
     NavigationStack(path: $navigationManager.path) {
       ScrollView {
         VStack(alignment: .leading, spacing: .TKSpacingDefault) {
-          ForEach(recipes) { recipe in
-            NavigationLink(
-              destination: {
-                RecipeView(recipe: recipe)
-              },
-              label: {
-                RecipeCardView(recipe: recipe)
-                  .background(Color.TKBackgroundDefault)
-              }
-            )
+
+          if recipes2.isEmpty {
+            Spacer(minLength: 160)
+            HStack {
+              Spacer()
+              Text("No recipes found")
+                .TKTitle()
+              Spacer()
+            }
+          } else {
+            ForEach(recipes2) { recipe in
+              NavigationLink(
+                destination: {
+                  RecipeView(recipe: recipe)
+                },
+                label: {
+                  RecipeCardView(recipe: recipe)
+                    .background(Color.TKBackgroundDefault)
+                }
+              )
+            }
           }
         }
       }
-
       .padding()
       .background(Color.TKBackgroundDefault)
+      .animation(.spring, value: recipes2)
       .navigationTitle(
         Text("Recipes")
       )

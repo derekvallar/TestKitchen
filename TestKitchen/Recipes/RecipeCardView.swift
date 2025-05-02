@@ -40,8 +40,8 @@ struct RecipeCardView: View {
         HStack(spacing: .TKSpacingDefault) {
           (Text("Prep: ")
             .TKFontBody2Gray()
-          + Text("\(prepTime) min"))
-            .TKFontBody2()
+           + Text("\(prepTime) min"))
+          .TKFontBody2()
           Text("|")
             .TKFontBody2Gray()
           Text("Total: ")
@@ -52,6 +52,7 @@ struct RecipeCardView: View {
       }
     }
     .frame(maxWidth: .infinity, alignment: .topLeading)
+    .background(Color.TKBackgroundDefault)
   }
 }
 

@@ -14,16 +14,15 @@ struct RecipeCreatorView: View, NavigatableView {
   @Environment(\.navigationManager) var navigationManager: NavigationManager
 
   enum Field: Hashable {
+    case title
     case preparationStep
   }
   @FocusState private var focusedField: Field?
+  @State var showSaveAlert: Bool = false
 
   var pendingRecipe: Recipe? {
     return makeRecipe()
   }
-
-  @State var showSaveAlert: Bool = false
-
   @State private var title: String = ""
   @State private var description: String = "A simple family recipe made with a little bit of love and a lot of fish!"
   @State private var ingredients: String = "4 cod fillets\n1 cup all-purpose flour"
@@ -83,6 +82,9 @@ struct RecipeCreatorView: View, NavigatableView {
         showSaveAlert = false
       }
     }
+    .onAppear {
+      focusedField = .title
+    }
   }
 
   @ViewBuilder
@@ -96,6 +98,8 @@ struct RecipeCreatorView: View, NavigatableView {
       axis: .vertical
     )
       .font(.TKDisplay)
+      .focused($focusedField, equals: .title)
+
     Spacer().frame(height: 16)
   }
 

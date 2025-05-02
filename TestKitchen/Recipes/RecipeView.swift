@@ -20,6 +20,7 @@ struct RecipeView: View, NavigatableView {
       VStack(alignment: .leading, spacing: 0) {
         Spacer()
           .frame(minHeight: 10)
+        title
         recipeDescription
         DividerView(top: 30, bottom: 30)
         ingredientList
@@ -31,7 +32,16 @@ struct RecipeView: View, NavigatableView {
     .scrollIndicators(.hidden)
     .navigationTitle(recipe.title)
     .navigationBarTitleDisplayMode(.large)
-//    .background(Color.TKBackgroundDefault)
+    .background(Color.TKBackgroundDefault)
+  }
+
+  @ViewBuilder
+  private var title: some View {
+    Text(recipe.title)
+      .TKDisplay()
+      .frame(alignment: .leading)
+      .padding(.bottom, 10)
+      .multilineTextAlignment(.leading)
   }
 
   @ViewBuilder

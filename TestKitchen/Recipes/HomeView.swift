@@ -12,7 +12,9 @@ struct HomeView: View {
   @Environment(\.modelContext) private var modelContext
   @Environment(\.navigationManager) private var navigationManager
 
-  var recipes: [Recipe] = TestExamples.makeRecipes()
+  @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes: [Recipe]
+
+//  var recipes: [Recipe] = TestExamples.makeRecipes()
 
   init() {
     let appear = UINavigationBarAppearance()
@@ -35,6 +37,10 @@ struct HomeView: View {
           Button("Test", systemImage: "minus") {
             print("Test minus")
             navigationManager.path.append(RecipeCreatorView.navigationTag)
+//            for recipe in recipes {
+//              modelContext.delete(recipe)
+//            }
+//            try? modelContext.save()
           }
         }
       }
@@ -51,5 +57,5 @@ struct HomeView: View {
 
 #Preview {
   HomeView()
-    .modelContainer(for: Item.self, inMemory: true)
+    .modelContainer(for: Recipe.self, inMemory: true)
 }

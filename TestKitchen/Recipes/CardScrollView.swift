@@ -75,7 +75,7 @@ struct CardScrollView: View {
     } action: { oldIndex, index in
       currentCardIndex = index
     }
-    .scrollTargetBehavior(CardScrollTargetBehavior())
+    .scrollTargetBehavior(CardScrollTargetBehavior(recipes: recipes))
     .sensoryFeedback(.increase, trigger: currentCardIndex)
     .scrollIndicators(.hidden)
     .scrollClipDisabled()
@@ -193,20 +193,18 @@ extension CardScrollView {
   }
 }
 
-extension CardScrollView {
-  struct CardScrollTargetBehavior: ScrollTargetBehavior {
-    func updateTarget(_ target: inout ScrollTarget, context: TargetContext) {
-      // Align to every mid point between each card, or every half a peek width.
+struct CardScrollTargetBehavior: ScrollTargetBehavior {
+  var recipes: [Recipe]
 
-      print("TargetX: \(target.rect), context: \(context.)")
-      target.rect.
-      var targetedIndex = floor(target.rect.origin.x / CardScrollView.getCardPeekWidth())
+  init(recipes: [Recipe]) {
+    self.recipes = recipes
+  }
 
-//      targetedIndex = min(targetedIndex, context.contentSize)
-      target.rect.origin.x = (targetedIndex + 1) * CardScrollView.getCardPeekWidth() - CardScrollView.getCardPeekWidth() / 2
-
-//      print("TargetIndex: \(targetedIndex), endX: \(target.rect.origin.x), contentSize: \(context.contentSize)")
-    }
+  func updateTarget(_ target: inout ScrollTarget, context: TargetContext) {
+    // Align to every mid point between each card, or every half a peek width.
+    var targetedIndex = floor(target.rect.origin.x / CardScrollView.getCardPeekWidth())
+    targetedIndex = min(targetedIndex, CGFloat(recipes.count - 1))
+    target.rect.origin.x = (targetedIndex + 1) * CardScrollView.getCardPeekWidth() - CardScrollView.getCardPeekWidth() / 2
   }
 }
 

@@ -15,24 +15,25 @@ struct CardScrollView: View {
 
   @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes: [Recipe]
 
+  @State private var scrollPosition = ScrollPosition()
   @State private var scrollOffset = CGPoint.zero
+  @State private var middleCardOffset = CGFloat.zero
   @State private var currentCardIndex: Int = 0
   @State private var engine: CHHapticEngine?
 
-  private let leadingTrailingCardSpace: CGFloat = 120
-  private let topBottomCardSpace: CGFloat = 200
-  private let cardsPerSide: Int = 3
+  static let leadingTrailingCardSpace: CGFloat = 120
+  static let topBottomCardSpace: CGFloat = 200
+  static let cardsPerSide: Int = 2
 
   var body: some View {
     ScrollView(.horizontal) {
-      HStack(spacing: -1 * getCardWidth() + getCardPeekWidth()) {
+      HStack(spacing: -1 * getCardWidth() + CardScrollView.getCardPeekWidth()) {
         // Add two empty cards so the first card can be centered
-        ForEach(0..<cardsPerSide, id: \.self) { _ in
+        ForEach(0..<CardScrollView.cardsPerSide, id: \.self) { _ in
           emptyCard()
         }
         ForEach(Array(zip(recipes.indices, recipes)), id: \.0) { index, recipe in
           let zIndex = Double(100 - abs(currentCardIndex - index))
-          let cardOffset = getMiddleCardOffset(for: index, point: scrollOffset)
           NavigationLink(
             destination: {
               RecipeView(recipe: recipe)
@@ -41,43 +42,44 @@ struct CardScrollView: View {
               RecipeView(recipe: recipe)
                 .frame(
                   width: getCardWidth(),
-                  height: getCardDynamicHeight(for: index, offset: cardOffset)
+                  height: getCardDynamicHeight(for: index)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .shadow(radius: 10)
             }
           )
           .offset(
-            x: getXOffset(for: index, offset: cardOffset),
+            x: getXOffset(for: index),
             y: 0
           )
           .zIndex(zIndex)
           .buttonStyle(NoHighlightLinkStyle())
         }
-        ForEach(0..<cardsPerSide, id: \.self) { _ in
+        ForEach(0..<CardScrollView.cardsPerSide + 1, id: \.self) { _ in
           emptyCard()
         }
       }
     }
-    .onScrollGeometryChange(for: Int.self) { proxy in
-      let _ = print("Scroll offset: \(proxy.contentOffset)")
-      return getCardIndex(from: proxy.contentOffset)
-    } action: { oldIndex, index in
-      currentCardIndex = index
-//      triggerHaptic()
+    .scrollPosition($scrollPosition)
+    .onAppear() {
+      scrollPosition.scrollTo(x: CardScrollView.getCardPeekWidth()/2)
     }
     .onScrollGeometryChange(for: CGPoint.self) { proxy in
       proxy.contentOffset
     } action: { oldOffset, offset in
       scrollOffset = offset
+      middleCardOffset = getMiddleCardOffset(from: offset)
     }
-//    .onAppear(perform: prepareHaptics)
+    .onScrollGeometryChange(for: Int.self) { proxy in
+      return getCardIndex(from: proxy.contentOffset)
+    } action: { oldIndex, index in
+      currentCardIndex = index
+    }
+    .scrollTargetBehavior(CardScrollTargetBehavior())
     .sensoryFeedback(.increase, trigger: currentCardIndex)
-
     .scrollIndicators(.hidden)
     .scrollClipDisabled()
     .animation(.spring, value: recipes)
-    
   }
 
   @ViewBuilder
@@ -95,67 +97,65 @@ struct CardScrollView: View {
     // There will be a zero content width until there is at least 2 cards
     guard recipes.count > 1 else { return 0 }
 
-    let totalContentWidth = getCardPeekWidth() * CGFloat(recipes.count - 1)
-    print("Total content width: \(totalContentWidth)")
+    let totalContentWidth = CardScrollView.getCardPeekWidth() * CGFloat(recipes.count)
     print("Point: \(point.x)")
 
     let index = Int(floor(point.x / totalContentWidth * CGFloat(recipes.count)))
-    
     return min(max(index, 0), recipes.count - 1)
   }
 
-  func getMiddleCardOffset(for index: Int, point: CGPoint) -> CGFloat {
+  func getMiddleCardOffset(from scrollOffset: CGPoint) -> CGFloat {
 /**
     (-10)       (0)         (10)          (20)        (30)
     |------------|------------|------------|------------|
-
 */
-    let middleOffset = -1 * ((getCardPeekWidth() * CGFloat(index)) - point.x)
-    print("Middle Offset: \(middleOffset)")
-    print("Card peek: \(getCardPeekWidth())")
+
+    let middleOffset = -1 * ((CardScrollView.getCardPeekWidth() * CGFloat(currentCardIndex)) - scrollOffset.x)
     return middleOffset
   }
 
   func getCardWidth() -> CGFloat {
-    return screenSize.width - leadingTrailingCardSpace
+    return screenSize.width - CardScrollView.leadingTrailingCardSpace
   }
 
   func getCardHeight() -> CGFloat {
-    return screenSize.height - topBottomCardSpace
+    return screenSize.height - CardScrollView.topBottomCardSpace
   }
 
-  func getXOffset(for index: Int, offset: CGFloat) -> CGFloat {
+  func getXOffset(for index: Int) -> CGFloat {
     if index == currentCardIndex {
-      return offset
-    } else if index == currentCardIndex - 1 {
-      return 0
-//      return offset - getCardPeekWidth() / 2
+//      print("Index: \(index), offset: \(middleCardOffset)")
+      return middleCardOffset
+    } else if index < currentCardIndex  {
+      return CardScrollView.getCardPeekWidth()
     }
     return 0
   }
 
-  func getCardDynamicHeight(for index: Int, offset: CGFloat) -> CGFloat {
+  func getCardDynamicHeight(for index: Int) -> CGFloat {
     let cardHeight = getCardHeight()
     var dynamicCardHeight = cardHeight
-    let peekWidth = getCardPeekWidth()
-    let correctedOffset = offset + (peekWidth / 2)
+    let peekWidth = CardScrollView.getCardPeekWidth()
+    let correctedOffset = middleCardOffset + (peekWidth / 2)
 
     if index == currentCardIndex {
       dynamicCardHeight += peekWidth * 2
     } else if index == currentCardIndex - 1 && index >= 0 {
-      dynamicCardHeight += max(peekWidth * 2 - correctedOffset, 0)
+      dynamicCardHeight += peekWidth * 3 - correctedOffset * 2
     } else if index == currentCardIndex + 1 {
-      dynamicCardHeight += max(peekWidth + correctedOffset, 0)
+      dynamicCardHeight += correctedOffset * 2 - peekWidth
     }
     return dynamicCardHeight
   }
 
-  func getCardPeekWidth() -> CGFloat {
+  static func getCardPeekWidth() -> CGFloat {
     // Take the total card space on the sides,
     // divide it by 2 to get the space on one side,
     // then divide it by the number of cards that can appear on a side
     // and one empty space.
-    return leadingTrailingCardSpace / 2 / CGFloat(cardsPerSide)
+    return CardScrollView.leadingTrailingCardSpace
+      / 2
+      / CGFloat(CardScrollView.cardsPerSide)
   }
 }
 
@@ -190,6 +190,23 @@ extension CardScrollView {
       } catch {
           print("Failed to play pattern: \(error.localizedDescription).")
       }
+  }
+}
+
+extension CardScrollView {
+  struct CardScrollTargetBehavior: ScrollTargetBehavior {
+    func updateTarget(_ target: inout ScrollTarget, context: TargetContext) {
+      // Align to every mid point between each card, or every half a peek width.
+
+      print("TargetX: \(target.rect), context: \(context.)")
+      target.rect.
+      var targetedIndex = floor(target.rect.origin.x / CardScrollView.getCardPeekWidth())
+
+//      targetedIndex = min(targetedIndex, context.contentSize)
+      target.rect.origin.x = (targetedIndex + 1) * CardScrollView.getCardPeekWidth() - CardScrollView.getCardPeekWidth() / 2
+
+//      print("TargetIndex: \(targetedIndex), endX: \(target.rect.origin.x), contentSize: \(context.contentSize)")
+    }
   }
 }
 

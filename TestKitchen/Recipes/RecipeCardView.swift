@@ -9,49 +9,49 @@ import SwiftUI
 
 struct RecipeCardView: View {
   
-  var image: Image?
-  var title: String
-  var author: String
-  var prepTime: Int
-  var totalTime: Int
+  var recipe: Recipe
   
   init(recipe: Recipe) {
-    self.title = recipe.title
-    self.author = recipe.author
-    self.prepTime = recipe.prepTime
-    self.totalTime = recipe.totalTime
+    self.recipe = recipe
   }
   
   var body: some View {
-    HStack(alignment: .top, spacing: .TKSpacingCard) {
-      Text("Image go here")
-        .font(.headline)
-        .lineLimit(2)
-        .frame(width: 100, height: 100)
-        .background(Color.blue)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-      VStack(alignment: .leading, spacing: .TKSpacingDefault) {
-        Text(title)
+    VStack(spacing: 16) {
+      //      Image("test_photo")
+      Image("test_vertical")
+        .resizable()
+        .scaledToFill()
+        .frame(height: 200)
+        .clipped()
+      VStack(spacing: 8) {
+        Text(recipe.title)
           .TKTitle()
           .lineLimit(2)
-        Text(author)
-          .TKFontBody1()
-          .lineLimit(1)
+        if let author = recipe.author,
+           !author.isEmpty {
+          Text(author)
+            .TKFontBody1()
+            .lineLimit(1)
+        }
         HStack(spacing: .TKSpacingDefault) {
           (Text("Prep: ")
             .TKFontBody2Gray()
-           + Text("\(prepTime) min"))
+           + Text("\(recipe.prepTime) min"))
           .TKFontBody2()
           Text("|")
             .TKFontBody2Gray()
           Text("Total: ")
             .TKFontBody2Gray()
-          + Text("\(totalTime) min")
+          + Text("\(recipe.totalTime) min")
             .TKFontBody2()
         }
+        Text(recipe.recipeDescription)
+          .TKFontBody1()
+          .lineLimit(3)
       }
+      .padding()
+      Spacer()
     }
-    .frame(maxWidth: .infinity, alignment: .topLeading)
     .background(Color.TKBackgroundDefault)
   }
 }

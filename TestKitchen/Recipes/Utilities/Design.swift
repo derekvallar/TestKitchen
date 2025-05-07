@@ -66,7 +66,13 @@ extension Text {
       .font(.TKBody1)
       .foregroundStyle(Color.gray)
   }
-  
+
+  public func TKFontPlaceholder() -> Text {
+    return self
+      .font(.TKBody1)
+      .foregroundStyle(Color.TKFontGray)
+  }
+
   public func TKFontBody1Inverse() -> Text {
     return self
       .font(.TKBody1)
@@ -93,7 +99,16 @@ extension Text {
   }
 }
 
+extension TextField {
+  public func TKFontBody1() -> some View {
+    return self
+      .font(.TKBody1)
+      .foregroundStyle(Color.TKFontDefault)
+  }
+}
+
 extension CGFloat {
   public static var TKSpacingDefault: CGFloat = 4
   public static var TKSpacingCard: CGFloat = 8
+  public static var TKLineSpacingIngredients: CGFloat = 10
 }

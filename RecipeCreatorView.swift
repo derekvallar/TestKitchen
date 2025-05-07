@@ -24,15 +24,25 @@ struct RecipeCreatorView: View, NavigatableView {
     return makeRecipe()
   }
   @State private var title: String = ""
-  @State private var description: String = "A simple family recipe made with a little bit of love and a lot of fish!"
-  @State private var ingredients: String = "4 cod fillets\n1 cup all-purpose flour"
+  @State private var author: String = ""
+  @State private var prepTime: String = ""
+  @State private var cookTime: String = ""
+
+  @State private var description: String = ""
+  @State private var ingredients: String = ""
   @State private var preparationSteps: [String] = [""]
   @State private var numberOfPrepSteps = 1
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading, spacing: 20) {
+        ImageUploadList()
         RecipeTitleView
+        AuthorView
+        HStack(alignment: .top) {
+          PrepTimeView
+          CookTimeView
+        }
         DescriptionView
         IngredientsView
         PreparationStepsView
@@ -40,6 +50,7 @@ struct RecipeCreatorView: View, NavigatableView {
     }
     .padding()
     .scrollIndicators(.hidden)
+    .scrollClipDisabled(true)
     .toolbar {
       ToolbarItemGroup(placement: .keyboard) {
         if focusedField == .preparationStep {
@@ -59,21 +70,7 @@ struct RecipeCreatorView: View, NavigatableView {
       }
       ToolbarItem(placement: .topBarTrailing) {
         Button("Save") {
-          guard let recipe = pendingRecipe else {
-            showSaveAlert = true
-            return
-          }
-
-          navigationManager.popLast()
-          // Animate the recipe inserting in the homeview after a brief delay
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            modelContext.insert(recipe)
-            try? modelContext.save()
-          }
-
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
-            navigationManager.path.append(recipe)
-          }
+          saveRecipe()
         }
       }
     }
@@ -89,18 +86,64 @@ struct RecipeCreatorView: View, NavigatableView {
 
   @ViewBuilder
   var RecipeTitleView: some View {
-    Text("Recipe Title")
+    HStack(alignment: .top) {
+      Text("Recipe Title")
+        .TKFontBody1()
+        .bold()
+      TextField(
+        "Fish n' Chips",
+        text: $title,
+        axis: .vertical
+      )
+      .TKFontBody1()
+      .focused($focusedField, equals: .title)
+    }
+  }
+
+  @ViewBuilder
+  var AuthorView: some View {
+    HStack(alignment: .top) {
+
+      Text("Author")
+        .TKFontBody1()
+        .bold()
+      TextField(
+        "Julia Child",
+        text: $author,
+        axis: .vertical
+      )
+      .font(.TKBody1)
+      .focused($focusedField, equals: .title)
+    }
+    //    Spacer().frame(height: 16)
+  }
+
+  @ViewBuilder
+  var PrepTimeView: some View {
+    Text("Prep Time")
       .TKFontBody1()
       .bold()
     TextField(
-      "Fish n' Chips",
-      text: $title,
+      "30 mins",
+      text: $prepTime,
       axis: .vertical
     )
-      .font(.TKDisplay)
-      .focused($focusedField, equals: .title)
+    .TKFontBody1()
+    .focused($focusedField, equals: .title)
+  }
 
-    Spacer().frame(height: 16)
+  @ViewBuilder
+  var CookTimeView: some View {
+    Text("Cook Time")
+      .TKFontBody1()
+      .bold()
+    TextField(
+      "1 hour",
+      text: $cookTime,
+      axis: .vertical
+    )
+    .TKFontBody1()
+    .focused($focusedField, equals: .title)
   }
 
   @ViewBuilder
@@ -109,9 +152,11 @@ struct RecipeCreatorView: View, NavigatableView {
       .TKFontBody1()
       .bold()
     TextEditor(text: $description)
-      .frame(minHeight: 54)
-      .DefaultTextBoxStyle()
-    Spacer().frame(height: 16)
+      .frame(minHeight: 58)
+      .defaultTextBoxStyle(
+        for: $description,
+        placeholder: "A simple family recipe made with a little bit of love and a lot of fish!"
+      )
   }
 
   @ViewBuilder
@@ -120,10 +165,13 @@ struct RecipeCreatorView: View, NavigatableView {
       .TKFontBody1()
       .bold()
     TextEditor(text: $ingredients)
-      .lineSpacing(10)
-      .frame(minHeight: 65)
-      .DefaultTextBoxStyle()
-    Spacer().frame(height: 16)
+      .lineSpacing(.TKLineSpacingIngredients)
+      .frame(minHeight: 68)
+      .defaultTextBoxStyle(
+        for: $ingredients,
+        placeholder: "4 cod fillets\n1 cup all-purpose flour",
+        lineSpacing: .TKLineSpacingIngredients
+      )
   }
 
   @ViewBuilder
@@ -131,15 +179,16 @@ struct RecipeCreatorView: View, NavigatableView {
     Text("Preparation Steps")
       .TKFontBody1()
       .bold()
-    Spacer().frame(height: 8)
 
     ForEach(0..<numberOfPrepSteps, id: \.self) { index in
       Text("Step \(index + 1)")
         .TKFontBody1()
       TextEditor(text: $preparationSteps[index])
-        .lineSpacing(10)
-        .frame(minHeight: 70)
-        .DefaultTextBoxStyle()
+        .frame(minHeight: 68)
+        .defaultTextBoxStyle(
+          for: $preparationSteps[index],
+          placeholder: "Prepare the fillets"
+        )
         .focused($focusedField, equals: .preparationStep)
     }
   }
@@ -151,7 +200,7 @@ struct RecipeCreatorView: View, NavigatableView {
 
     return Recipe(
       title: title,
-      author: "",
+      author: nil,
       recipeDescription: description,
       photos: [],
       prepTime: 0,
@@ -161,19 +210,53 @@ struct RecipeCreatorView: View, NavigatableView {
     )
   }
 
-  private func saveRecipe(_ recipe: Recipe) {
-    
+  private func saveRecipe() {
+    guard let recipe = pendingRecipe else {
+      showSaveAlert = true
+      return
+    }
+
+    navigationManager.popLast()
+    // Animate the recipe inserting in the homeview after a brief delay
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+      modelContext.insert(recipe)
+      try? modelContext.save()
+    }
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+      navigationManager.path.append(recipe)
+    }
   }
 }
 
 extension View {
-  func DefaultTextBoxStyle() -> some View {
+  func defaultTextBoxStyle(
+    for textBinding: Binding<String>,
+    placeholder: String? = nil,
+    lineSpacing: CGFloat = 0
+  ) -> some View {
+
     return self
       .font(.TKBody1)
+      .foregroundStyle(Color.TKFontDefault)
       .scrollContentBackground(.hidden)
-      .background(Color.TKBackgroundLightGray)
-//      .padding(.horizontal, -5)
+//      .background(Color.TKBackgroundLightGray)
       .clipShape(RoundedRectangle(cornerRadius: 4))
+      .padding(.horizontal, -5)
+      .padding(.vertical, -8)
+      .overlay(alignment: .topLeading) {
+        if textBinding.wrappedValue == "",
+           let placeholder = placeholder {
+          HStack(spacing: 0) {
+            Text(placeholder)
+              .TKFontPlaceholder()
+              .lineSpacing(lineSpacing)
+              .lineLimit(2)
+              .frame(alignment: .topLeading)
+            Spacer()
+          }
+        }
+      }
   }
 }
 

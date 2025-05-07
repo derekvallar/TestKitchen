@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "test_vertical.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },

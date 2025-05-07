@@ -11,7 +11,7 @@ import SwiftData
 @Model
 final class Recipe {
   var title: String
-  var author: String
+  var author: String?
   var dateCreated: Date
   var recipeDescription: String
   var photos: [Photo]
@@ -25,7 +25,7 @@ final class Recipe {
   
   init(
     title: String,
-    author: String,
+    author: String?,
     recipeDescription: String,
     photos: [Photo],
     prepTime: Int,
@@ -46,7 +46,7 @@ final class Recipe {
 
   init(
     title: String,
-    author: String,
+    author: String?,
     recipeDescription: String,
     photos: [Photo],
     prepTime: Int,

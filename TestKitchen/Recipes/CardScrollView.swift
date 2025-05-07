@@ -22,7 +22,7 @@ struct CardScrollView: View {
   @State private var engine: CHHapticEngine?
 
   static let leadingTrailingCardSpace: CGFloat = 120
-  static let topBottomCardSpace: CGFloat = 200
+  static let topBottomCardSpace: CGFloat = 400
   static let cardsPerSide: Int = 2
 
   var body: some View {
@@ -39,7 +39,7 @@ struct CardScrollView: View {
               RecipeView(recipe: recipe)
             },
             label: {
-              RecipeView(recipe: recipe)
+              RecipeCardView(recipe: recipe)
                 .frame(
                   width: getCardWidth(),
                   height: getCardDynamicHeight(for: index)
@@ -108,6 +108,8 @@ struct CardScrollView: View {
 /**
     (-10)       (0)         (10)          (20)        (30)
     |------------|------------|------------|------------|
+    <------(First card)------->
+ 
 */
 
     let middleOffset = -1 * ((CardScrollView.getCardPeekWidth() * CGFloat(currentCardIndex)) - scrollOffset.x)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		583BEBA32DB81D6400D69DE0 /* RecipeCreatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */; };
+		585B4DEE2DCA927200D6CD56 /* ImageUploadList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585B4DED2DCA927200D6CD56 /* ImageUploadList.swift */; };
 		58AD67A92DC41C280077C280 /* CardScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD67A82DC41C280077C280 /* CardScrollView.swift */; };
 		58AD67AD2DC53C340077C280 /* CardScrollViewClaude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD67AC2DC53C340077C280 /* CardScrollViewClaude.swift */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCreatorView.swift; sourceTree = "<group>"; };
+		585B4DED2DCA927200D6CD56 /* ImageUploadList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageUploadList.swift; path = TestKitchen/Recipes/ImageUploadList.swift; sourceTree = "<group>"; };
 		58AD67A82DC41C280077C280 /* CardScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CardScrollView.swift; path = TestKitchen/Recipes/CardScrollView.swift; sourceTree = "<group>"; };
 		58AD67AC2DC53C340077C280 /* CardScrollViewClaude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScrollViewClaude.swift; sourceTree = "<group>"; };
 		58DF9FFF2D74296A002F98F4 /* TestKitchen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestKitchen.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +99,7 @@
 		58DF9FF62D74296A002F98F4 = {
 			isa = PBXGroup;
 			children = (
+				585B4DED2DCA927200D6CD56 /* ImageUploadList.swift */,
 				58AD67A82DC41C280077C280 /* CardScrollView.swift */,
 				58AD67AC2DC53C340077C280 /* CardScrollViewClaude.swift */,
 				583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */,
@@ -264,6 +267,7 @@
 				58AD67A92DC41C280077C280 /* CardScrollView.swift in Sources */,
 				58AD67AD2DC53C340077C280 /* CardScrollViewClaude.swift in Sources */,
 				583BEBA32DB81D6400D69DE0 /* RecipeCreatorView.swift in Sources */,
+				585B4DEE2DCA927200D6CD56 /* ImageUploadList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

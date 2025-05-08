@@ -12,6 +12,7 @@ struct RecipeCreatorView: View, NavigatableView {
 
   @Environment(\.modelContext) private var modelContext
   @Environment(\.navigationManager) var navigationManager: NavigationManager
+  @Environment(\.screenSize) var screenSize
 
   enum Field: Hashable {
     case title
@@ -36,7 +37,10 @@ struct RecipeCreatorView: View, NavigatableView {
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 20) {
+        let imageSize = ImageUploadList.calculateImageSize(from: screenSize.width - 2 * CGFloat.TKPagePadding)
+        let _ = print("imageSize: \(imageSize)")
         ImageUploadList()
+          .frame(minHeight: imageSize)
         RecipeTitleView
         AuthorView
         HStack(alignment: .top) {
@@ -48,7 +52,7 @@ struct RecipeCreatorView: View, NavigatableView {
         PreparationStepsView
       }
     }
-    .padding()
+    .padding(.all, 20)
     .scrollIndicators(.hidden)
     .scrollClipDisabled(true)
     .toolbar {
@@ -113,7 +117,7 @@ struct RecipeCreatorView: View, NavigatableView {
         axis: .vertical
       )
       .font(.TKBody1)
-      .focused($focusedField, equals: .title)
+//      .focused($focusedField, equals: .title)
     }
     //    Spacer().frame(height: 16)
   }
@@ -129,7 +133,7 @@ struct RecipeCreatorView: View, NavigatableView {
       axis: .vertical
     )
     .TKFontBody1()
-    .focused($focusedField, equals: .title)
+//    .focused($focusedField, equals: .title)
   }
 
   @ViewBuilder
@@ -143,7 +147,7 @@ struct RecipeCreatorView: View, NavigatableView {
       axis: .vertical
     )
     .TKFontBody1()
-    .focused($focusedField, equals: .title)
+//    .focused($focusedField, equals: .title)
   }
 
   @ViewBuilder

@@ -108,6 +108,7 @@ extension TextField {
 }
 
 extension CGFloat {
+  public static var TKPagePadding: CGFloat = 16
   public static var TKSpacingDefault: CGFloat = 4
   public static var TKSpacingCard: CGFloat = 8
   public static var TKLineSpacingIngredients: CGFloat = 10

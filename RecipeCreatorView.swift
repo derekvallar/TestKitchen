@@ -18,16 +18,25 @@ struct RecipeCreatorView: View, NavigatableView {
     case title
     case preparationStep
   }
+
+  let imageUploadList =  ImageUploadList()
+
   @FocusState private var focusedField: Field?
   @State var showSaveAlert: Bool = false
 
   var pendingRecipe: Recipe? {
     return makeRecipe()
   }
+
+  init(recipe: Recipe?) {
+
+  }
+
   @State private var title: String = ""
   @State private var author: String = ""
   @State private var prepTime: String = ""
   @State private var cookTime: String = ""
+  @State private var totalTime: String = ""
 
   @State private var description: String = ""
   @State private var ingredients: String = ""
@@ -37,19 +46,19 @@ struct RecipeCreatorView: View, NavigatableView {
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 20) {
-        let imageSize = ImageUploadList.calculateImageSize(from: screenSize.width - 2 * CGFloat.TKPagePadding)
-        let _ = print("imageSize: \(imageSize)")
-        ImageUploadList()
+        let imageSize = ImageUploadList.calculateImageSize(from: screenSize.width - 2 * .TKPagePadding)
+        imageUploadList
           .frame(minHeight: imageSize)
-        RecipeTitleView
-        AuthorView
+        recipeTitleView
+        authorView
         HStack(alignment: .top) {
-          PrepTimeView
-          CookTimeView
+          prepTimeView
+          cookTimeView
         }
-        DescriptionView
-        IngredientsView
-        PreparationStepsView
+        totalTimeView
+        descriptionView
+        ingredientsView
+        preparationStepsView
       }
     }
     .padding(.all, 20)
@@ -89,7 +98,7 @@ struct RecipeCreatorView: View, NavigatableView {
   }
 
   @ViewBuilder
-  var RecipeTitleView: some View {
+  var recipeTitleView: some View {
     HStack(alignment: .top) {
       Text("Recipe Title")
         .TKFontBody1()
@@ -105,7 +114,7 @@ struct RecipeCreatorView: View, NavigatableView {
   }
 
   @ViewBuilder
-  var AuthorView: some View {
+  var authorView: some View {
     HStack(alignment: .top) {
 
       Text("Author")
@@ -117,13 +126,11 @@ struct RecipeCreatorView: View, NavigatableView {
         axis: .vertical
       )
       .font(.TKBody1)
-//      .focused($focusedField, equals: .title)
     }
-    //    Spacer().frame(height: 16)
   }
 
   @ViewBuilder
-  var PrepTimeView: some View {
+  var prepTimeView: some View {
     Text("Prep Time")
       .TKFontBody1()
       .bold()
@@ -133,11 +140,10 @@ struct RecipeCreatorView: View, NavigatableView {
       axis: .vertical
     )
     .TKFontBody1()
-//    .focused($focusedField, equals: .title)
   }
 
   @ViewBuilder
-  var CookTimeView: some View {
+  var cookTimeView: some View {
     Text("Cook Time")
       .TKFontBody1()
       .bold()
@@ -147,11 +153,24 @@ struct RecipeCreatorView: View, NavigatableView {
       axis: .vertical
     )
     .TKFontBody1()
-//    .focused($focusedField, equals: .title)
   }
 
   @ViewBuilder
-  var DescriptionView: some View {
+  var totalTimeView: some View {
+    Text("Total Time")
+      .TKFontBody1()
+      .bold()
+    TextField(
+      "1 1/2 hours",
+      text: $totalTime,
+      axis: .vertical
+    )
+    .TKFontBody1()
+  }
+
+
+  @ViewBuilder
+  var descriptionView: some View {
     Text("Description")
       .TKFontBody1()
       .bold()
@@ -164,7 +183,7 @@ struct RecipeCreatorView: View, NavigatableView {
   }
 
   @ViewBuilder
-  var IngredientsView: some View {
+  var ingredientsView: some View {
     Text("Ingredients")
       .TKFontBody1()
       .bold()
@@ -179,7 +198,7 @@ struct RecipeCreatorView: View, NavigatableView {
   }
 
   @ViewBuilder
-  var PreparationStepsView: some View {
+  var preparationStepsView: some View {
     Text("Preparation Steps")
       .TKFontBody1()
       .bold()
@@ -198,17 +217,16 @@ struct RecipeCreatorView: View, NavigatableView {
   }
 
   private func makeRecipe() -> Recipe? {
-    print("nav name: \(navigationManager.testID)")
-
     guard !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
 
     return Recipe(
       title: title,
-      author: nil,
+      author: author,
       recipeDescription: description,
       photos: [],
-      prepTime: 0,
-      cookTime: 0,
+      prepTime: prepTime,
+      cookTime: cookTime,
+      totalTime: totalTime,
       preparationSteps: preparationSteps,
       ingredients: ingredients
     )
@@ -266,6 +284,6 @@ extension View {
 
 struct RecipeCreatorView_Preview: PreviewProvider {
   static var previews: some View {
-    RecipeCreatorView()
+    RecipeCreatorView(recipe: nil)
   }
 }

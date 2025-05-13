@@ -17,6 +17,13 @@ struct HomeView: View {
 //  var recipes: [Recipe] = TestExamples.makeRecipes()
 
   init() {
+//    do {
+//      try modelContext.delete(model: Recipe.self)
+//    } catch {
+//        print("Failed to delete all recipes.")
+//    }
+
+
     let appear = UINavigationBarAppearance()
     let atters: [NSAttributedString.Key: Any] = [
       .font: UIFont.TKDisplay
@@ -35,21 +42,34 @@ struct HomeView: View {
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button("Test", systemImage: "minus") {
-            print("Test minus")
-            navigationManager.path.append(RecipeCreatorView.navigationTag)
-//            for recipe in recipes {
-//              modelContext.delete(recipe)
+            navigationManager.path.append(Destination.recipeCreation(recipe: nil))
+
+//            do {
+//              try modelContext.delete(model: Recipe.self)
+//            } catch {
+//                print("Failed to delete all schools.")
 //            }
 //            try? modelContext.save()
           }
         }
       }
-      .navigationDestination(for: Recipe.self) { recipe in
+//      .navigationDestination(for: Recipe.self) { recipe in
+//        if recipes.contains(recipe) {
+//          
+//        }
+//          RecipeView(recipe: recipe)
+//      }
+//      .navigationDestination(for: String.self) { destination in
+//        // destination == recipeCreation
+//        RecipeCreatorView()
+//      }
+      .navigationDestination(for: Destination.self) { destination in
+        switch destination {
+        case .recipeCreation(let recipe):
+          RecipeCreatorView(recipe: recipe)
+        case .recipeDetails(let recipe):
           RecipeView(recipe: recipe)
-      }
-      .navigationDestination(for: String.self) { destination in
-        // destination == recipeCreation
-        RecipeCreatorView()
+        }
       }
     }
   }

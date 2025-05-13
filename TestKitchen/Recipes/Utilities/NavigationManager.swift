@@ -14,7 +14,6 @@ final class NavigationManager {
   var testID: String
 
   init(testID: String = "test") {
-    print("NavigationManager init: \(testID)")
     self.testID = testID
   }
 
@@ -42,4 +41,16 @@ final class NavigationManager {
 
 extension EnvironmentValues {
   @Entry var navigationManager: NavigationManager = NavigationManager(testID: "anotherTest")
+}
+
+//struct Destination: Hashable {
+//  let destination: String
+//  let recipe: Recipe?
+//
+//
+//}
+
+enum Destination: Hashable {
+  case recipeCreation(recipe: Recipe?)
+  case recipeDetails(recipe: Recipe)
 }

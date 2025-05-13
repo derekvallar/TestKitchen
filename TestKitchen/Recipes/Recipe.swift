@@ -7,29 +7,31 @@
 
 import Foundation
 import SwiftData
+import _PhotosUI_SwiftUI
 
 @Model
 final class Recipe {
+  // NOTE(dvallar): Make these recipes unique models depending on id (perhaps creator too?)
+//  var id: UUID = UUID()
   var title: String
   var author: String?
   var dateCreated: Date
-  var recipeDescription: String
+  var recipeDescription: String?
   var photos: [Photo]
-  var prepTime: Int
-  var cookTime: Int
-  var totalTime: Int {
-    prepTime + cookTime
-  }
+  var prepTime: String?
+  var cookTime: String?
+  var totalTime: String?
   var preparationSteps: [PreparationStep]
   var ingredients: [Ingredient]
   
   init(
     title: String,
     author: String?,
-    recipeDescription: String,
+    recipeDescription: String?,
     photos: [Photo],
-    prepTime: Int,
-    cookTime: Int,
+    prepTime: String?,
+    cookTime: String?,
+    totalTime: String?,
     preparationSteps: [PreparationStep],
     ingredients: [Ingredient]
   ) {
@@ -40,6 +42,7 @@ final class Recipe {
     self.photos = photos
     self.prepTime = prepTime
     self.cookTime = cookTime
+    self.totalTime = totalTime
     self.preparationSteps = preparationSteps
     self.ingredients = ingredients
   }
@@ -47,10 +50,11 @@ final class Recipe {
   init(
     title: String,
     author: String?,
-    recipeDescription: String,
+    recipeDescription: String?,
     photos: [Photo],
-    prepTime: Int,
-    cookTime: Int,
+    prepTime: String?,
+    cookTime: String?,
+    totalTime: String?,
     preparationSteps: [String],
     ingredients: String
   ) {
@@ -61,6 +65,7 @@ final class Recipe {
     self.photos = photos
     self.prepTime = prepTime
     self.cookTime = cookTime
+    self.totalTime = totalTime
     self.preparationSteps = preparationSteps.map {
       PreparationStep(text: $0)
     }
@@ -85,7 +90,7 @@ struct Ingredient: Codable {
   let ingredient: String
 }
 
-class Photo: Codable {
+struct Photo: Codable, Hashable {
   
 }
 

@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ImageUploadList: View {
   static let imageSpacing: CGFloat = 10
-//  @State var imageSize: CGFloat = 120
 
   @State var photoItems: [PhotosPickerItem] = []
   @State var uploadedImages: [Image] = []
@@ -74,6 +73,9 @@ struct ImageUploadView: View {
           // NOTE(dvallar): If you care, optimize this.
           uploadedImages.removeAll()
           for item in photoItems {
+            let item2: PhotosPickerItem = item
+//            item2
+            print("Photo picker: \(item2.supportedContentTypes) ")
             if let image = try? await item.loadTransferable(type: Image.self) {
               uploadedImages.append(image)
             }

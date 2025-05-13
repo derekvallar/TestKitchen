@@ -98,7 +98,6 @@ struct CardScrollView: View {
     guard recipes.count > 1 else { return 0 }
 
     let totalContentWidth = CardScrollView.getCardPeekWidth() * CGFloat(recipes.count)
-    print("Point: \(point.x)")
 
     let index = Int(floor(point.x / totalContentWidth * CGFloat(recipes.count)))
     return min(max(index, 0), recipes.count - 1)
@@ -126,7 +125,6 @@ struct CardScrollView: View {
 
   func getXOffset(for index: Int) -> CGFloat {
     if index == currentCardIndex {
-//      print("Index: \(index), offset: \(middleCardOffset)")
       return middleCardOffset
     } else if index < currentCardIndex  {
       return CardScrollView.getCardPeekWidth()

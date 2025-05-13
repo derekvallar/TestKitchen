@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct RecipeCardView: View {
-  
+
   var recipe: Recipe
-  
+
   init(recipe: Recipe) {
     self.recipe = recipe
   }
-  
+
   var body: some View {
     VStack(spacing: 16) {
       //      Image("test_photo")
@@ -36,16 +36,16 @@ struct RecipeCardView: View {
         HStack(spacing: .TKSpacingDefault) {
           (Text("Prep: ")
             .TKFontBody2Gray()
-           + Text("\(recipe.prepTime) min"))
+           + Text("\(recipe.prepTime ?? "") min"))
           .TKFontBody2()
           Text("|")
             .TKFontBody2Gray()
           Text("Total: ")
             .TKFontBody2Gray()
-          + Text("\(recipe.totalTime) min")
+          + Text("\(recipe.totalTime ?? "") min")
             .TKFontBody2()
         }
-        Text(recipe.recipeDescription)
+        Text(recipe.recipeDescription ?? "")
           .TKFontBody1()
           .lineLimit(3)
       }

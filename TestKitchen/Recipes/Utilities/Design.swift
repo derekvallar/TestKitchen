@@ -13,6 +13,13 @@ extension Color {
   public static var TKFontDefaultSub = Color(red: 0.5, green: 0.5, blue: 0.5)
   public static var TKFontGray = Color(red: 0.7, green: 0.7, blue: 0.7)
   public static var TKBackgroundLightGray = Color(red: 0.94, green: 0.94, blue: 0.94)
+
+  public static var TKYellow = Color(red: 0.9803921569, green: 0.9411764706, blue: 0.5882352941)
+  public static var TKOrange = Color(red: 1.0, green: 0.5764705882, blue: 0.3098039216)
+  public static var TKGreen = Color(red: 0.1490196078, green: 0.662745098, blue: 0.4235294118)
+  public static var TKBlue = Color(red: 0.0, green: 0.5333333333, blue: 1.0)
+  public static var TKDarkBlue = Color(red: 0.03921568627, green: 0.06666666667, blue: 0.1568627451)
+
 }
 
 /**
@@ -39,6 +46,7 @@ extension Text {
   public func TKDisplay() -> Text {
     return self
       .font(.TKDisplay)
+      .bold()
       .foregroundStyle(Color.TKFontDefault)
   }
     

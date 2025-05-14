@@ -22,51 +22,17 @@ struct RecipeView: View, NavigatableView {
   }
 
   var body: some View {
-    ScrollView {
-      VStack {
-        ScrollView(.horizontal) {
-          HStack(spacing: 0) {
-            ForEach(recipe.photos, id: \.self) { photo in
-              Image("test_photo")
-                .resizable()
-                .scaledToFill()
-
-//              # if debug
-                .frame(width: 410, height: 240)
-//              # else
-//                .frame(width: screenSize.width, height: 240)
-            }
-          }
-        }
-        .scrollTargetBehavior(.paging)
+    ScrollView() {
+      VStack(spacing: .TKPagePadding) {
+        photoCarousel
+        infoStack
+        bottomFoldStack
       }
-      VStack(alignment: .leading, spacing: .TKPagePadding) {
-        title
-        if recipe.prepTime != nil || recipe.cookTime != nil {
-          HStack {
-            if recipe.prepTime != nil {
-              prepTimeView
-            }
-            if recipe.cookTime != nil {
-              cookTimeView
-            }
-          }
-        }
-        if recipe.totalTime != nil {
-          totalTimeView
-        }
-        recipeDescription
-        DividerView(top: 30, bottom: 30)
-        ingredientList
-        DividerView(top: 30, bottom: 30)
-        preparationSteps
-      }
-      .padding(.all, .TKPagePadding)
     }
     .scrollIndicators(.hidden)
-    .navigationTitle(recipe.title)
-    .navigationBarTitleDisplayMode(.large)
-    .background(Color.TKBackgroundDefault)
+//    .navigationTitle(recipe.title)
+//    .navigationBarTitleDisplayMode(.large)
+    .background(Color.TKYellow)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
         Button("Edit") {
@@ -79,64 +45,143 @@ struct RecipeView: View, NavigatableView {
   }
 
   @ViewBuilder
+  private var photoCarousel: some View {
+    ScrollView(.horizontal) {
+      HStack(spacing: 0) {
+        ForEach(recipe.photos, id: \.self) { photo in
+          Image("test_photo")
+            .resizable()
+            .scaledToFill()
+            #if DEBUG
+            .frame(width: 410, height: 240)
+            #else
+            .frame(width: screenSize.width, height: 240)
+            #endif
+        }
+      }
+    }
+    .scrollTargetBehavior(.paging)
+  }
+
+  @ViewBuilder
+  private var infoStack: some View {
+    VStack(alignment: .leading, spacing: .TKPagePadding) {
+      title
+      timeViewStack
+      recipeDescription
+    }
+    .padding(.all, .TKPagePadding)
+    .background(Color.TKBackgroundDefault)
+    .clipShape(RoundedRectangle(cornerRadius: 8))
+    .padding(.horizontal, .TKPagePadding)
+  }
+
+  @ViewBuilder
   private var title: some View {
     Text(recipe.title)
       .TKDisplay()
-      .frame(alignment: .leading)
-      .padding(.bottom, 10)
-      .multilineTextAlignment(.leading)
+//      .frame(alignment: .leading)
+//      .padding(.bottom, .TKPagePadding)
+//      .multilineTextAlignment(.leading)
   }
 
   @ViewBuilder
-  var prepTimeView: some View {
-    Text("Prep Time:")
-      .TKFontBody1Gray()
-    Text("\(recipe.prepTime ?? "")")
-      .TKFontBody1()
+  var timeViewStack: some View {
+    if recipe.prepTime == nil && recipe.cookTime == nil && recipe.totalTime == nil {
+      EmptyView()
+    } else {
+      VStack(spacing: .TKSpacingDefault) {
+        if recipe.prepTime != nil || recipe.cookTime != nil {
+          HStack {
+            if let prepTime = recipe.prepTime{
+              HStack {
+                Text("Prep Time:")
+                  .TKFontBody1Gray()
+                Text("\(prepTime)")
+                  .TKFontBody1()
+              }
+              .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            if let cookTime = recipe.cookTime {
+              HStack {
+                Text("Cook Time:")
+                  .TKFontBody1Gray()
+                Text("\(cookTime)")
+                  .TKFontBody1()
+              }
+              .frame(maxWidth: .infinity, alignment: .leading)
+            }
+          }
+        }
+        if let totalTime = recipe.totalTime {
+          HStack {
+            Text("Total Time:")
+              .TKFontBody1Gray()
+            Text("\(totalTime)")
+              .TKFontBody1()
+            Spacer()
+          }
+        }
+      }
+    }
   }
 
   @ViewBuilder
-  var cookTimeView: some View {
-    Text("Cook Time:")
-      .TKFontBody1Gray()
-    Text("\(recipe.cookTime ?? "")")
-      .TKFontBody1()
-  }
-
-  @ViewBuilder
-  var totalTimeView: (some View)? {
-    Text("Total Time:")
-      .TKFontBody1Gray()
-    Text("\(recipe.totalTime ?? "")")
-      .TKFontBody1()
+  var totalTimeView: some View {
+    if let totalTime = recipe.totalTime{
+      Text("Total Time:")
+        .TKFontBody1Gray()
+      Text("\(totalTime)")
+        .TKFontBody1()
+    } else {
+      EmptyView()
+    }
   }
 
   @ViewBuilder
   private var recipeDescription: some View {
-    NavigationLink(
-      destination: {
-        CommunityView(
-          text: recipe.recipeDescription ?? "",
-          comments: TestExamples.makeCommunityComments()
-        )
-      },
-      label: {
-        Text(recipe.recipeDescription ?? "")
-          .TKFontBody1()
-          .frame(alignment: .leading)
-          .multilineTextAlignment(.leading)
-      }
-    )
+    HStack {
+      NavigationLink(
+        destination: {
+          CommunityView(
+            text: recipe.recipeDescription ?? "",
+            comments: TestExamples.makeCommunityComments()
+          )
+        },
+        label: {
+          Text(recipe.recipeDescription ?? "")
+            .TKFontBody1()
+            .frame(alignment: .leading)
+            .multilineTextAlignment(.leading)
+        }
+      )
+      // For some reason, the title section wont fill up the whole width of the screen, so we'll add a spacer here.
+//      Spacer()
+    }
+  }
+
+  @ViewBuilder
+  private var bottomFoldStack: some View {
+    VStack(alignment: .leading) {
+      ingredientList
+      DividerView(top: 30, bottom: 30)
+      preparationSteps
+    }
+    .padding(.all, .TKPagePadding)
+    .background(Color.TKBackgroundDefault)
+    .clipShape(RoundedRectangle(cornerRadius: 8))
+    .padding(.horizontal, .TKPagePadding)
   }
 
   @ViewBuilder
   private var ingredientList: some View {
-    VStack(alignment: .leading, spacing: .TKLineSpacingIngredients) {
-      ForEach(0..<recipe.ingredients.count, id: \.self) { index in
-        Text("\(recipe.ingredients[index].ingredient)")
-          .TKFontBody1()
-          .frame(minHeight: 30)
-      }
+    if recipe.ingredients == nil {
+      EmptyView()
+    } else {
+      Text("\(recipe.ingredients ?? "")")
+        .TKFontBody1()
+        .lineSpacing(.TKLineSpacingIngredients)
+        .frame(minHeight: 30)
     }
   }
 

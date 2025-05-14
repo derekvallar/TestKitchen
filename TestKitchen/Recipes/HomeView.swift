@@ -24,21 +24,21 @@ struct HomeView: View {
 //    }
 
 
-    let appear = UINavigationBarAppearance()
-    let atters: [NSAttributedString.Key: Any] = [
-      .font: UIFont.TKDisplay
-    ]
-    appear.largeTitleTextAttributes = atters
-    UINavigationBar.appearance().standardAppearance = appear
+//    let appear = UINavigationBarAppearance()
+//    let atters: [NSAttributedString.Key: Any] = [
+//      .font: UIFont.TKDisplay
+//    ]
+//    appear.largeTitleTextAttributes = atters
+//    UINavigationBar.appearance().standardAppearance = appear
   }
 
   var body: some View {
     @Bindable var navigationManager = navigationManager
     NavigationStack(path: $navigationManager.path) {
       CardScrollView()
-      .navigationTitle(
-        Text("Recipes")
-      )
+//      .navigationTitle(
+//        Text("Recipes")
+//      )
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button("Test", systemImage: "minus") {
@@ -53,16 +53,6 @@ struct HomeView: View {
           }
         }
       }
-//      .navigationDestination(for: Recipe.self) { recipe in
-//        if recipes.contains(recipe) {
-//          
-//        }
-//          RecipeView(recipe: recipe)
-//      }
-//      .navigationDestination(for: String.self) { destination in
-//        // destination == recipeCreation
-//        RecipeCreatorView()
-//      }
       .navigationDestination(for: Destination.self) { destination in
         switch destination {
         case .recipeCreation(let recipe):

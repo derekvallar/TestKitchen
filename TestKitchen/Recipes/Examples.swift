@@ -18,24 +18,15 @@ struct TestExamples {
         prepTime: "10 mins",
         cookTime: "45 mins",
         totalTime: "55 mins",
+        ingredients: "1/2 onion, diced\n1 carrot\n2 stalks of celery\nA pinch of black pepper\n3 tablespoons of olive oil\n2 tablespoons of lemon juice\n1 lb of cod fillets (frozen)\n1 lb of russet potatoes",
         preparationSteps: [
-          PreparationStep(text: "Heat oil in a large pot over medium heat."),
-          PreparationStep(text: "Add onions and sauté until soft and translucent."),
-          PreparationStep(text: "Add carrots and celery and cook for an additional 5 minutes."),
-          PreparationStep(text: "Add cod fillets and cook until flaky and browned on all sides."),
-          PreparationStep(text: "Add potatoes and simmer until tender."),
-          PreparationStep(text: "Add salt and pepper to taste."),
-          PreparationStep(text: "Serve hot.")
-        ],
-        ingredients: [
-          Ingredient(ingredient: "1/2 onion, diced"),
-          Ingredient(ingredient: "1 carrot"),
-          Ingredient(ingredient: "2 stalks of celery"),
-          Ingredient(ingredient: "A pinch of black pepper"),
-          Ingredient(ingredient: "3 tablespoons of olive oil"),
-          Ingredient(ingredient: "2 tablespoons of lemon juice"),
-          Ingredient(ingredient: "1 lb of cod fillets (frozen)"),
-          Ingredient(ingredient: "1lb of russet potatoes")
+          "Heat oil in a large pot over medium heat.",
+          "Add onions and sauté until soft and translucent.",
+          "Add carrots and celery and cook for an additional 5 minutes.",
+          "Add cod fillets and cook until flaky and browned on all sides.",
+          "Add potatoes and simmer until tender.",
+          "Add salt and pepper to taste.",
+          "Serve hot.",
         ]
       ),
       Recipe(
@@ -46,22 +37,15 @@ struct TestExamples {
         prepTime: nil,
         cookTime: "1 hour",
         totalTime: "1 hour",
+        ingredients: "1 cup of chocolate chips\n2 cups of all purpose flour\n1 cup of granulated sugar\n2 large eggs\n1 cup of unsalted butter, melted\n1 teaspoon of vanilla extract",
         preparationSteps: [
-          PreparationStep(text: "Heat oil in a large pot over medium heat."),
-          PreparationStep(text: "Add onions and sauté until soft and translucent."),
-          PreparationStep(text: "Add carrots and celery and cook for an additional 5 minutes."),
-          PreparationStep(text: "Add cod fillets and cook until flaky and browned on all sides."),
-          PreparationStep(text: "Add potatoes and simmer until tender."),
-          PreparationStep(text: "Add salt and pepper to taste."),
-          PreparationStep(text: "Serve hot."),
-        ],
-        ingredients: [
-          Ingredient(ingredient: "1 cup of chocolate chips"),
-          Ingredient(ingredient: "2 cups of all purpose flour"),
-          Ingredient(ingredient: "1 cup of granulated sugar"),
-          Ingredient(ingredient: "2 large eggs"),
-          Ingredient(ingredient: "1 cup of unsalted butter, melted"),
-          Ingredient(ingredient: "1 teaspoon of vanilla extract"),
+          "Heat oil in a large pot over medium heat.",
+          "Add onions and sauté until soft and translucent.",
+          "Add carrots and celery and cook for an additional 5 minutes.",
+          "Add cod fillets and cook until flaky and browned on all sides.",
+          "Add potatoes and simmer until tender.",
+          "Add salt and pepper to taste.",
+          "Serve hot.",
         ]
       ),
       Recipe(
@@ -72,22 +56,20 @@ struct TestExamples {
         prepTime: "15 mins",
         cookTime: "30 mins",
         totalTime: "45 mins",
+        ingredients: "1 zucchini",
         preparationSteps: [
-          PreparationStep(text: "Heat oil in a large pot over medium heat."),
-          PreparationStep(text: "Add onions and sauté until soft and translucent."),
-          PreparationStep(text: "Add carrots and celery and cook for an additional 5 minutes."),
-          PreparationStep(text: "Add cod fillets and cook until flaky and browned on all sides."),
-          PreparationStep(text: "Add potatoes and simmer until tender."),
-          PreparationStep(text: "Add salt and pepper to taste."),
-          PreparationStep(text: "Serve hot.")
-        ],
-        ingredients: [
-          Ingredient(ingredient: "1 zucchini"),
+          "Heat oil in a large pot over medium heat.",
+          "Add onions and sauté until soft and translucent.",
+          "Add carrots and celery and cook for an additional 5 minutes.",
+          "Add cod fillets and cook until flaky and browned on all sides.",
+          "Add potatoes and simmer until tender.",
+          "Add salt and pepper to taste.",
+          "Serve hot.",
         ]
       ),
     ]
   }
-  
+
   static func makeCommunityComments() -> [Comment] {
     return [
       Comment(

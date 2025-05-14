@@ -24,12 +24,10 @@ struct RecipeCreatorView: View, NavigatableView {
   @FocusState private var focusedField: Field?
   @State var showSaveAlert: Bool = false
 
-  var pendingRecipe: Recipe? {
-    return makeRecipe()
-  }
+  var pendingRecipe: Recipe?
 
   init(recipe: Recipe?) {
-
+    pendingRecipe = recipe
   }
 
   @State private var title: String = ""
@@ -48,7 +46,11 @@ struct RecipeCreatorView: View, NavigatableView {
       VStack(alignment: .leading, spacing: 20) {
         let imageSize = ImageUploadList.calculateImageSize(from: screenSize.width - 2 * .TKPagePadding)
         imageUploadList
+        #if DEBUG
+          .frame(minHeight: 100)
+        #else
           .frame(minHeight: imageSize)
+        #endif
         recipeTitleView
         authorView
         HStack(alignment: .top) {
@@ -70,14 +72,17 @@ struct RecipeCreatorView: View, NavigatableView {
           if numberOfPrepSteps > 1 {
             Button("Remove section") {
               print("Removed section")
-              preparationSteps.removeLast()
-              numberOfPrepSteps = preparationSteps.count
+              // We won't remove the last preparationStep in case a user
+              // accidentally removed their section and wanted to re-add it.
+              numberOfPrepSteps -= 1
             }
           }
           Button("Add section") {
             print("Added section")
-            preparationSteps.append("")
-            numberOfPrepSteps = preparationSteps.count
+            numberOfPrepSteps += 1
+            if numberOfPrepSteps > preparationSteps.count {
+              preparationSteps.append("")
+            }
           }
         }
       }
@@ -125,7 +130,7 @@ struct RecipeCreatorView: View, NavigatableView {
         text: $author,
         axis: .vertical
       )
-      .font(.TKBody1)
+      .TKFontBody1()
     }
   }
 
@@ -205,7 +210,7 @@ struct RecipeCreatorView: View, NavigatableView {
 
     ForEach(0..<numberOfPrepSteps, id: \.self) { index in
       Text("Step \(index + 1)")
-        .TKFontBody1()
+        .TKFontBody1Gray()
       TextEditor(text: $preparationSteps[index])
         .frame(minHeight: 68)
         .defaultTextBoxStyle(
@@ -216,27 +221,28 @@ struct RecipeCreatorView: View, NavigatableView {
     }
   }
 
-  private func makeRecipe() -> Recipe? {
-    guard !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-
-    return Recipe(
-      title: title,
-      author: author,
-      recipeDescription: description,
-      photos: [],
-      prepTime: prepTime,
-      cookTime: cookTime,
-      totalTime: totalTime,
-      preparationSteps: preparationSteps,
-      ingredients: ingredients
-    )
+  private func canSaveRecipe() -> Bool {
+    return !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
   }
 
+
   private func saveRecipe() {
-    guard let recipe = pendingRecipe else {
+    guard canSaveRecipe() else {
       showSaveAlert = true
       return
     }
+
+    let recipe = pendingRecipe ?? Recipe(title: title)
+    recipe.update(
+      title: title,
+      author: author,
+      description: description,
+      prepTime: prepTime,
+      cookTime: cookTime,
+      totalTime: totalTime,
+      ingredients: ingredients,
+      preparationSteps: preparationSteps
+    )
 
     navigationManager.popLast()
     // Animate the recipe inserting in the homeview after a brief delay
@@ -246,8 +252,24 @@ struct RecipeCreatorView: View, NavigatableView {
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
-      navigationManager.path.append(recipe)
+      navigationManager.path.append(
+        Destination.recipeDetails(recipe: recipe)
+      )
     }
+  }
+
+  private func updateRecipe(_ recipe: Recipe) -> Recipe {
+    return Recipe(
+      title: title,
+      author: author,
+      recipeDescription: description,
+      photos: [],
+      prepTime: prepTime,
+      cookTime: cookTime,
+      totalTime: totalTime,
+      ingredients: ingredients,
+      preparationSteps: Array(preparationSteps[0...(numberOfPrepSteps - 1)])
+    )
   }
 }
 

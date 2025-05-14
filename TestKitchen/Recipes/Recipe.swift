@@ -12,51 +12,32 @@ import _PhotosUI_SwiftUI
 @Model
 final class Recipe {
   // NOTE(dvallar): Make these recipes unique models depending on id (perhaps creator too?)
-//  var id: UUID = UUID()
+  var recipeId: String?
+  var isPublic: Bool = false
+  var isArchived: Bool = false
+  var dateCreated: Date
+
   var title: String
   var author: String?
-  var dateCreated: Date
-  var recipeDescription: String?
   var photos: [Photo]
+  var recipeDescription: String?
+
   var prepTime: String?
   var cookTime: String?
   var totalTime: String?
+  var ingredients: String?
   var preparationSteps: [PreparationStep]
-  var ingredients: [Ingredient]
-  
-  init(
-    title: String,
-    author: String?,
-    recipeDescription: String?,
-    photos: [Photo],
-    prepTime: String?,
-    cookTime: String?,
-    totalTime: String?,
-    preparationSteps: [PreparationStep],
-    ingredients: [Ingredient]
-  ) {
-    self.title = title
-    self.author = author
-    self.dateCreated = Date()
-    self.recipeDescription = recipeDescription
-    self.photos = photos
-    self.prepTime = prepTime
-    self.cookTime = cookTime
-    self.totalTime = totalTime
-    self.preparationSteps = preparationSteps
-    self.ingredients = ingredients
-  }
 
   init(
     title: String,
-    author: String?,
-    recipeDescription: String?,
-    photos: [Photo],
-    prepTime: String?,
-    cookTime: String?,
-    totalTime: String?,
-    preparationSteps: [String],
-    ingredients: String
+    author: String? = nil,
+    recipeDescription: String? = nil,
+    photos: [Photo] = [],
+    prepTime: String? = nil,
+    cookTime: String? = nil,
+    totalTime: String? = nil,
+    ingredients: String? = nil,
+    preparationSteps: [String] = []
   ) {
     self.title = title
     self.author = author
@@ -66,15 +47,34 @@ final class Recipe {
     self.prepTime = prepTime
     self.cookTime = cookTime
     self.totalTime = totalTime
+    self.ingredients = ingredients
     self.preparationSteps = preparationSteps.map {
       PreparationStep(text: $0)
     }
-    self.ingredients = ingredients.split(separator: "\n").map {
-      $0.trimmingCharacters(in: .whitespaces)
-    }.compactMap {
-      Ingredient(ingredient: $0)
+  }
+
+  func update(
+    title: String,
+    author: String? = nil,
+    description: String? = nil,
+    prepTime: String? = nil,
+    cookTime: String? = nil,
+    totalTime: String? = nil,
+    ingredients: String? = nil,
+    preparationSteps: [String] = []
+  ) {
+    self.title = title
+    self.author = author
+    self.recipeDescription = description
+    self.prepTime = prepTime
+    self.cookTime = cookTime
+    self.totalTime = totalTime
+    self.ingredients = ingredients
+    self.preparationSteps = preparationSteps.map {
+      PreparationStep(text: $0)
     }
-  }}
+  }
+}
 
 struct PreparationStep: Codable, Identifiable {
   var id = UUID()
@@ -85,33 +85,28 @@ struct PreparationStep: Codable, Identifiable {
   }
 }
 
-struct Ingredient: Codable {
-//  var id = UUID()
-  let ingredient: String
-}
-
 struct Photo: Codable, Hashable {
   
 }
 
-extension Int {
-  func recipeDisplayTime() -> String {
-    let hours = self / 60
-    let minutes = self % 60
-    
-    if hours > 0 {
-      return "\(hours) hours \(minutes) minutes"
-    }
-    return "\(minutes) minutes"
-  }
-  
-  func recipeDisplayTimeShort() -> String {
-    let hours = self / 60
-    let minutes = self % 60
-    
-    if hours > 0 {
-      return "\(hours) hrs \(minutes) mins"
-    }
-    return "\(minutes) mins"
-  }
-}
+//extension Int {
+//  func recipeDisplayTime() -> String {
+//    let hours = self / 60
+//    let minutes = self % 60
+//    
+//    if hours > 0 {
+//      return "\(hours) hours \(minutes) minutes"
+//    }
+//    return "\(minutes) minutes"
+//  }
+//  
+//  func recipeDisplayTimeShort() -> String {
+//    let hours = self / 60
+//    let minutes = self % 60
+//    
+//    if hours > 0 {
+//      return "\(hours) hrs \(minutes) mins"
+//    }
+//    return "\(minutes) mins"
+//  }
+//}

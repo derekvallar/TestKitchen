@@ -36,13 +36,13 @@ struct RecipeCardView: View {
         HStack(spacing: .TKSpacingDefault) {
           (Text("Prep: ")
             .TKFontBody2Gray()
-           + Text("\(recipe.prepTime ?? "") min"))
+           + Text("\(recipe.prepTime ?? "")"))
           .TKFontBody2()
           Text("|")
             .TKFontBody2Gray()
           Text("Total: ")
             .TKFontBody2Gray()
-          + Text("\(recipe.totalTime ?? "") min")
+          + Text("\(recipe.totalTime ?? "")")
             .TKFontBody2()
         }
         Text(recipe.recipeDescription ?? "")
@@ -53,6 +53,8 @@ struct RecipeCardView: View {
       Spacer()
     }
     .background(Color.TKBackgroundDefault)
+    .border(Color.TKYellow, width: 8)
+    .clipShape(RoundedRectangle(cornerRadius: 8))
   }
 }
 

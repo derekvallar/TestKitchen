@@ -57,6 +57,7 @@ final class Recipe {
     title: String,
     author: String? = nil,
     description: String? = nil,
+    photos: [Photo] = [],
     prepTime: String? = nil,
     cookTime: String? = nil,
     totalTime: String? = nil,

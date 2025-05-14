@@ -235,13 +235,14 @@ struct RecipeCreatorView: View, NavigatableView {
     let recipe = pendingRecipe ?? Recipe(title: title)
     recipe.update(
       title: title,
-      author: author,
-      description: description,
-      prepTime: prepTime,
-      cookTime: cookTime,
-      totalTime: totalTime,
-      ingredients: ingredients,
-      preparationSteps: preparationSteps
+      author: cleanTextInput(author),
+      description: cleanTextInput(description),
+      photos: [],
+      prepTime: cleanTextInput(prepTime),
+      cookTime: cleanTextInput(cookTime),
+      totalTime: cleanTextInput(totalTime),
+      ingredients: cleanTextInput(ingredients),
+      preparationSteps: Array(preparationSteps[0...(numberOfPrepSteps - 1)])
     )
 
     navigationManager.popLast()
@@ -258,18 +259,9 @@ struct RecipeCreatorView: View, NavigatableView {
     }
   }
 
-  private func updateRecipe(_ recipe: Recipe) -> Recipe {
-    return Recipe(
-      title: title,
-      author: author,
-      recipeDescription: description,
-      photos: [],
-      prepTime: prepTime,
-      cookTime: cookTime,
-      totalTime: totalTime,
-      ingredients: ingredients,
-      preparationSteps: Array(preparationSteps[0...(numberOfPrepSteps - 1)])
-    )
+  private func cleanTextInput(_ text: String?) -> String? {
+    let cleanedText = title.trimmingCharacters(in: .whitespacesAndNewlines)
+    return cleanedText.isEmpty ? nil : cleanedText
   }
 }
 

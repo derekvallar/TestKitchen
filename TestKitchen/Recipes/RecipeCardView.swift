@@ -13,6 +13,8 @@ struct RecipeCardView: View {
 
   init(recipe: Recipe) {
     self.recipe = recipe
+    print("Prep time2: \(recipe.prepTime ?? "")")
+
   }
 
   var body: some View {
@@ -27,18 +29,21 @@ struct RecipeCardView: View {
         title
         author
         timeStack
-        recipeDescription
+//        recipeDescription
       }
-      .padding()
+      .padding([.leading, .trailing, .bottom], .TKSpacingCard)
+//      .background(Color.TKBlue)
+//      .padding(.bottom, .TKSpacingCard)
     }
+    .padding(.all, 10)
     .background(Color.TKBackgroundDefault)
-    .border(Color.TKYellow, width: 8)
+    .border(Color.TKYellow, width: 10)
     .clipShape(RoundedRectangle(cornerRadius: 8))
   }
 
   @ViewBuilder
   private var title: some View {
-    Text(recipe.title)
+    Text(recipe.title + "\n")
       .TKFontBody1()
       .lineLimit(2)
   }
@@ -59,24 +64,27 @@ struct RecipeCardView: View {
       VStack {
         Text("Prep")
           .TKFontBody2Gray()
-        Text("\(recipe.prepTime ?? "")")
+        Text("\(recipe.prepTime ?? "-")")
         .TKFontBody2()
         .lineLimit(2)
       }
+      .frame(maxWidth: .infinity)
       VStack {
         Text("Cook")
           .TKFontBody2Gray()
-        Text("\(recipe.cookTime ?? "")")
+        Text("\(recipe.cookTime ?? "-")")
         .TKFontBody2()
         .lineLimit(2)
       }
+      .frame(maxWidth: .infinity)
       VStack {
         Text("Total")
           .TKFontBody2Gray()
-        Text("\(recipe.totalTime ?? "")")
+        Text("\(recipe.totalTime ?? "-")")
         .TKFontBody2()
         .lineLimit(2)
       }
+      .frame(maxWidth: .infinity)
     }
   }
 

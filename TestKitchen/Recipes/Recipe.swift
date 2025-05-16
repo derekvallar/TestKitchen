@@ -64,6 +64,7 @@ final class Recipe {
     ingredients: String? = nil,
     preparationSteps: [String] = []
   ) {
+    print("Prep time: \(prepTime ?? "")")
     self.title = title
     self.author = author
     self.recipeDescription = description

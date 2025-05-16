@@ -12,10 +12,10 @@ import CoreHaptics
 
 struct CardScrollView: View {
   @Environment(\.screenSize) private var screenSize
+  @Environment(\.navigationManager) private var navigationManager
 
   @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes: [Recipe]
 
-  @State private var scrollPosition = ScrollPosition()
   @State private var scrollOffset = CGPoint.zero
   @State private var middleCardOffset = CGFloat.zero
   @State private var currentCardIndex: Int = 0
@@ -34,35 +34,32 @@ struct CardScrollView: View {
         }
         ForEach(Array(zip(recipes.indices, recipes)), id: \.0) { index, recipe in
           let zIndex = Double(100 - abs(currentCardIndex - index))
-          NavigationLink(
-            destination: {
-              RecipeView(recipe: recipe)
-            },
-            label: {
-              RecipeCardView(recipe: recipe)
-                .frame(
-                  width: getCardWidth(),
-                  height: getCardDynamicHeight(for: index)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .shadow(radius: 10)
+
+          RecipeCardView(recipe: recipe)
+            .frame(
+              width: getCardWidth(),
+              //                  height: getCardDynamicHeight(for: index)
+              height: getCardHeight()
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .shadow(radius: 1, x: 8, y: 8)
+            .offset(
+              x: getXOffset(for: index),
+              y: 0
+            )
+            .scaleCard(for: index, currentIndex: currentCardIndex, middleCardOffset: middleCardOffset)
+            .zIndex(zIndex)
+            .buttonStyle(NoHighlightLinkStyle())
+            .onTapGesture {
+              navigationManager.path.append(
+                Destination.recipeDetails(recipe: recipe)
+              )
             }
-          )
-          .offset(
-            x: getXOffset(for: index),
-            y: 0
-          )
-          .zIndex(zIndex)
-          .buttonStyle(NoHighlightLinkStyle())
         }
         ForEach(0..<CardScrollView.cardsPerSide + 1, id: \.self) { _ in
           emptyCard()
         }
       }
-    }
-    .scrollPosition($scrollPosition)
-    .onAppear() {
-      scrollPosition.scrollTo(x: CardScrollView.getCardPeekWidth()/2)
     }
     .onScrollGeometryChange(for: CGPoint.self) { proxy in
       proxy.contentOffset
@@ -104,14 +101,16 @@ struct CardScrollView: View {
   }
 
   func getMiddleCardOffset(from scrollOffset: CGPoint) -> CGFloat {
-/**
-    (-10)       (0)         (10)          (20)        (30)
-    |------------|------------|------------|------------|
-    <------(First card)------->
- 
-*/
+    /**
+     (-10)       (0)         (10)          (20)        (30)
+     |------------|------------|------------|------------|
+     <------(First card)------->
+
+     */
 
     let middleOffset = -1 * ((CardScrollView.getCardPeekWidth() * CGFloat(currentCardIndex)) - scrollOffset.x)
+    //    print("MiddleOffset: \(middleOffset)")
+    //    print("Scroll off: \(scrollOffset.x)")
     return middleOffset
   }
 
@@ -154,42 +153,42 @@ struct CardScrollView: View {
     // then divide it by the number of cards that can appear on a side
     // and one empty space.
     return CardScrollView.leadingTrailingCardSpace
-      / 2
-      / CGFloat(CardScrollView.cardsPerSide)
+    / 2
+    / CGFloat(CardScrollView.cardsPerSide)
   }
 }
 
 // MARK: Haptics
 extension CardScrollView {
   func prepareHaptics() {
-      guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-      do {
-          engine = try CHHapticEngine()
-          try engine?.start()
-      } catch {
-          print("There was an error creating the engine: \(error.localizedDescription)")
-      }
+    guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+    do {
+      engine = try CHHapticEngine()
+      try engine?.start()
+    } catch {
+      print("There was an error creating the engine: \(error.localizedDescription)")
+    }
   }
 
   func triggerHaptic() {
-      // make sure that the device supports haptics
-      guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-      var events = [CHHapticEvent]()
+    // make sure that the device supports haptics
+    guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+    var events = [CHHapticEvent]()
 
-      // create one intense, sharp tap
-      let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
-      let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)
-      let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
-      events.append(event)
+    // create one intense, sharp tap
+    let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
+    let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)
+    let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0)
+    events.append(event)
 
-      // convert those events into a pattern and play it immediately
-      do {
-          let pattern = try CHHapticPattern(events: events, parameters: [])
-          let player = try engine?.makePlayer(with: pattern)
-          try player?.start(atTime: 0)
-      } catch {
-          print("Failed to play pattern: \(error.localizedDescription).")
-      }
+    // convert those events into a pattern and play it immediately
+    do {
+      let pattern = try CHHapticPattern(events: events, parameters: [])
+      let player = try engine?.makePlayer(with: pattern)
+      try player?.start(atTime: 0)
+    } catch {
+      print("Failed to play pattern: \(error.localizedDescription).")
+    }
   }
 }
 
@@ -205,6 +204,43 @@ struct CardScrollTargetBehavior: ScrollTargetBehavior {
     var targetedIndex = floor(target.rect.origin.x / CardScrollView.getCardPeekWidth())
     targetedIndex = min(targetedIndex, CGFloat(recipes.count - 1))
     target.rect.origin.x = (targetedIndex + 1) * CardScrollView.getCardPeekWidth() - CardScrollView.getCardPeekWidth() / 2
+  }
+}
+
+extension View {
+  func scaleCard(for index: Int, currentIndex: Int, middleCardOffset: CGFloat) -> some View {
+    guard index <= currentIndex + 1,
+          index >= currentIndex - 1
+    else {
+      return self
+        .scaleEffect(1)
+    }
+
+    let scaleFactor = 0.1
+    if index == currentIndex {
+      return self.scaleEffect(1 + scaleFactor)
+    } else if index == currentIndex + 1 {
+
+      let cardPeekWidth = CardScrollView.getCardPeekWidth()
+      let scaleRatio = max(middleCardOffset, 0) / cardPeekWidth
+      //      print("Middle Offset: \(middleCardOffset)")
+      //      print("Scale Ratio: \(scaleRatio)")
+      return self
+        .scaleEffect(
+          x: 1 + (scaleFactor * scaleRatio),
+          y: 1 + (scaleFactor * scaleRatio)
+        )
+    } else {
+      let cardPeekWidth = CardScrollView.getCardPeekWidth()
+      let scaleRatio = 1 - (min(middleCardOffset, cardPeekWidth) / cardPeekWidth)
+      //      print("Middle Offset: \(middleCardOffset)")
+      //      print("Scale Ratio: \(scaleRatio)")
+      return self
+        .scaleEffect(
+          x: 1 + (scaleFactor * scaleRatio),
+          y: 1 + (scaleFactor * scaleRatio)
+        )
+    }
   }
 }
 

@@ -260,7 +260,8 @@ struct RecipeCreatorView: View, NavigatableView {
   }
 
   private func cleanTextInput(_ text: String?) -> String? {
-    let cleanedText = title.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard let text = text else { return nil }
+    let cleanedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
     return cleanedText.isEmpty ? nil : cleanedText
   }
 }

@@ -11,6 +11,8 @@ import SwiftData
 @main
 struct TestKitchenApp: App {
   @State var navigationManager = NavigationManager(testID: "homeView")
+//  @Environment(\.modelContext) private var modelContext
+//  @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes: [Recipe]
 
   var sharedModelContainer: ModelContainer = {
     let schema = Schema([
@@ -31,6 +33,7 @@ struct TestKitchenApp: App {
         HomeView()
           .environment(\.navigationManager, navigationManager)
           .environment(\.screenSize, geometry.size)
+
       }
     }
     .modelContainer(sharedModelContainer)

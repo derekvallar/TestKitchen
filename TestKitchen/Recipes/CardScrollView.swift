@@ -28,35 +28,34 @@ struct CardScrollView: View {
   var body: some View {
     ScrollView(.horizontal) {
       HStack(spacing: -1 * getCardWidth() + CardScrollView.getCardPeekWidth()) {
-        // Add two empty cards so the first card can be centered
+        // Add empty cards so the first card can be centered
         ForEach(0..<CardScrollView.cardsPerSide, id: \.self) { _ in
           emptyCard()
         }
-        ForEach(Array(zip(recipes.indices, recipes)), id: \.0) { index, recipe in
+        ForEach(Array(zip(recipes.indices, recipes)), id: \.0) {
+          index,
+          recipe in
           let zIndex = Double(100 - abs(currentCardIndex - index))
-
-          RecipeCardView(recipe: recipe)
-            .frame(
-              width: getCardWidth(),
-              //                  height: getCardDynamicHeight(for: index)
-              height: getCardHeight()
+          
+          RecipeCardView(
+            recipe: recipe,
+            width: getCardWidth(),
+            height: getCardHeight()
+          )
+          .offset(
+            x: getXOffset(for: index),
+            y: 0
+          )
+          .scaleCard(for: index, currentIndex: currentCardIndex, middleCardOffset: middleCardOffset)
+          .zIndex(zIndex)
+          .buttonStyle(NoHighlightLinkStyle())
+          .onTapGesture {
+            navigationManager.path.append(
+              Destination.recipeDetails(recipe: recipe)
             )
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .shadow(radius: 1, x: 8, y: 8)
-            .offset(
-              x: getXOffset(for: index),
-              y: 0
-            )
-            .scaleCard(for: index, currentIndex: currentCardIndex, middleCardOffset: middleCardOffset)
-            .zIndex(zIndex)
-            .buttonStyle(NoHighlightLinkStyle())
-            .onTapGesture {
-              navigationManager.path.append(
-                Destination.recipeDetails(recipe: recipe)
-              )
-            }
+          }
         }
-        ForEach(0..<CardScrollView.cardsPerSide + 1, id: \.self) { _ in
+        ForEach(0..<CardScrollView.cardsPerSide, id: \.self) { _ in
           emptyCard()
         }
       }
@@ -94,9 +93,10 @@ struct CardScrollView: View {
     // There will be a zero content width until there is at least 2 cards
     guard recipes.count > 1 else { return 0 }
 
-    let totalContentWidth = CardScrollView.getCardPeekWidth() * CGFloat(recipes.count)
-
+    let totalContentWidth = CardScrollView.getCardPeekWidth() * CGFloat(recipes.count - 1)
     let index = Int(floor(point.x / totalContentWidth * CGFloat(recipes.count)))
+
+    print("Total Content Width: \(totalContentWidth), index: \(index)")
     return min(max(index, 0), recipes.count - 1)
   }
 
@@ -109,8 +109,8 @@ struct CardScrollView: View {
      */
 
     let middleOffset = -1 * ((CardScrollView.getCardPeekWidth() * CGFloat(currentCardIndex)) - scrollOffset.x)
-    //    print("MiddleOffset: \(middleOffset)")
-    //    print("Scroll off: \(scrollOffset.x)")
+        print("MiddleOffset: \(middleOffset)")
+        print("Scroll off: \(scrollOffset.x)")
     return middleOffset
   }
 

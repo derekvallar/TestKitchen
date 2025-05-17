@@ -30,14 +30,14 @@ extension Color {
  4. Body
  */
 extension Font {
-  public static var TKDisplay = Font.custom("NewYork-Regular", size: 24)
-  public static var TKTitle = Font.custom("ScotchModern", size: 18)
+  public static var TKDisplay = Font.custom("NewYork-Regular", size: 20)
+  public static var TKTitle = Font.custom("NewYork-Regular", size: 18)
   public static var TKBody1 = Font.custom("NewYork-Regular", size: 16)
   public static var TKBody2 = Font.custom("NewYork-Regular", size: 14)
 }
 
 extension UIFont {
-  public static var TKDisplay = UIFont(name: "ScotchModern", size: 30)!
+  public static var TKDisplay = UIFont(name: "NewYork-Regular", size: 30)!
   public static var TKDisplay2 = UIFont(name: "NewYork-Regular", size: 30)!
 
 }

@@ -9,52 +9,67 @@ import SwiftUI
 
 struct RecipeCardView: View {
 
-  var recipe: Recipe
+  let recipe: Recipe
+  let width: CGFloat
+  let height: CGFloat
 
-  init(recipe: Recipe) {
+  init(recipe: Recipe, width: CGFloat, height: CGFloat) {
     self.recipe = recipe
-    print("Prep time2: \(recipe.prepTime ?? "")")
-
+    self.width = width
+    self.height = height
   }
 
   var body: some View {
     VStack(spacing: .TKSpacingCard) {
-      //      Image("test_photo")
-      Image("test_vertical")
-        .resizable()
-        .scaledToFill()
-        .frame(height: 200)
-        .clipped()
       VStack(spacing: .TKSpacingCard) {
         title
         author
         timeStack
 //        recipeDescription
       }
-      .padding([.leading, .trailing, .bottom], .TKSpacingCard)
+      .padding([.leading, .trailing, .top], .TKSpacingCard)
+      Spacer()
+      Image("test_photo")
+//      Image("test_vertical")
+        .resizable()
+        .scaledToFill()
+        .frame(height: 200)
+        .clipped()
+
 //      .background(Color.TKBlue)
 //      .padding(.bottom, .TKSpacingCard)
     }
-    .padding(.all, 10)
+    .frame(
+      width: width,
+      height: height
+    )
     .background(Color.TKBackgroundDefault)
+    .padding(.all, 10)
     .border(Color.TKYellow, width: 10)
     .clipShape(RoundedRectangle(cornerRadius: 8))
+    .shadow(radius: 1, x: 8, y: 8)
   }
 
   @ViewBuilder
   private var title: some View {
-    Text(recipe.title + "\n")
-      .TKFontBody1()
-      .lineLimit(2)
+    // Adding the \n helps force max height of the text
+    Text(recipe.title)
+      .TKDisplay()
+      .lineLimit(1)
+      .frame(maxWidth: .infinity, alignment: .leading)
+//      .background(Color.TKBlue)
+//      .padding(.TKSpacingCard)
   }
 
   @ViewBuilder
   private var author: some View {
     if let author = recipe.author,
        !author.isEmpty {
-      Text(author)
-        .TKFontBody1()
+      // Adding the \n helps force max height of the text
+      Text("Crafted by: " + author)
+        .TKFontBody2Gray()
         .lineLimit(1)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
   }
 
@@ -99,6 +114,6 @@ struct RecipeCardView: View {
 struct RecipeCardView_Preview: PreviewProvider {
   static var previews: some View {
     let recipe = TestExamples.makeRecipes().first!
-    RecipeCardView(recipe: recipe)
+    RecipeCardView(recipe: recipe, width: 300, height: 500)
   }
 }

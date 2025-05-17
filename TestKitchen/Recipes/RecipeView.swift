@@ -26,7 +26,8 @@ struct RecipeView: View, NavigatableView {
       VStack(spacing: .TKPagePadding) {
         photoCarousel
         infoStack
-        bottomFoldStack
+        ingredientList
+        preparationSteps
       }
     }
     .scrollIndicators(.hidden)
@@ -161,19 +162,6 @@ struct RecipeView: View, NavigatableView {
   }
 
   @ViewBuilder
-  private var bottomFoldStack: some View {
-    VStack(alignment: .leading) {
-      ingredientList
-      DividerView(top: 30, bottom: 30)
-      preparationSteps
-    }
-    .padding(.all, .TKPagePadding)
-    .background(Color.TKBackgroundDefault)
-    .clipShape(RoundedRectangle(cornerRadius: 8))
-    .padding(.horizontal, .TKPagePadding)
-  }
-
-  @ViewBuilder
   private var ingredientList: some View {
     if recipe.ingredients == nil {
       EmptyView()
@@ -181,7 +169,15 @@ struct RecipeView: View, NavigatableView {
       Text("\(recipe.ingredients ?? "")")
         .TKFontBody1()
         .lineSpacing(.TKLineSpacingIngredients)
-        .frame(minHeight: 30)
+        .frame(
+          maxWidth: .infinity,
+          minHeight: 30,
+          alignment: .leading
+        )
+        .padding(.all, .TKPagePadding)
+        .background(Color.TKBackgroundDefault)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .padding(.horizontal, .TKPagePadding)
     }
   }
 
@@ -195,7 +191,14 @@ struct RecipeView: View, NavigatableView {
           .TKFontBody1()
           .lineSpacing(4)
       }
-      .padding(.bottom, 24)
+      .frame(
+        maxWidth: .infinity,
+        alignment: .leading
+      )
+      .padding(.all, .TKPagePadding)
+      .background(Color.TKBackgroundDefault)
+      .clipShape(RoundedRectangle(cornerRadius: 8))
+      .padding(.horizontal, .TKPagePadding)
     }
   }
 }

@@ -62,7 +62,7 @@ final class Recipe {
     cookTime: String? = nil,
     totalTime: String? = nil,
     ingredients: String? = nil,
-    preparationSteps: [String] = []
+    preparationSteps: [PreparationStep] = []
   ) {
     print("Prep time: \(prepTime ?? "")")
     self.title = title
@@ -72,18 +72,19 @@ final class Recipe {
     self.cookTime = cookTime
     self.totalTime = totalTime
     self.ingredients = ingredients
-    self.preparationSteps = preparationSteps.map {
-      PreparationStep(text: $0)
-    }
+    self.preparationSteps = preparationSteps
   }
 }
 
 struct PreparationStep: Codable, Identifiable {
   var id = UUID()
   let text: String
-  
-  init(text: String) {
+  // This value should only be updated by the server
+  let isTrending: Bool
+
+  init(text: String, isTrending: Bool = false) {
     self.text = text
+    self.isTrending = isTrending
   }
 }
 

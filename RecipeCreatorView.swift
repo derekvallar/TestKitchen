@@ -242,7 +242,9 @@ struct RecipeCreatorView: View, NavigatableView {
       cookTime: cleanTextInput(cookTime),
       totalTime: cleanTextInput(totalTime),
       ingredients: cleanTextInput(ingredients),
-      preparationSteps: Array(preparationSteps[0...(numberOfPrepSteps - 1)])
+      preparationSteps: Array(preparationSteps[0...(numberOfPrepSteps - 1)]).map {
+        PreparationStep(text: $0)
+      }
     )
 
     navigationManager.popLast()

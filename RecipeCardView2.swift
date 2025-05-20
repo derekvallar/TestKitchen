@@ -7,17 +7,9 @@
 
 import SwiftUI
 
-struct RecipeCardView: View {
+struct RecipeCardView2: View {
 
   let recipe: Recipe
-  let width: CGFloat
-  let height: CGFloat
-
-  init(recipe: Recipe, width: CGFloat, height: CGFloat) {
-    self.recipe = recipe
-    self.width = width
-    self.height = height
-  }
 
   var body: some View {
     VStack(spacing: .TKSpacingCard) {
@@ -39,17 +31,14 @@ struct RecipeCardView: View {
 //      .background(Color.TKBlue)
 //      .padding(.bottom, .TKSpacingCard)
     }
-    .frame(
-      width: width,
-      height: height
-    )
+//    .frame(maxWidth: .infinity)
     .background(Color.TKBackgroundDefault)
     .padding(.all, 10)
     .border(Color.TKYellow, width: 10)
     .clipShape(RoundedRectangle(cornerRadius: 8))
-    .TKShadow()
-    .padding(.all, 10)
+    .padding(.all, 20)
 
+    .TKShadow()
   }
 
   @ViewBuilder
@@ -83,7 +72,7 @@ struct RecipeCardView: View {
   }
 }
 
-struct RecipeCardView_Preview: PreviewProvider {
+struct RecipeCardView_Preview2: PreviewProvider {
   static var previews: some View {
     let recipe = TestExamples.makeRecipes().first!
     RecipeCardView(recipe: recipe, width: 300, height: 500)

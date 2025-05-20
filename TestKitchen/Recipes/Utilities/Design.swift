@@ -8,18 +8,21 @@
 import SwiftUI
 
 extension Color {
-  public static var TKBackgroundDefault = Color(red: 0.97, green: 0.97, blue: 0.95)
+  public static var TKBackgroundDefault = Color(red: 0.98, green: 0.98, blue: 0.96)
+//  public static var TKBackgroundDefault = Color(red: 0.97, green: 0.97, blue: 0.95)
   public static var TKFontDefault = Color(red: 0.2, green: 0.2, blue: 0.2)
   public static var TKFontDefaultSub = Color(red: 0.5, green: 0.5, blue: 0.5)
   public static var TKFontGray = Color(red: 0.7, green: 0.7, blue: 0.7)
   public static var TKBackgroundLightGray = Color(red: 0.94, green: 0.94, blue: 0.94)
 
-  public static var TKYellow = Color(red: 0.9803921569, green: 0.9411764706, blue: 0.5882352941)
-  public static var TKOrange = Color(red: 1.0, green: 0.5764705882, blue: 0.3098039216)
+//  public static var TKYellow = Color(red: 0.9803921569, green: 0.9411764706, blue: 0.5882352941)
+  public static var TKYellow = Color(red: 0.9725490196, green: 0.9215686275, blue: 0.4666666667)
+//  public static var TKOrange = Color(red: 1.0, green: 0.5764705882, blue: 0.3098039216)
+  public static var TKOrange = Color(red: 1.0, green: 0.5058823529, blue: 0.2)
   public static var TKGreen = Color(red: 0.1490196078, green: 0.662745098, blue: 0.4235294118)
   public static var TKBlue = Color(red: 0.0, green: 0.5333333333, blue: 1.0)
   public static var TKDarkBlue = Color(red: 0.03921568627, green: 0.06666666667, blue: 0.1568627451)
-
+  public static var TKRed = Color(red: 0.9411764706, green: 0.3098039216, blue: 0.3098039216)
 }
 
 /**
@@ -120,4 +123,20 @@ extension CGFloat {
   public static var TKSpacingDefault: CGFloat = 4
   public static var TKSpacingCard: CGFloat = 8
   public static var TKLineSpacingIngredients: CGFloat = 10
+
+
+}
+
+struct Spacing {
+  public static var small: CGFloat = 4
+  public static var medium: CGFloat = 8
+  public static var large: CGFloat = 16
+  public static var extraLarge: CGFloat = 24
+}
+
+extension View {
+  func TKShadow() -> some View {
+    return self
+      .shadow(radius: 1, x: 8, y: 8)
+  }
 }

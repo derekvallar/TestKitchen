@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 import _PhotosUI_SwiftUI
 
 @Model
@@ -89,7 +90,17 @@ struct PreparationStep: Codable, Identifiable {
 }
 
 struct Photo: Codable, Hashable {
-  
+  let data: Data?
+
+  func image() -> Image? {
+    guard let data = data,
+          let uiImage = UIImage(data: data)
+    else {
+      assertionFailure("Could not create image from data")
+      return nil
+    }
+    return Image(uiImage: uiImage)
+  }
 }
 
 //extension Int {

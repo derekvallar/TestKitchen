@@ -18,7 +18,7 @@ struct RecipeView: View, NavigatableView {
     self.recipe = recipe
 
     // Test
-    recipe.photos = Array(repeating: Photo(), count: 5)
+//    recipe.photos = Array(repeating: Photo(data: Data()), count: 5)
   }
 
   var body: some View {
@@ -68,7 +68,8 @@ struct RecipeView: View, NavigatableView {
   private var infoStack: some View {
     VStack(alignment: .leading, spacing: .TKPagePadding) {
       title
-      timeViewStack
+      CTAStack
+      RecipeTimeStackView(recipe: recipe)
       recipeDescription
     }
     .padding(.all, .TKPagePadding)
@@ -136,6 +137,32 @@ struct RecipeView: View, NavigatableView {
         .TKFontBody1()
     } else {
       EmptyView()
+    }
+  }
+
+  @ViewBuilder
+  var CTAStack: some View {
+    HStack(spacing: Spacing.extraLarge) {
+      CTAButton(
+        icon: SFSymbols.heart_fill,
+        text: "103 likes",
+        color: .TKRed,
+        isActive: true,
+        tapGesture: {}
+      )
+      CTAButton(
+        icon: SFSymbols.frying_pan_fill,
+        text: "22 tries",
+        color: .TKGreen,
+        isActive: true,
+        tapGesture: {}
+      )
+      CTAButton(
+        icon: SFSymbols.newspaper_fill,
+        text: "4 crafts",
+        color: .TKOrange,
+        tapGesture: {}
+      )
     }
   }
 

@@ -37,11 +37,8 @@ struct HomeView: View {
     @Bindable var navigationManager = navigationManager
     NavigationStack(path: $navigationManager.path) {
       ZStack {
-//        Color.TKDarkBlue
-        CardScrollView()
-        //      .navigationTitle(
-        //        Text("Recipes")
-        //      )
+//        CardScrollView()
+        RecipeCardListView()
           .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
               Button("Test", systemImage: "minus") {

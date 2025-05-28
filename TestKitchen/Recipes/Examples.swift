@@ -74,22 +74,22 @@ struct TestExamples {
     return [
       Comment(
         commentText: "This was lovely! I really enjoyed it.",
-        userName: "Haehae K.",
-        upvoteCount: 27
+        user: User(userID: "3213", username: "Haekae", profileImage: Data()),
+        upvoteCount: 27,
       ),
       Comment(
         commentText: "Meh",
-        userName: "derkatterk",
+        user: User(userID: "123", username: "DerkPutsInTheWerk", profileImage: Data()),
         upvoteCount: 1
       ),
       Comment(
         commentText: "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.",
-        userName: "Beeliever",
+        user: User(userID: "333", username: "Beeliever", profileImage: Data()),
         upvoteCount: 13
       ),
       Comment(
         commentText: "I like the soup",
-        userName: "SouperMan",
+        user: User(userID: "1", username: "SouperMan", profileImage: Data()),
         upvoteCount: 3
       ),
     ]

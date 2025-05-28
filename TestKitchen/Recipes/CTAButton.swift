@@ -19,7 +19,7 @@ struct CTAButton: View {
   var body: some View {
     VStack(spacing: Spacing.small) {
       Image(systemName: icon)
-        .foregroundStyle(isActive ? Color.white : Color.gray)
+        .foregroundStyle(isActive ? Color.white : Color.TKFontGray)
       Text(text)
         .font(.TKBody1)
         .foregroundStyle(isActive ? Color.white : Color.TKFontDefault)

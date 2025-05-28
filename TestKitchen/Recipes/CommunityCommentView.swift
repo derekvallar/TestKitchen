@@ -7,29 +7,48 @@
 
 import SwiftUI
 
+
 struct CommunityCommentView: View {
   let comment: Comment
-  
+
   var body: some View {
-    HStack(alignment: .top, spacing: 20) {
-      VStack(alignment: .leading, spacing: .TKSpacingDefault) {
+    HStack(alignment: .top, spacing: Spacing.medium) {
+//      Image(uiImage: UIImage(data: comment.user.profileImage))
+      Image(systemName: "person.circle")
+      VStack(alignment: .leading, spacing: Spacing.medium) {
+        HStack(spacing: Spacing.small) {
+          Text(comment.user.username)
+            .font(Font.system(size: 12))
+            .bold()
+            .foregroundStyle(Color.TKFontDefault)
+          Text("2h")
+            .font(Font.system(size: 12))
+            .foregroundStyle(Color.gray)
+        }
         Text(comment.commentText)
           .TKFontBody1()
-        Text(comment.userName)
-          .TKFontBody2Gray()
+        HStack(spacing: Spacing.large) {
+          HStack(spacing: Spacing.small) {
+            Image(systemName: SFSymbols.heart_fill)
+              .foregroundStyle(Color.TKRed)
+            Text("103")
+              .font(Font.system(size: 12))
+              .foregroundStyle(Color.TKFontDefault)
+          }
+          Text("See \(comment.user.username)'s Version")
+            .font(Font.system(size: 12))
+            .foregroundStyle(Color.white)
+            .lineLimit(1)
+            .padding(.vertical, 2)
+            .padding(.horizontal, 6)
+            .background {
+              RoundedRectangle(cornerRadius: 3)
+                .fill(Color.TKOrange)
+            }
+        }
       }
-      .layoutPriority(1)
       Spacer()
-      Text("\(comment.upvoteCount)")
-        .TKFontBody1Inverse()
-        .frame(width: 35, height: 35)
-        .background(Color(red: 0.6, green: 0.6, blue: 1))
-        .clipShape(Circle())
     }
-//    .padding(.all, .TKSpacingCard)
-//    .background(Color.TKBackgroundDefault)
-//    .cornerRadius(6)
-//    .shadow(radius: 5)
   }
 }
 

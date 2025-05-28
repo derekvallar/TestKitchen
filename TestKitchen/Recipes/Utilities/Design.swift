@@ -10,7 +10,7 @@ import SwiftUI
 extension Color {
   public static var TKBackgroundDefault = Color(red: 0.98, green: 0.98, blue: 0.96)
 //  public static var TKBackgroundDefault = Color(red: 0.97, green: 0.97, blue: 0.95)
-  public static var TKFontDefault = Color(red: 0.2, green: 0.2, blue: 0.2)
+  public static var TKFontDefault = Color(red: 0.15, green: 0.15, blue: 0.15)
   public static var TKFontDefaultSub = Color(red: 0.5, green: 0.5, blue: 0.5)
   public static var TKFontGray = Color(red: 0.7, green: 0.7, blue: 0.7)
   public static var TKBackgroundLightGray = Color(red: 0.94, green: 0.94, blue: 0.94)

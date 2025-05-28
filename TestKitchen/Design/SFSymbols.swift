@@ -14,4 +14,8 @@ struct SFSymbols {
   static let stove_fill: String = "stove.fill"
   static let frying_pan_fill: String = "frying.pan.fill"
   static let newspaper_fill: String = "newspaper.fill"
+  static let bubble_exclamation: String = "bubble.left.and.exclamationmark.bubble.right"
+  static let arrow_right_fill: String = "arrow.right.circle.fill"
+  static let chevron_right_circle: String = "chevron.right.circle"
+  static let quote_bubble: String = "quote.bubble"
 }

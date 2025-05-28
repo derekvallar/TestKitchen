@@ -12,7 +12,8 @@ struct RecipeCardListView: View {
 
   @Environment(\.screenSize) private var screenSize
   @Environment(\.navigationManager) private var navigationManager
-  @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes: [Recipe]
+//  @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes: [Recipe]
+  @Query(sort: \Recipe.dateCreated) var recipes: [Recipe]
 
   var body: some View {
     List {
@@ -24,7 +25,6 @@ struct RecipeCardListView: View {
             )
           }
           .listRowSeparator(.hidden)
-
       }
     }
     .listStyle(.plain)

@@ -13,12 +13,14 @@ struct RecipeView: View, NavigatableView {
   @Environment(\.navigationManager) var navigationManager: NavigationManager
 
   var recipe: Recipe
+  @State private var scrollOffset = CGPoint.zero
+
 
   init(recipe: Recipe) {
     self.recipe = recipe
 
     // Test
-//    recipe.photos = Array(repeating: Photo(data: Data()), count: 5)
+    recipe.photos = Array(repeating: Photo(data: Data()), count: 5)
   }
 
   var body: some View {
@@ -26,14 +28,17 @@ struct RecipeView: View, NavigatableView {
       VStack(spacing: .TKPagePadding) {
         photoCarousel
         infoStack
-        ingredientList
+        if let ingredients = recipe.ingredients {
+          IngredientListView(ingredients: ingredients)
+        }
         preparationSteps
       }
     }
+    .ignoresSafeArea(edges: .top)
     .scrollIndicators(.hidden)
-//    .navigationTitle(recipe.title)
-//    .navigationBarTitleDisplayMode(.large)
     .background(Color.TKYellow)
+    .toolbarBackground(.hidden, for: .navigationBar)
+    .toolbarRole(.editor)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
         Button("Edit") {
@@ -41,8 +46,17 @@ struct RecipeView: View, NavigatableView {
             Destination.recipeCreation(recipe: recipe)
           )
         }
+        .foregroundStyle(Color.white)
       }
     }
+    .onScrollGeometryChange(for: CGPoint.self) { proxy in
+      proxy.contentOffset
+    } action: { oldOffset, offset in
+      scrollOffset = offset
+    }
+//    .sheet(item: <#T##Binding<Identifiable?>#>, content: <#T##(Identifiable) -> View#>) {
+//
+//    }
   }
 
   @ViewBuilder
@@ -62,6 +76,7 @@ struct RecipeView: View, NavigatableView {
       }
     }
     .scrollTargetBehavior(.paging)
+//    .scaleEffect(scrollOffset)
   }
 
   @ViewBuilder
@@ -74,8 +89,6 @@ struct RecipeView: View, NavigatableView {
     }
     .padding(.all, .TKPagePadding)
     .background(Color.TKBackgroundDefault)
-    .clipShape(RoundedRectangle(cornerRadius: 8))
-    .padding(.horizontal, .TKPagePadding)
   }
 
   @ViewBuilder
@@ -171,7 +184,7 @@ struct RecipeView: View, NavigatableView {
     HStack {
       NavigationLink(
         destination: {
-          CommunityView(
+          RecipeHighlightView(
             text: recipe.recipeDescription ?? "",
             comments: TestExamples.makeCommunityComments()
           )
@@ -189,11 +202,46 @@ struct RecipeView: View, NavigatableView {
   }
 
   @ViewBuilder
-  private var ingredientList: some View {
-    if recipe.ingredients == nil {
-      EmptyView()
-    } else {
-      Text("\(recipe.ingredients ?? "")")
+  private var preparationSteps: some View {
+    VStack(spacing: 0) {
+      Text("Preparation")
+        .TKTitle()
+        .bold()
+        .frame(
+          maxWidth: .infinity,
+          alignment: .leading
+        )
+        .padding(.bottom, Spacing.large)
+      VStack(spacing: Spacing.extraLarge) {
+        ForEach(0..<recipe.preparationSteps.count, id: \.self) { index in
+          PreparationStepView(
+            recipe: recipe,
+            stepNumber: index + 1,
+            prepStep: recipe.preparationSteps[index]
+          )
+        }
+      }
+    }
+    .padding(.all, .TKPagePadding)
+    .background(Color.TKBackgroundDefault)
+  }
+}
+
+struct IngredientListView: View {
+
+  let ingredients: String
+//  @State private var recipeHighlight: Highlightable?
+
+  var body: some View {
+    VStack(spacing: Spacing.large) {
+      Text("Ingredients")
+        .TKTitle()
+        .bold()
+        .frame(
+          maxWidth: .infinity,
+          alignment: .leading
+        )
+      Text(ingredients)
         .TKFontBody1()
         .lineSpacing(.TKLineSpacingIngredients)
         .frame(
@@ -201,33 +249,17 @@ struct RecipeView: View, NavigatableView {
           minHeight: 30,
           alignment: .leading
         )
-        .padding(.all, .TKPagePadding)
-        .background(Color.TKBackgroundDefault)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .padding(.horizontal, .TKPagePadding)
     }
+    .padding(.all, .TKPagePadding)
+    .background(Color.TKBackgroundDefault)
+//    .onTapGesture {
+//      recipeHighlight =
+//    }
+//    .sheet(item: $recipeHighlight) {
+//
+//    }
   }
 
-  @ViewBuilder
-  private var preparationSteps: some View {
-    ForEach(0..<recipe.preparationSteps.count, id: \.self) { index in
-      VStack(alignment: .leading, spacing: 4) {
-        Text("Step \(index + 1)")
-          .TKFontBody1BoldGray()
-        Text("\(recipe.preparationSteps[index].text)")
-          .TKFontBody1()
-          .lineSpacing(4)
-      }
-      .frame(
-        maxWidth: .infinity,
-        alignment: .leading
-      )
-      .padding(.all, .TKPagePadding)
-      .background(Color.TKBackgroundDefault)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
-      .padding(.horizontal, .TKPagePadding)
-    }
-  }
 }
 
 struct DividerView: View {
@@ -247,6 +279,75 @@ struct DividerView: View {
 //      .foregroundStyle(Color.TKFontDefault)
       .clipShape(RoundedRectangle(cornerRadius: height/2))
       .padding(EdgeInsets(top: topSpacing, leading: 20, bottom: bottomSpacing, trailing: 20))
+  }
+}
+
+struct PreparationStepView: View {
+  @Environment(\.navigationManager) var navigationManager: NavigationManager
+
+  let recipe: Recipe
+  let stepNumber: Int
+  let prepStep: PreparationStep
+
+  var body: some View {
+    HStack {
+      VStack(alignment: .leading, spacing: Spacing.medium) {
+        HStack(alignment: .center) {
+          Text("Step \(stepNumber)")
+            .font(Font.TKBody1)
+            .bold()
+            .foregroundStyle(Color.TKFontDefault)
+          //        Text("See comments")
+          //          .font(Font.system(size: 10, weight: .medium))
+          //          .foregroundStyle(Color.white)
+          //          .padding(.vertical, 2)
+          //          .padding(.horizontal, 4)
+          //          .background {
+          //            RoundedRectangle(cornerRadius: Spacing.small)
+          //              .fill(Color.TKOrange)
+          //          }
+          if stepNumber.isMultiple(of: 4) {
+
+            Image(systemName: SFSymbols.quote_bubble)
+              .foregroundStyle(Color.TKOrange)
+          }
+        }
+        Text("\(prepStep.text)")
+          .TKFontBody1()
+          .lineSpacing(4)
+      }
+      .frame(
+        maxWidth: .infinity,
+        alignment: .leading
+      )
+      //      if prepStep.isTrending {
+      if stepNumber.isMultiple(of: 4) {
+        Image(systemName: SFSymbols.chevron_right_circle)
+          .foregroundStyle(Color.TKOrange)
+      }
+    }
+    .onTapGesture {
+//      if prepStep.isTrending {
+      if stepNumber.isMultiple(of: 4) {
+//        navigationManager.path.append(
+//          Destination.recipeHighlightView(recipe: recipe, comment: nil)
+//        )
+
+      }
+    }
+  }
+}
+
+struct HighlightableView<Content: View, Highlightable>: View {
+
+  @Binding var highlightable: Highlightable?
+  @ViewBuilder var content: Content
+
+  var body: some View {
+    content
+      .onTapGesture {
+//        highlightable = content
+      }
   }
 }
 

@@ -46,7 +46,7 @@ struct CardScrollView: View {
             x: getXOffset(for: index),
             y: 0
           )
-          .scaleCard(for: index, currentIndex: currentCardIndex, middleCardOffset: middleCardOffset)
+//          .scaleCard(for: index, currentIndex: currentCardIndex, middleCardOffset: middleCardOffset)
           .zIndex(zIndex)
           .buttonStyle(NoHighlightLinkStyle())
           .onTapGesture {
@@ -208,40 +208,40 @@ struct CardScrollTargetBehavior: ScrollTargetBehavior {
 }
 
 extension View {
-  func scaleCard(for index: Int, currentIndex: Int, middleCardOffset: CGFloat) -> some View {
-    guard index <= currentIndex + 1,
-          index >= currentIndex - 1
-    else {
-      return self
-        .scaleEffect(1)
-    }
-
-    let scaleFactor = 0.1
-    if index == currentIndex {
-      return self.scaleEffect(1 + scaleFactor)
-    } else if index == currentIndex + 1 {
-
-      let cardPeekWidth = CardScrollView.getCardPeekWidth()
-      let scaleRatio = max(middleCardOffset, 0) / cardPeekWidth
-      //      print("Middle Offset: \(middleCardOffset)")
-      //      print("Scale Ratio: \(scaleRatio)")
-      return self
-        .scaleEffect(
-          x: 1 + (scaleFactor * scaleRatio),
-          y: 1 + (scaleFactor * scaleRatio)
-        )
-    } else {
-      let cardPeekWidth = CardScrollView.getCardPeekWidth()
-      let scaleRatio = 1 - (min(middleCardOffset, cardPeekWidth) / cardPeekWidth)
-      //      print("Middle Offset: \(middleCardOffset)")
-      //      print("Scale Ratio: \(scaleRatio)")
-      return self
-        .scaleEffect(
-          x: 1 + (scaleFactor * scaleRatio),
-          y: 1 + (scaleFactor * scaleRatio)
-        )
-    }
-  }
+//  func scaleCard(for index: Int, currentIndex: Int, middleCardOffset: CGFloat) -> some View {
+//    guard index <= currentIndex + 1,
+//          index >= currentIndex - 1
+//    else {
+//      return self
+//        .scaleEffect(1)
+//    }
+//
+//    let scaleFactor = 0.1
+//    if index == currentIndex {
+//      return self.scaleEffect(1 + scaleFactor)
+//    } else if index == currentIndex + 1 {
+//
+//      let cardPeekWidth = CardScrollView.getCardPeekWidth()
+//      let scaleRatio = max(middleCardOffset, 0) / cardPeekWidth
+//      //      print("Middle Offset: \(middleCardOffset)")
+//      //      print("Scale Ratio: \(scaleRatio)")
+//      return self
+//        .scaleEffect(
+//          x: 1 + (scaleFactor * scaleRatio),
+//          y: 1 + (scaleFactor * scaleRatio)
+//        )
+//    } else {
+//      let cardPeekWidth = CardScrollView.getCardPeekWidth()
+//      let scaleRatio = 1 - (min(middleCardOffset, cardPeekWidth) / cardPeekWidth)
+//      //      print("Middle Offset: \(middleCardOffset)")
+//      //      print("Scale Ratio: \(scaleRatio)")
+//      return self
+//        .scaleEffect(
+//          x: 1 + (scaleFactor * scaleRatio),
+//          y: 1 + (scaleFactor * scaleRatio)
+//        )
+//    }
+//  }
 }
 
 #Preview {

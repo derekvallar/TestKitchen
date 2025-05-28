@@ -18,6 +18,9 @@ final class Recipe {
   var isArchived: Bool = false
   var dateCreated: Date
 
+  var parentRecipe: Recipe?
+  var childRecipes: [Recipe] = []
+
   var title: String
   var author: String?
   var photos: [Photo]
@@ -77,16 +80,28 @@ final class Recipe {
   }
 }
 
-struct PreparationStep: Codable, Identifiable {
-  var id = UUID()
+struct PreparationStep: Codable, Highlightable {
+  var id: String = UUID().uuidString
   let text: String
+  let parentRecipeId: String?
   // This value should only be updated by the server
   let isTrending: Bool
 
-  init(text: String, isTrending: Bool = false) {
+  init(
+    text: String,
+    parentRecipeId: String? = "test123",
+    isTrending: Bool = false
+  ) {
     self.text = text
+    self.parentRecipeId = parentRecipeId
     self.isTrending = isTrending
   }
+}
+
+protocol Highlightable {
+  var id: String { get }
+  var text: String { get }
+  var parentRecipeId: String? { get }
 }
 
 struct Photo: Codable, Hashable {

@@ -59,6 +59,8 @@ struct HomeView: View {
               RecipeCreatorView(recipe: recipe)
             case .recipeDetails(let recipe):
               RecipeView(recipe: recipe)
+            case .recipeHighlightView( _, _):
+              RecipeHighlightView(text: "Test", comments: [])
             }
           }
       }
@@ -82,6 +84,7 @@ struct HomeView: View {
 //        }
       }
     }
+    .tint(Color.white)
   }
 }
 

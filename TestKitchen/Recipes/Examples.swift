@@ -18,7 +18,11 @@ struct TestExamples {
         prepTime: "10 mins",
         cookTime: "45 mins",
         totalTime: "55 mins",
-        ingredients: "1/2 onion, diced\n1 carrot\n2 stalks of celery\nA pinch of black pepper\n3 tablespoons of olive oil\n2 tablespoons of lemon juice\n1 lb of cod fillets (frozen)\n1 lb of russet potatoes",
+        ingredients: IngredientList(
+          id: "test123",
+          text: "1/2 onion, diced\n1 carrot\n2 stalks of celery\nA pinch of black pepper\n3 tablespoons of olive oil\n2 tablespoons of lemon juice\n1 lb of cod fillets (frozen)\n1 lb of russet potatoes",
+          recipeId: "recipe123"
+        ),
         preparationSteps: [
           "Heat oil in a large pot over medium heat.",
           "Add onions and sauté until soft and translucent.",
@@ -37,7 +41,11 @@ struct TestExamples {
         prepTime: nil,
         cookTime: "1 hour",
         totalTime: "1 hour",
-        ingredients: "1 cup of chocolate chips\n2 cups of all purpose flour\n1 cup of granulated sugar\n2 large eggs\n1 cup of unsalted butter, melted\n1 teaspoon of vanilla extract",
+        ingredients: IngredientList(
+          id: "test123",
+          text: "1 cup of chocolate chips\n2 cups of all purpose flour\n1 cup of granulated sugar\n2 large eggs\n1 cup of unsalted butter, melted\n1 teaspoon of vanilla extract",
+          recipeId: "recipe123"
+        ),
         preparationSteps: [
           "Heat oil in a large pot over medium heat.",
           "Add onions and sauté until soft and translucent.",
@@ -56,7 +64,11 @@ struct TestExamples {
         prepTime: "15 mins",
         cookTime: "30 mins",
         totalTime: "45 mins",
-        ingredients: "1 zucchini",
+        ingredients: IngredientList(
+          id: "test123",
+          text: "1 zucchini",
+          recipeId: "recipe123"
+        ),
         preparationSteps: [
           "Heat oil in a large pot over medium heat.",
           "Add onions and sauté until soft and translucent.",

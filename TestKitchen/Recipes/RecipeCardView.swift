@@ -45,7 +45,7 @@ struct RecipeCardView: View {
     )
     .background(Color.TKBackgroundDefault)
     .padding(.all, 10)
-    .border(Color.TKYellow, width: 10)
+    .border(Color.TKBackgroundDefault, width: 10)
     .clipShape(RoundedRectangle(cornerRadius: 8))
     .TKShadow()
     .padding(.all, 10)

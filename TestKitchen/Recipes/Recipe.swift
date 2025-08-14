@@ -29,7 +29,7 @@ final class Recipe {
   var prepTime: String?
   var cookTime: String?
   var totalTime: String?
-  var ingredients: String?
+  var ingredients: IngredientList?
   var preparationSteps: [PreparationStep]
 
   init(
@@ -40,7 +40,7 @@ final class Recipe {
     prepTime: String? = nil,
     cookTime: String? = nil,
     totalTime: String? = nil,
-    ingredients: String? = nil,
+    ingredients: IngredientList? = nil,
     preparationSteps: [String] = []
   ) {
     self.title = title
@@ -65,7 +65,7 @@ final class Recipe {
     prepTime: String? = nil,
     cookTime: String? = nil,
     totalTime: String? = nil,
-    ingredients: String? = nil,
+    ingredients: IngredientList? = nil,
     preparationSteps: [PreparationStep] = []
   ) {
     print("Prep time: \(prepTime ?? "")")
@@ -80,28 +80,64 @@ final class Recipe {
   }
 }
 
-struct PreparationStep: Codable, Highlightable {
+struct IngredientList: Codable {
+  let id: String
+  let text: String
+  let recipeId: String?
+}
+
+struct PreparationStep: Codable {
   var id: String = UUID().uuidString
   let text: String
-  let parentRecipeId: String?
+  var recipeId: String? = "test123"
   // This value should only be updated by the server
   let isTrending: Bool
 
   init(
     text: String,
-    parentRecipeId: String? = "test123",
     isTrending: Bool = false
   ) {
     self.text = text
-    self.parentRecipeId = parentRecipeId
     self.isTrending = isTrending
   }
 }
 
-protocol Highlightable {
-  var id: String { get }
-  var text: String { get }
-  var parentRecipeId: String? { get }
+//protocol Highlightable: Identifiable {
+//  var id: String { get }
+//  var text: String { get }
+//  var recipeId: String? { get }
+//}
+
+enum Highlightable: Identifiable {
+  case ingredients(IngredientList)
+  case prepStep(PreparationStep)
+
+  var id: String {
+    switch self {
+    case .ingredients(let list):
+      return list.id
+    case .prepStep(let step):
+      return step.id
+    }
+  }
+
+  var text: String {
+    switch self {
+    case .ingredients(let list):
+      return list.text
+    case .prepStep(let step):
+      return step.text
+    }
+  }
+
+  var recipeId: String? {
+    switch self {
+    case .ingredients(let list):
+      return list.recipeId
+    case .prepStep(let step):
+      return step.recipeId
+    }
+  }
 }
 
 struct Photo: Codable, Hashable {

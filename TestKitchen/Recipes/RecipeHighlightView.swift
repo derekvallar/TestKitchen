@@ -25,55 +25,58 @@ struct Comment: Codable, Hashable {
 struct RecipeHighlightView: View, NavigatableView {
   static let navigationTag: String = "recipeHighlightView"
 
+  let highlightId: String
   let text: String
-  let comments: [Comment]
+  let recipeId: String?
+  let comments: [Comment] = TestExamples.makeCommunityComments()
 
-  init(text: String, comments: [Comment]) {
-    self.text = text
-    self.comments = comments
-  }
-  
+  @State private var hasScrolled: Bool = false
+
   var body: some View {
-    List {
+    VStack(spacing: 0) {
       Text("Recipe Highlight")
         .TKFontBody1()
         .bold()
-        .listRowSeparator(.hidden)
+        .padding(.top, Spacing.extraLarge)
+        .padding(.bottom, Spacing.large)
+      Rectangle()
+        .foregroundStyle(hasScrolled ? Color.TKFontGray : Color.white)
+        .frame(height: 0.25)
 
-      ForEach(comments, id: \.self) { comment in
-        CommunityCommentView(
-          comment: comment
-        )
-        .padding([.top, .bottom], 2)
+      List {
+        Section(
+          content: {
+            ForEach(comments, id: \.self) { comment in
+              CommunityCommentView(
+                comment: comment
+              )
+              .padding([.top, .bottom], 2)
+            }
+            .listRowSeparator(.hidden)
+          },
+          header: {
+
+        })
       }
-      .listRowSeparator(.hidden)
+      .listStyle(.plain)
+      .background(Color.TKBackgroundDefault)
+      .onScrollGeometryChange(for: Bool.self) { proxy in
+        return proxy.contentOffset.y > 0.0
+      } action: { _, hasScrolled in
+        self.hasScrolled = hasScrolled
+      }
     }
-    .listStyle(.plain)
-
-//    ScrollView {
-//      VStack(alignment: .leading, spacing: Spacing.large) {
-//        Text(text)
-//          .TKTitle()
-//        ForEach(comments, id: \.self) { comment in
-//          CommunityCommentView(
-//            comment: comment
-//          )
-//          .padding([.top, .bottom], 2)
-//        }
-//      }
-//      .padding()
-//      .background(Color.TKBackgroundDefault)
-//      
-//    }
-//    .scrollIndicators(.hidden)
-    .background(Color.TKBackgroundDefault)
   }
 }
 
 struct RecipeHighlightView_Preview: PreviewProvider {
   static var previews: some View {
     let recipe = TestExamples.makeRecipes().first!
-    let comments = TestExamples.makeCommunityComments()
-    RecipeHighlightView(text: recipe.preparationSteps[0].text, comments: comments)
+//    let comments = TestExamples.makeCommunityComments()
+    RecipeHighlightView(
+      highlightId: "test123",
+      text: recipe.preparationSteps[0].text,
+      recipeId: recipe.recipeId
+    )
   }
 }

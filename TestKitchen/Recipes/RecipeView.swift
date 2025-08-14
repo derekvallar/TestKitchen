@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 struct RecipeView: View, NavigatableView {
   static let navigationTag: String = "recipeView"
   @Environment(\.screenSize) var screenSize
@@ -14,7 +16,7 @@ struct RecipeView: View, NavigatableView {
 
   var recipe: Recipe
   @State private var scrollOffset = CGPoint.zero
-
+  @State var tappedHighlightable: Highlightable?
 
   init(recipe: Recipe) {
     self.recipe = recipe
@@ -29,14 +31,17 @@ struct RecipeView: View, NavigatableView {
         photoCarousel
         infoStack
         if let ingredients = recipe.ingredients {
-          IngredientListView(ingredients: ingredients)
+          IngredientListView(
+            ingredients: ingredients,
+            tappedHighlightable: $tappedHighlightable
+          )
         }
         preparationSteps
       }
     }
     .ignoresSafeArea(edges: .top)
     .scrollIndicators(.hidden)
-    .background(Color.TKYellow)
+    .background(Color.TKBackgroundDefault)
     .toolbarBackground(.hidden, for: .navigationBar)
     .toolbarRole(.editor)
     .toolbar {
@@ -54,9 +59,21 @@ struct RecipeView: View, NavigatableView {
     } action: { oldOffset, offset in
       scrollOffset = offset
     }
-//    .sheet(item: <#T##Binding<Identifiable?>#>, content: <#T##(Identifiable) -> View#>) {
-//
-//    }
+    .sheet(
+      item: $tappedHighlightable,
+      onDismiss: {
+        tappedHighlightable = nil
+      },
+      content: { highlightable in
+        RecipeHighlightView(
+          highlightId: highlightable.id,
+          text: highlightable.text,
+          recipeId: highlightable.recipeId
+        )
+        .presentationDetents([.fraction(0.6)])
+        .presentationDragIndicator(.visible)
+      }
+    )
   }
 
   @ViewBuilder
@@ -181,24 +198,25 @@ struct RecipeView: View, NavigatableView {
 
   @ViewBuilder
   private var recipeDescription: some View {
-    HStack {
-      NavigationLink(
-        destination: {
-          RecipeHighlightView(
-            text: recipe.recipeDescription ?? "",
-            comments: TestExamples.makeCommunityComments()
-          )
-        },
-        label: {
+//    HStack {
+//      NavigationLink(
+//        destination: {
+//          RecipeHighlightView(highlightId: "123", text: recipe., recipeId: <#T##String?#>)
+//          RecipeHighlightView(
+//            text: recipe.recipeDescription ?? "",
+//            comments: TestExamples.makeCommunityComments()
+//          )
+//        },
+//        label: {
           Text(recipe.recipeDescription ?? "")
             .TKFontBody1()
             .frame(alignment: .leading)
             .multilineTextAlignment(.leading)
-        }
-      )
-      // For some reason, the title section wont fill up the whole width of the screen, so we'll add a spacer here.
-//      Spacer()
-    }
+//        }
+//      )
+//      // For some reason, the title section wont fill up the whole width of the screen, so we'll add a spacer here.
+////      Spacer()
+//    }
   }
 
   @ViewBuilder
@@ -217,7 +235,8 @@ struct RecipeView: View, NavigatableView {
           PreparationStepView(
             recipe: recipe,
             stepNumber: index + 1,
-            prepStep: recipe.preparationSteps[index]
+            prepStep: recipe.preparationSteps[index],
+            tappedHighlightable: $tappedHighlightable
           )
         }
       }
@@ -229,8 +248,8 @@ struct RecipeView: View, NavigatableView {
 
 struct IngredientListView: View {
 
-  let ingredients: String
-//  @State private var recipeHighlight: Highlightable?
+  let ingredients: IngredientList
+  @Binding var tappedHighlightable: Highlightable?
 
   var body: some View {
     VStack(spacing: Spacing.large) {
@@ -241,7 +260,7 @@ struct IngredientListView: View {
           maxWidth: .infinity,
           alignment: .leading
         )
-      Text(ingredients)
+      Text(ingredients.text)
         .TKFontBody1()
         .lineSpacing(.TKLineSpacingIngredients)
         .frame(
@@ -252,12 +271,9 @@ struct IngredientListView: View {
     }
     .padding(.all, .TKPagePadding)
     .background(Color.TKBackgroundDefault)
-//    .onTapGesture {
-//      recipeHighlight =
-//    }
-//    .sheet(item: $recipeHighlight) {
-//
-//    }
+    .onTapGesture {
+      tappedHighlightable = .ingredients(ingredients)
+    }
   }
 
 }
@@ -289,6 +305,8 @@ struct PreparationStepView: View {
   let stepNumber: Int
   let prepStep: PreparationStep
 
+  @Binding var tappedHighlightable: Highlightable?
+
   var body: some View {
     HStack {
       VStack(alignment: .leading, spacing: Spacing.medium) {
@@ -297,15 +315,6 @@ struct PreparationStepView: View {
             .font(Font.TKBody1)
             .bold()
             .foregroundStyle(Color.TKFontDefault)
-          //        Text("See comments")
-          //          .font(Font.system(size: 10, weight: .medium))
-          //          .foregroundStyle(Color.white)
-          //          .padding(.vertical, 2)
-          //          .padding(.horizontal, 4)
-          //          .background {
-          //            RoundedRectangle(cornerRadius: Spacing.small)
-          //              .fill(Color.TKOrange)
-          //          }
           if stepNumber.isMultiple(of: 4) {
 
             Image(systemName: SFSymbols.quote_bubble)
@@ -327,27 +336,8 @@ struct PreparationStepView: View {
       }
     }
     .onTapGesture {
-//      if prepStep.isTrending {
-      if stepNumber.isMultiple(of: 4) {
-//        navigationManager.path.append(
-//          Destination.recipeHighlightView(recipe: recipe, comment: nil)
-//        )
-
-      }
+        tappedHighlightable = .prepStep(prepStep)
     }
-  }
-}
-
-struct HighlightableView<Content: View, Highlightable>: View {
-
-  @Binding var highlightable: Highlightable?
-  @ViewBuilder var content: Content
-
-  var body: some View {
-    content
-      .onTapGesture {
-//        highlightable = content
-      }
   }
 }
 

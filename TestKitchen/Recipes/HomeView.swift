@@ -14,23 +14,12 @@ struct HomeView: View {
 
   @Query(sort: \Recipe.dateCreated, order: .reverse) var recipes: [Recipe]
 
-  //  var recipes: [Recipe] = TestExamples.makeRecipes()
-
   init() {
-
     //    do {
     //      try modelContext.delete(model: Recipe.self)
     //    } catch {
     //        print("Failed to delete all recipes.")
     //    }
-
-
-    //    let appear = UINavigationBarAppearance()
-    //    let atters: [NSAttributedString.Key: Any] = [
-    //      .font: UIFont.TKDisplay
-    //    ]
-    //    appear.largeTitleTextAttributes = atters
-    //    UINavigationBar.appearance().standardAppearance = appear
   }
 
   var body: some View {
@@ -41,15 +30,8 @@ struct HomeView: View {
         RecipeCardListView()
           .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-              Button("Test", systemImage: "minus") {
+              Button("Test", systemImage: "plus") {
                 navigationManager.path.append(Destination.recipeCreation(recipe: nil))
-
-                //            do {
-                //              try modelContext.delete(model: Recipe.self)
-                //            } catch {
-                //                print("Failed to delete all schools.")
-                //            }
-                //            try? modelContext.save()
               }
             }
           }
@@ -59,32 +41,34 @@ struct HomeView: View {
               RecipeCreatorView(recipe: recipe)
             case .recipeDetails(let recipe):
               RecipeView(recipe: recipe)
-            case .recipeHighlightView( _, _):
-              RecipeHighlightView(text: "Test", comments: [])
+//            case .recipeHighlightView( _, _):
+//              RecipeHighlightView(highlightId: "test123", text: "Test", recipeId: re)
+//              RecipeHighlightView(text: "Test", comments: [])
             }
           }
       }
       .onAppear {
         // Update models here
-        print("On appear: \(recipes[0].preparationSteps)")
-//        for recipe in recipes {
-//          recipe.update(
-//            title: recipe.title,
-//            author: recipe.author,
-//            description: recipe.recipeDescription,
-//            photos: recipe.photos,
-//            prepTime: recipe.prepTime,
-//            cookTime: recipe.cookTime,
-//            totalTime: recipe.totalTime,
-//            ingredients: recipe.ingredients,
-//            preparationSteps: recipe.preparationSteps.map {
-//              PreparationStep(text: $0.text, isTrending: false)
-//            }
-//          )
-//        }
+//        print("On appear: \(recipes[0].preparationSteps)")
+
+        for recipe in recipes {
+          recipe.update(
+            title: recipe.title,
+            author: recipe.author,
+            description: recipe.recipeDescription,
+            photos: recipe.photos,
+            prepTime: recipe.prepTime,
+            cookTime: recipe.cookTime,
+            totalTime: recipe.totalTime,
+            ingredients: recipe.ingredients,
+            preparationSteps: recipe.preparationSteps.map {
+              PreparationStep(text: $0.text, isTrending: false)
+            }
+          )
+        }
+//
       }
     }
-    .tint(Color.white)
   }
 }
 

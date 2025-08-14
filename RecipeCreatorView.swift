@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import FoundationModels
+
 struct RecipeCreatorView: View, NavigatableView {
   static var navigationTag = "recipeCreatorView"
 
@@ -100,6 +102,22 @@ struct RecipeCreatorView: View, NavigatableView {
     .onAppear {
       focusedField = .title
     }
+    .task {
+        if #available(iOS 26.0, *) {
+          let task = Task {
+            let session = LanguageModelSession()
+            let response = try? await session.respond(
+              to: "Suggest a catch name for a new coffee shop."
+            )
+//            print(response)
+            guard let content = response?.content else { return "" }
+            //    print(content)
+            return content
+          }
+
+          title = await task.value
+        }
+      }
   }
 
   @ViewBuilder
@@ -241,7 +259,7 @@ struct RecipeCreatorView: View, NavigatableView {
       prepTime: cleanTextInput(prepTime),
       cookTime: cleanTextInput(cookTime),
       totalTime: cleanTextInput(totalTime),
-      ingredients: cleanTextInput(ingredients),
+//      ingredients: cleanTextInput(ingredients),
       preparationSteps: Array(preparationSteps[0...(numberOfPrepSteps - 1)]).map {
         PreparationStep(text: $0)
       }

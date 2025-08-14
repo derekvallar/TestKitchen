@@ -53,5 +53,5 @@ extension EnvironmentValues {
 enum Destination: Hashable {
   case recipeCreation(recipe: Recipe?)
   case recipeDetails(recipe: Recipe)
-  case recipeHighlightView(recipe: Recipe, comment: Comment?)
+//  case recipeHighlightView(recipe: Recipe, comment: Comment?)
 }

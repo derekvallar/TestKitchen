@@ -74,5 +74,5 @@ struct HomeView: View {
 
 #Preview {
   HomeView()
-    .modelContainer(for: Recipe.self, inMemory: true)
+    .modelContainer(for: Recipe.self)
 }

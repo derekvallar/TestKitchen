@@ -17,5 +17,10 @@ struct SFSymbols {
   static let bubble_exclamation: String = "bubble.left.and.exclamationmark.bubble.right"
   static let arrow_right_fill: String = "arrow.right.circle.fill"
   static let chevron_right_circle: String = "chevron.right.circle"
+  static let chevron_right: String = "chevron.right"
   static let quote_bubble: String = "quote.bubble"
+  static let timer: String = "timer"
+  static let test_tube: String = "testtube.2"
+  static let birthday_cake: String = "birthday.cake"
+  static let bookmark_fill: String = "bookmark.fill"
 }

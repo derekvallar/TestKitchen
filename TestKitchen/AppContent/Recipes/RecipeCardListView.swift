@@ -18,12 +18,8 @@ struct RecipeCardListView: View {
   var body: some View {
     List {
       ForEach(Array(zip(recipes.indices, recipes)), id: \.0) { index, recipe in
-        RecipeCardView2(recipe: recipe)
-          .onTapGesture {
-            navigationManager.path.append(
-              Destination.recipeDetails(recipe: recipe)
-            )
-          }
+        RecipeArticleView(recipe: recipe)
+
           .listRowSeparator(.hidden)
       }
     }

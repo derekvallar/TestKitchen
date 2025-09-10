@@ -34,9 +34,10 @@ extension Color {
  */
 extension Font {
   public static var TKDisplay = Font.custom("NewYork-Regular", size: 20)
-  public static var TKTitle = Font.custom("NewYork-Regular", size: 18)
-  public static var TKBody1 = Font.custom("NewYork-Regular", size: 16)
-  public static var TKBody2 = Font.custom("NewYork-Regular", size: 14)
+//  public static var TKDisplayItalic = Font.custom("NewYork-Italic", size: 20)
+  public static var TKTitle = Font.custom("NewYork-Regular", size: 16)
+  public static var TKBody1 = Font.custom("NewYork-Regular", size: 14)
+  public static var TKBody2 = Font.custom("NewYork-Regular", size: 12)
 }
 
 extension UIFont {
@@ -49,16 +50,34 @@ extension Text {
   public func TKDisplay() -> Text {
     return self
       .font(.TKDisplay)
-      .bold()
+      .fontWeight(.semibold)
       .foregroundStyle(Color.TKFontDefault)
   }
-    
+
+  public func TKDisplayItalic() -> Text {
+    return self
+      .font(.TKDisplay)
+      .italic()
+      .fontWeight(.semibold)
+
+      .foregroundStyle(Color.TKFontDefault)
+  }
+
   public func TKTitle() -> Text {
       return self
       .font(.TKTitle)
+      .fontWeight(.semibold)
       .foregroundStyle(Color.TKFontDefault)
     }
-    
+
+  public func TKTitleItalic() -> Text {
+      return self
+      .font(.TKTitle)
+      .italic()
+      .fontWeight(.semibold)
+      .foregroundStyle(Color.TKFontDefault)
+    }
+
   public func TKFontBody1() -> Text {
     return self
       .font(.TKBody1)
@@ -121,7 +140,7 @@ extension TextField {
 extension CGFloat {
   public static var TKPagePadding: CGFloat = 16
   public static var TKSpacingDefault: CGFloat = 4
-  public static var TKSpacingCard: CGFloat = 8
+  public static var TKSpacingCard: CGFloat = 6
   public static var TKLineSpacingIngredients: CGFloat = 10
 
 

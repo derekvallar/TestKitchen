@@ -138,25 +138,101 @@ extension TextField {
   }
 }
 
-extension CGFloat {
-  public static var TKPagePadding: CGFloat = 16
-  public static var TKSpacingDefault: CGFloat = 4
-  public static var TKSpacingCard: CGFloat = 6
-  public static var TKLineSpacingIngredients: CGFloat = 10
+// MARK: - Design System
 
-
+struct TKSpacing {
+  public static let xxsmall: CGFloat = 2
+  public static let xsmall: CGFloat = 4
+  public static let small: CGFloat = 6
+  public static let medium: CGFloat = 8
+  public static let large: CGFloat = 12
+  public static let xlarge: CGFloat = 16
+  public static let xxlarge: CGFloat = 20
+  public static let xxxlarge: CGFloat = 24
+  public static let xxxxlarge: CGFloat = 32
+  
+  // Common page-level spacing
+  public static let pagePadding: CGFloat = 16
+  public static let sectionSpacing: CGFloat = 24
+  public static let cardSpacing: CGFloat = 12
+  public static let lineSpacing: CGFloat = 10
 }
 
-struct Spacing {
-  public static var small: CGFloat = 4
-  public static var medium: CGFloat = 8
-  public static var large: CGFloat = 16
-  public static var extraLarge: CGFloat = 24
+struct TKCornerRadius {
+  public static let xsmall: CGFloat = 2
+  public static let small: CGFloat = 4
+  public static let medium: CGFloat = 8
+  public static let large: CGFloat = 12
+  public static let xlarge: CGFloat = 16
+}
+
+extension CGFloat {
+  // Spacing
+  public static var xxs: CGFloat { TKSpacing.xxsmall }
+  public static var xs: CGFloat { TKSpacing.xsmall }
+  public static var small: CGFloat { TKSpacing.small }
+  public static var medium: CGFloat { TKSpacing.medium }
+  public static var large: CGFloat { TKSpacing.large }
+  public static var xl: CGFloat { TKSpacing.xlarge }
+  public static var xxl: CGFloat { TKSpacing.xxlarge }
+  public static var xxxl: CGFloat { TKSpacing.xxxlarge }
+  public static var xxxxl: CGFloat { TKSpacing.xxxxlarge }
+
+  // Common spacing
+  public static var pagePadding: CGFloat { TKSpacing.pagePadding }
+  public static var sectionSpacing: CGFloat { TKSpacing.sectionSpacing }
+  public static var cardSpacing: CGFloat { TKSpacing.cardSpacing }
+  public static var lineSpacing: CGFloat { TKSpacing.lineSpacing }
+}
+
+struct TKSize {
+  public static let iconSmall: CGFloat = 16
+  public static let iconMedium: CGFloat = 20
+  public static let iconLarge: CGFloat = 24
+  public static let iconXL: CGFloat = 32
+
+  public static let avatarSmall: CGFloat = 40
+  public static let avatarMedium: CGFloat = 60
+  public static let avatarLarge: CGFloat = 80
+
+  public static let cardHeight: CGFloat = 120
+  public static let cardHeightLarge: CGFloat = 160
+  public static let cardHeightXL: CGFloat = 200
+
+  public static let cardWidthSmall: CGFloat = 140
+  public static let cardWidthMedium: CGFloat = 180
+  public static let cardWidthLarge: CGFloat = 220
+  public static let cardWidthXL: CGFloat = 240
+}
+
+struct TKShadow {
+  static let light = (radius: CGFloat(2), x: CGFloat(0), y: CGFloat(1), opacity: 0.1)
+  static let medium = (radius: CGFloat(4), x: CGFloat(0), y: CGFloat(2), opacity: 0.15)
+  static let heavy = (radius: CGFloat(8), x: CGFloat(0), y: CGFloat(4), opacity: 0.2)
 }
 
 extension View {
-  func TKShadow() -> some View {
+  func tkShadowLight() -> some View {
     return self
-      .shadow(radius: 1, x: 8, y: 8)
+      .shadow(color: .black.opacity(TKShadow.light.opacity), 
+              radius: TKShadow.light.radius, 
+              x: TKShadow.light.x, 
+              y: TKShadow.light.y)
+  }
+  
+  func tkShadowMedium() -> some View {
+    return self
+      .shadow(color: .black.opacity(TKShadow.medium.opacity), 
+              radius: TKShadow.medium.radius, 
+              x: TKShadow.medium.x, 
+              y: TKShadow.medium.y)
+  }
+  
+  func tkShadowHeavy() -> some View {
+    return self
+      .shadow(color: .black.opacity(TKShadow.heavy.opacity), 
+              radius: TKShadow.heavy.radius, 
+              x: TKShadow.heavy.x, 
+              y: TKShadow.heavy.y)
   }
 }

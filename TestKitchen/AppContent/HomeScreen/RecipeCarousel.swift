@@ -147,7 +147,7 @@ struct RecipeCarousel: View {
   }
   
   var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
+    VStack(alignment: .leading, spacing: .large) {
       carouselHeader
       
       if carouselData.recipes.isEmpty {
@@ -156,13 +156,13 @@ struct RecipeCarousel: View {
         carouselScrollView
       }
     }
-    .padding(.vertical, 8)
+    .padding(.vertical, .medium)
     .background(backgroundColor)
   }
   
   @ViewBuilder
   private var carouselHeader: some View {
-    VStack(alignment: .leading, spacing: 4) {
+    VStack(alignment: .leading, spacing: .xs) {
       Text(carouselData.title)
         .font(.TKTitle)
         .fontWeight(.bold)
@@ -174,13 +174,13 @@ struct RecipeCarousel: View {
           .foregroundStyle(Color.TKFontDefaultSub)
       }
     }
-    .padding(.horizontal, .TKPagePadding)
+    .padding(.horizontal, .pagePadding)
   }
   
   @ViewBuilder
   private var carouselScrollView: some View {
     ScrollView(.horizontal, showsIndicators: false) {
-      HStack(spacing: 16) {
+      HStack(spacing: .xl) {
         ForEach(carouselData.recipes, id: \.self) { recipe in
           carouselCard(for: recipe)
             .onTapGesture {
@@ -188,7 +188,7 @@ struct RecipeCarousel: View {
             }
         }
       }
-      .padding(.horizontal, .TKPagePadding)
+      .padding(.horizontal, .pagePadding)
     }
   }
   
@@ -208,15 +208,15 @@ struct RecipeCarousel: View {
   
   @ViewBuilder
   private var emptyStateView: some View {
-    VStack(spacing: 8) {
+    VStack(spacing: .medium) {
       Image(systemName: "fork.knife.circle")
-        .font(.system(size: 32))
+        .font(.TKDisplay)
         .foregroundStyle(Color.TKFontGray)
       Text("No recipes found")
         .font(.TKBody2)
         .foregroundStyle(Color.TKFontGray)
     }
-    .frame(height: 120)
+    .frame(height: TKSize.cardHeight)
     .frame(maxWidth: .infinity)
   }
 }
@@ -227,21 +227,21 @@ struct StandardCarouselCard: View {
   let recipe: Recipe
   
   var body: some View {
-    VStack(alignment: .leading, spacing: 8) {
+    VStack(alignment: .leading, spacing: .medium) {
       recipeImage
       recipeInfo
     }
-    .frame(width: 180)
+    .frame(width: TKSize.cardWidthMedium)
     .background(Color.white)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
-    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
+    .tkShadowMedium()
   }
   
   @ViewBuilder
   private var recipeImage: some View {
     Rectangle()
       .fill(Color.TKBackgroundLightGray)
-      .frame(height: 120)
+      .frame(height: TKSize.cardHeight)
       .overlay {
         if let photo = recipe.photos.first,
            let image = photo.image() {
@@ -251,7 +251,7 @@ struct StandardCarouselCard: View {
         } else {
           Image(systemName: "fork.knife")
             .foregroundStyle(Color.TKFontGray)
-            .font(.system(size: 24))
+            .font(.TKTitle)
         }
       }
       .clipped()
@@ -259,7 +259,7 @@ struct StandardCarouselCard: View {
   
   @ViewBuilder
   private var recipeInfo: some View {
-    VStack(alignment: .leading, spacing: 4) {
+    VStack(alignment: .leading, spacing: .xs) {
       Text(recipe.title)
         .font(.TKBody1)
         .fontWeight(.semibold)
@@ -276,7 +276,7 @@ struct StandardCarouselCard: View {
       HStack {
         Image(systemName: SFSymbols.heart_fill)
           .foregroundStyle(Color.TKRed)
-          .font(.system(size: 12))
+          .font(.TKBody2)
         Text("\(recipe.likeCount)")
           .font(.TKBody2)
           .foregroundStyle(Color.TKFontDefaultSub)
@@ -291,8 +291,8 @@ struct StandardCarouselCard: View {
         }
       }
     }
-    .padding(.horizontal, 12)
-    .padding(.bottom, 12)
+    .padding(.horizontal, .large)
+    .padding(.bottom, .large)
   }
 }
 
@@ -300,11 +300,11 @@ struct CompactCarouselCard: View {
   let recipe: Recipe
   
   var body: some View {
-    HStack(spacing: 12) {
+    HStack(spacing: .large) {
       Rectangle()
         .fill(Color.TKBackgroundLightGray)
-        .frame(width: 60, height: 60)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .frame(width: TKSize.avatarMedium, height: TKSize.avatarMedium)
+        .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.medium))
         .overlay {
           if let photo = recipe.photos.first,
              let image = photo.image() {
@@ -314,12 +314,12 @@ struct CompactCarouselCard: View {
           } else {
             Image(systemName: "fork.knife")
               .foregroundStyle(Color.TKFontGray)
-              .font(.system(size: 16))
+              .font(.TKBody1)
           }
         }
         .clipped()
       
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading, spacing: .xs) {
         Text(recipe.title)
           .font(.TKBody1)
           .fontWeight(.medium)
@@ -333,11 +333,11 @@ struct CompactCarouselCard: View {
       
       Spacer()
     }
-    .frame(width: 220)
-    .padding(12)
+    .frame(width: TKSize.cardWidthLarge)
+    .padding(.large)
     .background(Color.white)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
-    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
+    .tkShadowLight()
   }
 }
 
@@ -349,17 +349,17 @@ struct FeaturedCarouselCard: View {
       recipeImage
       recipeInfo
     }
-    .frame(width: 240)
+    .frame(width: TKSize.cardWidthXL)
     .background(Color.white)
-    .clipShape(RoundedRectangle(cornerRadius: 16))
-    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.xlarge))
+    .tkShadowHeavy()
   }
   
   @ViewBuilder
   private var recipeImage: some View {
     Rectangle()
       .fill(Color.TKBackgroundLightGray)
-      .frame(height: 160)
+      .frame(height: TKSize.cardHeightLarge)
       .overlay {
         if let photo = recipe.photos.first,
            let image = photo.image() {
@@ -369,19 +369,19 @@ struct FeaturedCarouselCard: View {
         } else {
           Image(systemName: "fork.knife")
             .foregroundStyle(Color.TKFontGray)
-            .font(.system(size: 32))
+            .font(.TKDisplay)
         }
       }
       .overlay(alignment: .topTrailing) {
         if recipe.likeCount > 100 {
           Text("TRENDING")
-            .font(.system(size: 10, weight: .bold))
+            .font(.TKBody2).fontWeight(.bold)
             .foregroundStyle(.white)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, .medium)
+            .padding(.vertical, .xs)
             .background(Color.TKOrange)
-            .clipShape(RoundedRectangle(cornerRadius: 4))
-            .padding(8)
+            .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.small))
+            .padding(.medium)
         }
       }
       .clipped()
@@ -389,7 +389,7 @@ struct FeaturedCarouselCard: View {
   
   @ViewBuilder
   private var recipeInfo: some View {
-    VStack(alignment: .leading, spacing: 8) {
+    VStack(alignment: .leading, spacing: .medium) {
       Text(recipe.title)
         .font(.TKTitle)
         .fontWeight(.bold)
@@ -405,7 +405,7 @@ struct FeaturedCarouselCard: View {
       }
       
       HStack {
-        HStack(spacing: 4) {
+        HStack(spacing: .xs) {
           Image(systemName: SFSymbols.heart_fill)
             .foregroundStyle(Color.TKRed)
           Text("\(recipe.likeCount)")
@@ -416,7 +416,7 @@ struct FeaturedCarouselCard: View {
         Spacer()
         
         if let score = recipe.experimentScore {
-          HStack(spacing: 4) {
+          HStack(spacing: .xs) {
             Text(String(format: "%.1f", score))
               .font(.TKBody1)
               .fontWeight(.bold)
@@ -428,7 +428,7 @@ struct FeaturedCarouselCard: View {
         }
       }
     }
-    .padding(16)
+    .padding(.xl)
   }
 }
 
@@ -436,7 +436,7 @@ struct MinimalCarouselCard: View {
   let recipe: Recipe
   
   var body: some View {
-    VStack(alignment: .leading, spacing: 6) {
+    VStack(alignment: .leading, spacing: .small) {
       Text(recipe.title)
         .font(.TKBody1)
         .fontWeight(.medium)
@@ -447,10 +447,10 @@ struct MinimalCarouselCard: View {
         .font(.TKBody2)
         .foregroundStyle(Color.TKFontDefaultSub)
     }
-    .frame(width: 140)
-    .padding(12)
+    .frame(width: TKSize.cardWidthSmall)
+    .padding(.large)
     .background(Color.TKBackgroundLightGray)
-    .clipShape(RoundedRectangle(cornerRadius: 8))
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.medium))
   }
 }
 

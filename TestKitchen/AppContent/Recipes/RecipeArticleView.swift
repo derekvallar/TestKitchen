@@ -14,20 +14,20 @@ struct RecipeArticleView: View {
   let recipe: Recipe
 
   var body: some View {
-    HStack(spacing: .TKSpacingCard) {
+    HStack(spacing: .cardSpacing) {
       Image("test_photo")
         .resizable()
         .scaledToFill()
         .frame(width: 120)
         .clipped()
-      VStack(spacing: .TKSpacingDefault) {
+      VStack(spacing: .lineSpacing) {
         Title
         Author
         TestCount
         Status
         Spacer()
       }
-      .padding([.leading, .trailing, .top], .TKSpacingCard)
+      .padding([.leading, .trailing, .top], .cardSpacing)
       Spacer()
 
     }
@@ -36,7 +36,7 @@ struct RecipeArticleView: View {
     )
     .background(Color.TKBackgroundDefault)
     .clipShape(RoundedRectangle(cornerRadius: 2))
-    .TKShadow()
+    .tkShadowMedium()
     .onTapGesture {
       navigationManager.path.append(
         Destination.recipeDetails(recipe: recipe)

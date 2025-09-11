@@ -15,13 +15,13 @@ struct CircleIcon: View {
 
   var body: some View {
     Image(systemName: systemName)
-      .font(.system(size: 10))
+      .font(.TKBody2)
       .foregroundStyle(Color.white)
-      .padding(4)
+      .padding(.xs)
       .background {
         Circle()
           .foregroundStyle(isHighlighted ? color : Color.TKFontGray)
-          .frame(width: 20, height: 20)
+          .frame(width: TKSize.iconMedium, height: TKSize.iconMedium)
       }
   }
 }

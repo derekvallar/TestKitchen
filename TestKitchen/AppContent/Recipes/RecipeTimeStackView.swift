@@ -12,7 +12,7 @@ struct RecipeTimeStackView: View {
   let recipe: Recipe
 
   var body: some View {
-    HStack(spacing: Spacing.extraLarge) {
+    HStack(spacing: .xl) {
       VStack {
         Text("Prep")
           .TKFontBody2Gray()

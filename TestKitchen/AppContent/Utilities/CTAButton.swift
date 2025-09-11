@@ -17,7 +17,7 @@ struct CTAButton: View {
   let tapGesture: () -> Void
 
   var body: some View {
-    VStack(spacing: Spacing.small) {
+    VStack(spacing: .small) {
       Image(systemName: icon)
         .foregroundStyle(isActive ? Color.white : Color.TKFontGray)
       Text(text)
@@ -25,11 +25,11 @@ struct CTAButton: View {
         .foregroundStyle(isActive ? Color.white : Color.TKFontDefault)
     }
     .frame(maxWidth: .infinity)
-    .padding(Spacing.medium)
+    .padding(.medium)
     .background {
-      RoundedRectangle(cornerRadius: 8)
+      RoundedRectangle(cornerRadius: TKCornerRadius.medium)
         .fill(isActive ? color : Color.TKBackgroundDefault)
-        .shadow(radius: 3, x: 2, y: 2)
+        .tkShadowMedium()
     }
     .onTapGesture {
       isActive.toggle()

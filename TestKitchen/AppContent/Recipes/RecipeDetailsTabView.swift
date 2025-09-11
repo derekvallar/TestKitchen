@@ -28,13 +28,10 @@ struct RecipeDetailsTabView: View, NavigatableView {
       VStack(spacing: 0) {
         // Hero photo section
         photoCarousel
-        
         // Recipe header with subtle social integration
         recipeHeaderSection
-        
         // Social engagement and scoring system (prominent placement)
         socialEngagementTopSection
-        
         // Cooking essentials - time, servings, difficulty  
         cookingEssentialsBar
         
@@ -102,11 +99,11 @@ struct RecipeDetailsTabView: View, NavigatableView {
               endPoint: .bottom
             )
           )
-          .frame(height: 280)
+          .frame(height: TKSize.cardHeightXL + 80)
           .overlay {
-            VStack(spacing: 12) {
+            VStack(spacing: .large) {
               Image(systemName: "fork.knife")
-                .font(.system(size: 48))
+                .font(.TKDisplay).scaleEffect(2.4)
                 .foregroundStyle(Color.TKFontGray.opacity(0.6))
               Text(recipe.title)
                 .font(.TKTitle)
@@ -115,7 +112,7 @@ struct RecipeDetailsTabView: View, NavigatableView {
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
             }
-            .padding(.horizontal, 32)
+            .padding(.horizontal, .xxxxl)
           }
       } else {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -125,7 +122,7 @@ struct RecipeDetailsTabView: View, NavigatableView {
                 image
                   .resizable()
                   .scaledToFill()
-                  .frame(width: screenSize.width, height: 280)
+                  .frame(width: screenSize.width, height: TKSize.cardHeightXL + 80)
                   .clipped()
               }
             }
@@ -135,7 +132,7 @@ struct RecipeDetailsTabView: View, NavigatableView {
       }
       
       // Floating like/bookmark buttons (subtle, top-right)
-      HStack(spacing: 12) {
+      HStack(spacing: .large) {
         floatingActionButton(
           icon: recipe.isBookmarked ? SFSymbols.bookmark_fill : "bookmark",
           isActive: recipe.isBookmarked,
@@ -148,23 +145,23 @@ struct RecipeDetailsTabView: View, NavigatableView {
           activeColor: Color.TKRed
         )
       }
-      .padding(.top, 60)
-      .padding(.trailing, 16)
+      .padding(.top, TKSize.avatarLarge - 20)
+      .padding(.trailing, .xl)
     }
   }
 
   @ViewBuilder
   private var recipeHeaderSection: some View {
-    VStack(alignment: .leading, spacing: 16) {
+    VStack(alignment: .leading, spacing: .xl) {
       // Title and author
-      VStack(alignment: .leading, spacing: 8) {
+      VStack(alignment: .leading, spacing: .medium) {
         Text(recipe.title)
           .font(.TKDisplay)
           .fontWeight(.bold)
           .foregroundStyle(Color.TKFontDefault)
         
         if let author = recipe.author {
-          HStack(spacing: 8) {
+          HStack(spacing: .medium) {
             Text("by \(author)")
               .font(.TKBody1)
               .foregroundStyle(Color.TKFontDefaultSub)
@@ -174,12 +171,12 @@ struct RecipeDetailsTabView: View, NavigatableView {
               Text("•")
                 .foregroundStyle(Color.TKFontGray)
               
-              HStack(spacing: 4) {
+              HStack(spacing: .xs) {
                 Image(systemName: SFSymbols.heart_fill)
-                  .font(.system(size: 12))
+                  .font(.TKBody2)
                   .foregroundStyle(Color.TKRed)
                 Text("\(recipe.likeCount)")
-                  .font(.system(size: 12))
+                  .font(.TKBody2)
                   .foregroundStyle(Color.TKFontDefaultSub)
               }
             }
@@ -195,8 +192,8 @@ struct RecipeDetailsTabView: View, NavigatableView {
           .lineSpacing(2)
       }
     }
-    .padding(.horizontal, .TKPagePadding)
-    .padding(.top, 24)
+    .padding(.horizontal, .pagePadding)
+    .padding(.top, .xxxl)
     .background(Color.white)
   }
   
@@ -218,78 +215,78 @@ struct RecipeDetailsTabView: View, NavigatableView {
       // Experiment score if available
       if let score = recipe.experimentScore {
         Divider()
-          .frame(height: 40)
+          .frame(height: TKSize.avatarSmall)
         
-        VStack(spacing: 4) {
+        VStack(spacing: .xs) {
           Text(String(format: "%.1f", score))
             .font(.TKTitle)
             .fontWeight(.bold)
             .foregroundStyle(score >= 7.0 ? Color.TKGreen : Color.TKOrange)
           
           Text("Score")
-            .font(.system(size: 11))
+            .font(.TKBody2)
             .fontWeight(.medium)
             .foregroundStyle(Color.TKFontDefaultSub)
         }
         .frame(maxWidth: .infinity)
       }
     }
-    .padding(.vertical, 20)
-    .padding(.horizontal, .TKPagePadding)
+    .padding(.vertical, .xxl)
+    .padding(.horizontal, .pagePadding)
     .background(Color.TKBackgroundLightGray)
   }
   
   @ViewBuilder
   private var socialEngagementTopSection: some View {
-    VStack(spacing: 20) {
+    VStack(spacing: .xxl) {
       // Social stats bar
       HStack(spacing: 0) {
         socialStatItem(icon: SFSymbols.heart_fill, count: recipe.likeCount, label: "likes", color: Color.TKRed)
         
         Divider()
-          .frame(height: 30)
-          .padding(.horizontal, 8)
+          .frame(height: TKSize.iconLarge + 6)
+          .padding(.horizontal, .medium)
         
         socialStatItem(icon: SFSymbols.bookmark_fill, count: recipe.bookmarkCount, label: "saves", color: Color.TKBlue)
         
         Divider()
-          .frame(height: 30)
-          .padding(.horizontal, 8)
+          .frame(height: TKSize.iconLarge + 6)
+          .padding(.horizontal, .medium)
         
         socialStatItem(icon: SFSymbols.quote_bubble, count: recipe.commentCount, label: "comments", color: Color.TKOrange)
         
         if recipe.takeCount > 0 {
           Divider()
-            .frame(height: 30)
-            .padding(.horizontal, 8)
+            .frame(height: TKSize.iconLarge + 6)
+            .padding(.horizontal, .medium)
           
           socialStatItem(icon: "fork.knife", count: recipe.takeCount, label: "takes", color: Color.TKGreen)
         }
       }
-      .padding(.horizontal, .TKPagePadding)
+      .padding(.horizontal, .pagePadding)
       
       // Scoring system and status (brought back from SocialSectionView)
       if let score = recipe.experimentScore, let status = recipe.recipeStatus {
-        HStack(spacing: 20) {
+        HStack(spacing: .xxl) {
           // Experiment Score Circle
-          VStack(spacing: 4) {
+          VStack(spacing: .xs) {
             Text(String(format: "%.1f", score))
-              .font(.system(size: 28, weight: .bold))
+              .font(.TKDisplay).scaleEffect(1.4).fontWeight(.bold)
               .foregroundStyle(score >= 7.0 ? Color.TKGreen : (score >= 5.0 ? Color.TKOrange : Color.TKRed))
-              .frame(width: 60, height: 60)
+              .frame(width: TKSize.avatarMedium, height: TKSize.avatarMedium)
               .overlay {
                 Circle()
                   .stroke(score >= 7.0 ? Color.TKGreen : (score >= 5.0 ? Color.TKOrange : Color.TKRed), lineWidth: 2)
               }
             
             Text("Recipe Score")
-              .font(.system(size: 11, weight: .medium))
+              .font(.TKBody2).fontWeight(.medium)
               .foregroundStyle(Color.TKFontDefaultSub)
           }
           
           // Recipe Status and Changes
-          VStack(alignment: .leading, spacing: 8) {
-            VStack(alignment: .leading, spacing: 4) {
+          VStack(alignment: .leading, spacing: .medium) {
+            VStack(alignment: .leading, spacing: .xs) {
               Text("Status:")
                 .font(.TKBody2)
                 .fontWeight(.semibold)
@@ -303,27 +300,27 @@ struct RecipeDetailsTabView: View, NavigatableView {
             
             // Takes/Variations indicator
             if recipe.takeCount > 0 {
-              HStack(spacing: 8) {
+              HStack(spacing: .medium) {
                 ZStack {
                   // Stacked recipe cards effect
                   Rectangle()
-                    .frame(width: 16, height: 20)
+                    .frame(width: TKSize.iconSmall, height: TKSize.iconMedium)
                     .foregroundStyle(Color.TKYellow)
-                    .clipShape(RoundedRectangle(cornerRadius: 2))
+                    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.xsmall))
                     .rotationEffect(.degrees(10), anchor: .bottom)
                     .offset(x: 2, y: -2)
                   
                   Rectangle()
-                    .frame(width: 16, height: 20)
+                    .frame(width: TKSize.iconSmall, height: TKSize.iconMedium)
                     .foregroundStyle(Color.TKYellow)
-                    .clipShape(RoundedRectangle(cornerRadius: 2))
+                    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.xsmall))
                     .rotationEffect(.degrees(-10), anchor: .bottom)
                     .offset(x: -2, y: 0)
                   
                   Rectangle()
-                    .frame(width: 16, height: 20)
+                    .frame(width: TKSize.iconSmall, height: TKSize.iconMedium)
                     .foregroundStyle(Color.TKYellow)
-                    .clipShape(RoundedRectangle(cornerRadius: 2))
+                    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.xsmall))
                 }
                 
                 Text("See \(recipe.takeCount) Takes")
@@ -332,7 +329,7 @@ struct RecipeDetailsTabView: View, NavigatableView {
                   .fontWeight(.medium)
                 
                 Image(systemName: SFSymbols.chevron_right_circle)
-                  .font(.system(size: 14))
+                  .font(.TKBody1)
                   .foregroundStyle(Color.TKFontGray)
               }
             }
@@ -340,16 +337,16 @@ struct RecipeDetailsTabView: View, NavigatableView {
           
           Spacer()
         }
-        .padding(.all, 16)
+        .padding(.all, .xl)
         .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
         .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
-        .padding(.horizontal, .TKPagePadding)
+        .padding(.horizontal, .pagePadding)
       }
       
       // Recipe changes/updates section
       if let changeDescription = recipe.recipeChangeDescription, !changeDescription.isEmpty {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: .medium) {
           HStack {
             Text("Changes from previous version:")
               .font(.TKBody1)
@@ -367,20 +364,20 @@ struct RecipeDetailsTabView: View, NavigatableView {
             .foregroundStyle(Color.TKFontDefault)
             .lineSpacing(2)
         }
-        .padding(.all, 16)
+        .padding(.all, .xl)
         .background(
-          RoundedRectangle(cornerRadius: 12)
+          RoundedRectangle(cornerRadius: TKCornerRadius.large)
             .fill(Color.TKBackgroundLightGray)
             .overlay(
-              RoundedRectangle(cornerRadius: 12)
+              RoundedRectangle(cornerRadius: TKCornerRadius.large)
                 .stroke(Color.TKOrange.opacity(0.3), lineWidth: 1)
             )
         )
-        .padding(.horizontal, .TKPagePadding)
+        .padding(.horizontal, .pagePadding)
       }
     }
-    .padding(.top, 16)
-    .padding(.bottom, 8)
+    .padding(.top, .xl)
+    .padding(.bottom, .medium)
     .background(Color.TKBackgroundDefault)
   }
 
@@ -392,10 +389,10 @@ struct RecipeDetailsTabView: View, NavigatableView {
 
   @ViewBuilder
   private var LikeView: some View {
-    HStack(spacing: 6) {
+    HStack(spacing: .small) {
       Image(systemName: SFSymbols.heart_fill)
         .foregroundStyle(Color.TKRed)
-        .font(.system(size: 24))
+        .font(.TKTitle)
       Text("1.2k")
         .TKFontBody1()
     }
@@ -403,10 +400,10 @@ struct RecipeDetailsTabView: View, NavigatableView {
 
   @ViewBuilder
   private var BookmarkView: some View {
-    HStack(spacing: 6) {
+    HStack(spacing: .small) {
       Image(systemName: SFSymbols.bookmark_fill)
         .foregroundStyle(Color.TKBlue)
-        .font(.system(size: 24))
+        .font(.TKTitle)
       Text("1.2k")
         .TKFontBody1()
     }
@@ -437,12 +434,12 @@ struct RecipeDetailsTabView: View, NavigatableView {
           .font(.TKBody2)
           .foregroundStyle(Color.TKFontDefaultSub)
       }
-      .padding(.horizontal, .TKPagePadding)
-      .padding(.top, 32)
-      .padding(.bottom, 20)
+      .padding(.horizontal, .pagePadding)
+      .padding(.top, .xxxxl)
+      .padding(.bottom, .xxl)
       
       // Steps
-      VStack(spacing: 20) {
+      VStack(spacing: .xxl) {
         ForEach(0..<recipe.preparationSteps.count, id: \.self) { index in
           ModernPreparationStepView(
             recipe: recipe,
@@ -452,8 +449,8 @@ struct RecipeDetailsTabView: View, NavigatableView {
           )
         }
       }
-      .padding(.horizontal, .TKPagePadding)
-      .padding(.bottom, 32)
+      .padding(.horizontal, .pagePadding)
+      .padding(.bottom, .xxxxl)
     }
     .background(Color.TKBackgroundDefault)
   }
@@ -467,9 +464,9 @@ struct RecipeDetailsTabView: View, NavigatableView {
       // Handle action
     } label: {
       Image(systemName: icon)
-        .font(.system(size: 16, weight: .medium))
+        .font(.TKBody1).fontWeight(.medium)
         .foregroundStyle(isActive ? activeColor : Color.white)
-        .frame(width: 40, height: 40)
+        .frame(width: TKSize.avatarSmall, height: TKSize.avatarSmall)
         .background(
           Circle()
             .fill(isActive ? Color.white : Color.black.opacity(0.3))
@@ -480,19 +477,19 @@ struct RecipeDetailsTabView: View, NavigatableView {
   
   @ViewBuilder
   private func cookingInfoItem(icon: String, title: String, value: String) -> some View {
-    VStack(spacing: 6) {
+    VStack(spacing: .small) {
       Image(systemName: icon)
-        .font(.system(size: 18))
+        .font(.TKBody1)
         .foregroundStyle(Color.TKOrange)
       
-      VStack(spacing: 2) {
+      VStack(spacing: .xxs) {
         Text(value)
           .font(.TKBody1)
           .fontWeight(.semibold)
           .foregroundStyle(Color.TKFontDefault)
         
         Text(title)
-          .font(.system(size: 11))
+          .font(.TKBody2)
           .fontWeight(.medium)
           .foregroundStyle(Color.TKFontDefaultSub)
       }
@@ -502,10 +499,10 @@ struct RecipeDetailsTabView: View, NavigatableView {
   
   @ViewBuilder
   private func socialStatView(icon: String, count: Int, label: String, color: Color) -> some View {
-    VStack(spacing: 4) {
-      HStack(spacing: 6) {
+    VStack(spacing: .xs) {
+      HStack(spacing: .small) {
         Image(systemName: icon)
-          .font(.system(size: 16))
+          .font(.TKBody1)
           .foregroundStyle(color)
         
         Text("\(count)")
@@ -515,17 +512,17 @@ struct RecipeDetailsTabView: View, NavigatableView {
       }
       
       Text(label)
-        .font(.system(size: 11))
+        .font(.TKBody2)
         .foregroundStyle(Color.TKFontDefaultSub)
     }
   }
   
   @ViewBuilder
   private func socialStatItem(icon: String, count: Int, label: String, color: Color) -> some View {
-    VStack(spacing: 6) {
-      HStack(spacing: 4) {
+    VStack(spacing: .small) {
+      HStack(spacing: .xs) {
         Image(systemName: icon)
-          .font(.system(size: 14))
+          .font(.TKBody1)
           .foregroundStyle(color)
         
         Text("\(count)")
@@ -535,7 +532,7 @@ struct RecipeDetailsTabView: View, NavigatableView {
       }
       
       Text(label)
-        .font(.system(size: 11, weight: .medium))
+        .font(.TKBody2).fontWeight(.medium)
         .foregroundStyle(Color.TKFontDefaultSub)
     }
     .frame(maxWidth: .infinity)
@@ -565,23 +562,23 @@ struct ModernIngredientListView: View {
         .font(.TKBody2)
         .foregroundStyle(Color.TKBlue)
       }
-      .padding(.horizontal, .TKPagePadding)
-      .padding(.top, 24)
+      .padding(.horizontal, .pagePadding)
+      .padding(.top, .xxxl)
       .padding(.bottom, 16)
       
       // Ingredients content
-      VStack(alignment: .leading, spacing: 12) {
+      VStack(alignment: .leading, spacing: .large) {
         Text(ingredients.text)
           .font(.TKBody1)
           .lineSpacing(6)
           .foregroundStyle(Color.TKFontDefault)
           .frame(maxWidth: .infinity, alignment: .leading)
       }
-      .padding(.all, .TKPagePadding)
+      .padding(.all, .pagePadding)
       .background(Color.white)
-      .clipShape(RoundedRectangle(cornerRadius: 12))
-      .padding(.horizontal, .TKPagePadding)
-      .padding(.bottom, 8)
+      .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
+      .padding(.horizontal, .pagePadding)
+      .padding(.bottom, .medium)
       .onTapGesture {
         tappedHighlightable = .ingredients(ingredients)
       }
@@ -600,20 +597,20 @@ struct ModernPreparationStepView: View {
   @Binding var tappedHighlightable: Highlightable?
 
   var body: some View {
-    HStack(alignment: .top, spacing: 16) {
+    HStack(alignment: .top, spacing: .xl) {
       // Step number circle
       Text("\(stepNumber)")
         .font(.TKBody1)
         .fontWeight(.bold)
         .foregroundStyle(Color.white)
-        .frame(width: 32, height: 32)
+        .frame(width: TKSize.iconXL, height: TKSize.iconXL)
         .background(
           Circle()
             .fill(Color.TKOrange)
         )
       
       // Step content
-      VStack(alignment: .leading, spacing: 8) {
+      VStack(alignment: .leading, spacing: .medium) {
         HStack {
           Text("Step \(stepNumber)")
             .font(.TKBody1)
@@ -627,7 +624,7 @@ struct ModernPreparationStepView: View {
               tappedHighlightable = .prepStep(prepStep)
             } label: {
               Image(systemName: SFSymbols.quote_bubble)
-                .font(.system(size: 16))
+                .font(.TKBody1)
                 .foregroundStyle(Color.TKBlue)
             }
           }
@@ -640,9 +637,9 @@ struct ModernPreparationStepView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
-    .padding(.all, 16)
+    .padding(.all, .xl)
     .background(Color.white)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
     .onTapGesture {
       tappedHighlightable = .prepStep(prepStep)
     }
@@ -655,7 +652,7 @@ struct IngredientListView: View {
   @Binding var tappedHighlightable: Highlightable?
 
   var body: some View {
-    VStack(spacing: Spacing.large) {
+    VStack(spacing: .large) {
       Text("Ingredients")
         .TKTitle()
         .bold()
@@ -665,14 +662,14 @@ struct IngredientListView: View {
         )
       Text(ingredients.text)
         .TKFontBody1()
-        .lineSpacing(.TKLineSpacingIngredients)
+        .lineSpacing(.lineSpacing)
         .frame(
           maxWidth: .infinity,
           minHeight: 30,
           alignment: .leading
         )
     }
-    .padding(.all, .TKPagePadding)
+    .padding(.all, .pagePadding)
     .background(Color.TKBackgroundDefault)
     .onTapGesture {
       tappedHighlightable = .ingredients(ingredients)
@@ -697,7 +694,7 @@ struct DividerView: View {
       .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
 //      .foregroundStyle(Color.TKFontDefault)
       .clipShape(RoundedRectangle(cornerRadius: height/2))
-      .padding(EdgeInsets(top: topSpacing, leading: 20, bottom: bottomSpacing, trailing: 20))
+      .padding(EdgeInsets(top: topSpacing, leading: .xxl, bottom: bottomSpacing, trailing: .xxl))
   }
 }
 
@@ -712,7 +709,7 @@ struct PreparationStepView: View {
 
   var body: some View {
     HStack {
-      VStack(alignment: .leading, spacing: Spacing.medium) {
+      VStack(alignment: .leading, spacing: .medium) {
         HStack(alignment: .center) {
           Text("Step \(stepNumber)")
             .font(Font.TKBody1)

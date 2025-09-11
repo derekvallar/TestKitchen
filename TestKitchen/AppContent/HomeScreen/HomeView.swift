@@ -62,7 +62,7 @@ struct HomeView: View {
   
   @ViewBuilder
   private var searchSection: some View {
-    VStack(spacing: 16) {
+    VStack(spacing: .xl) {
       RecipeSearchBar(
         searchText: $searchText,
         isSearching: $searchService.isSearching,
@@ -72,13 +72,13 @@ struct HomeView: View {
         suggestions: searchService.searchSuggestions
       )
     }
-    .padding(.horizontal, .TKPagePadding)
-    .padding(.vertical, 16)
+    .padding(.horizontal, .pagePadding)
+    .padding(.vertical, .xl)
   }
   
   @ViewBuilder
   private var discoveryContent: some View {
-    LazyVStack(spacing: 24) {
+    LazyVStack(spacing: .xxxl) {
       // Banners
       if let banners = homePageData.banners, !banners.isEmpty {
         ForEach(banners) { banner in
@@ -96,12 +96,12 @@ struct HomeView: View {
         featuredRecipesSection(recipes: featuredRecipes)
       }
     }
-    .padding(.bottom, 32)
+    .padding(.bottom, .xxxxl)
   }
   
   @ViewBuilder
   private var searchResultsContent: some View {
-    VStack(alignment: .leading, spacing: 16) {
+    VStack(alignment: .leading, spacing: .xl) {
       HStack {
         Text("Search Results")
           .font(.TKTitle)
@@ -115,9 +115,9 @@ struct HomeView: View {
             .foregroundStyle(Color.TKFontDefaultSub)
         }
       }
-      .padding(.horizontal, .TKPagePadding)
+      .padding(.horizontal, .pagePadding)
       
-      LazyVStack(spacing: 16) {
+      LazyVStack(spacing: .xl) {
         ForEach(searchService.searchResults, id: \.self) { recipe in
           SearchResultCard(recipe: recipe)
             .onTapGesture {
@@ -131,26 +131,26 @@ struct HomeView: View {
           }
           .font(.TKBody1)
           .foregroundStyle(Color.TKBlue)
-          .padding(.vertical, 16)
+          .padding(.vertical, .xl)
         }
       }
-      .padding(.horizontal, .TKPagePadding)
+      .padding(.horizontal, .pagePadding)
     }
   }
   
   @ViewBuilder
   private func featuredRecipesSection(recipes: [Recipe]) -> some View {
-    VStack(alignment: .leading, spacing: 16) {
+    VStack(alignment: .leading, spacing: .xl) {
       Text("Featured Today")
         .font(.TKTitle)
         .fontWeight(.bold)
         .foregroundStyle(Color.TKFontDefault)
-        .padding(.horizontal, .TKPagePadding)
+        .padding(.horizontal, .pagePadding)
       
       LazyVGrid(columns: [
         GridItem(.flexible()),
         GridItem(.flexible())
-      ], spacing: 16) {
+      ], spacing: .xl) {
         ForEach(recipes.prefix(4), id: \.self) { recipe in
           FeaturedRecipeCard(recipe: recipe)
             .onTapGesture {
@@ -158,7 +158,7 @@ struct HomeView: View {
             }
         }
       }
-      .padding(.horizontal, .TKPagePadding)
+      .padding(.horizontal, .pagePadding)
     }
   }
   
@@ -229,7 +229,7 @@ struct BannerView: View {
   let banner: BannerData
   
   var body: some View {
-    VStack(alignment: .leading, spacing: 8) {
+    VStack(alignment: .leading, spacing: .medium) {
       Text(banner.title)
         .font(.TKTitle)
         .fontWeight(.bold)
@@ -251,10 +251,10 @@ struct BannerView: View {
       }
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .padding(.all, .TKPagePadding)
+    .padding(.all, .pagePadding)
     .background(Color(hex: banner.backgroundColor) ?? Color.TKOrange)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
-    .padding(.horizontal, .TKPagePadding)
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
+    .padding(.horizontal, .pagePadding)
   }
 }
 
@@ -262,11 +262,11 @@ struct SearchResultCard: View {
   let recipe: Recipe
   
   var body: some View {
-    HStack(spacing: 12) {
+    HStack(spacing: .large) {
       Rectangle()
         .fill(Color.TKBackgroundLightGray)
-        .frame(width: 80, height: 80)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .frame(width: TKSize.avatarLarge, height: TKSize.avatarLarge)
+        .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.medium))
         .overlay {
           if let photo = recipe.photos.first,
              let image = photo.image() {
@@ -276,12 +276,12 @@ struct SearchResultCard: View {
           } else {
             Image(systemName: "fork.knife")
               .foregroundStyle(Color.TKFontGray)
-              .font(.system(size: 20))
+              .font(.TKBody1)
           }
         }
         .clipped()
       
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading, spacing: .xs) {
         Text(recipe.title)
           .font(.TKBody1)
           .fontWeight(.semibold)
@@ -320,10 +320,10 @@ struct SearchResultCard: View {
       
       Spacer()
     }
-    .padding(12)
+    .padding(.large)
     .background(Color.white)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
-    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
+    .tkShadowLight()
   }
 }
 
@@ -331,7 +331,7 @@ struct FeaturedRecipeCard: View {
   let recipe: Recipe
   
   var body: some View {
-    VStack(alignment: .leading, spacing: 8) {
+    VStack(alignment: .leading, spacing: .medium) {
       Rectangle()
         .fill(Color.TKBackgroundLightGray)
         .aspectRatio(4/3, contentMode: .fit)
@@ -348,9 +348,9 @@ struct FeaturedRecipeCard: View {
           }
         }
         .clipped()
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.medium))
       
-      VStack(alignment: .leading, spacing: 4) {
+      VStack(alignment: .leading, spacing: .xs) {
         Text(recipe.title)
           .font(.TKBody1)
           .fontWeight(.semibold)
@@ -366,8 +366,8 @@ struct FeaturedRecipeCard: View {
       }
     }
     .background(Color.white)
-    .clipShape(RoundedRectangle(cornerRadius: 12))
-    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
+    .tkShadowLight()
   }
 }
 

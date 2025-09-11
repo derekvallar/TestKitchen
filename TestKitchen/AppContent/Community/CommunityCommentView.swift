@@ -12,37 +12,37 @@ struct CommunityCommentView: View {
   let comment: Comment
 
   var body: some View {
-    HStack(alignment: .top, spacing: Spacing.medium) {
+    HStack(alignment: .top, spacing: .medium) {
 //      Image(uiImage: UIImage(data: comment.user.profileImage))
       Image(systemName: "person.circle")
-      VStack(alignment: .leading, spacing: Spacing.medium) {
-        HStack(spacing: Spacing.small) {
+      VStack(alignment: .leading, spacing: .medium) {
+        HStack(spacing: .small) {
           Text(comment.user.username)
-            .font(Font.system(size: 12))
+            .font(.TKBody2)
             .bold()
             .foregroundStyle(Color.TKFontDefault)
           Text("2h")
-            .font(Font.system(size: 12))
+            .font(.TKBody2)
             .foregroundStyle(Color.gray)
         }
         Text(comment.commentText)
           .TKFontBody1()
-        HStack(spacing: Spacing.large) {
-          HStack(spacing: Spacing.small) {
+        HStack(spacing: .large) {
+          HStack(spacing: .small) {
             Image(systemName: SFSymbols.heart_fill)
               .foregroundStyle(Color.TKRed)
             Text("103")
-              .font(Font.system(size: 12))
+              .font(.TKBody2)
               .foregroundStyle(Color.TKFontDefault)
           }
           Text("See \(comment.user.username)'s Version")
-            .font(Font.system(size: 12))
+            .font(.TKBody2)
             .foregroundStyle(Color.white)
             .lineLimit(1)
-            .padding(.vertical, 2)
-            .padding(.horizontal, 6)
+            .padding(.vertical, .xxs)
+            .padding(.horizontal, .small)
             .background {
-              RoundedRectangle(cornerRadius: 3)
+              RoundedRectangle(cornerRadius: TKCornerRadius.xsmall)
                 .fill(Color.TKOrange)
             }
         }

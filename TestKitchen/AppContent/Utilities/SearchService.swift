@@ -221,10 +221,10 @@ struct RecipeSearchBar: View {
           }
         }
       }
-      .padding(.horizontal, 16)
-      .padding(.vertical, 12)
+      .padding(.horizontal, .xl)
+      .padding(.vertical, .large)
       .background(Color.TKBackgroundLightGray)
-      .clipShape(RoundedRectangle(cornerRadius: 12))
+      .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.large))
       
       if isTextFieldFocused && !suggestions.isEmpty {
         suggestionsList
@@ -244,27 +244,27 @@ struct RecipeSearchBar: View {
           HStack {
             Image(systemName: "magnifyingglass")
               .foregroundStyle(Color.TKFontGray)
-              .font(.system(size: 14))
+              .font(.TKBody1)
             Text(suggestion)
               .font(.TKBody2)
               .foregroundStyle(Color.TKFontDefault)
             Spacer()
           }
-          .padding(.horizontal, 16)
-          .padding(.vertical, 12)
+          .padding(.horizontal, .xl)
+          .padding(.vertical, .large)
         }
         .background(Color.white)
         
         if suggestion != suggestions.prefix(5).last {
           Divider()
-            .padding(.leading, 16)
+            .padding(.leading, .xl)
         }
       }
     }
     .background(Color.white)
-    .clipShape(RoundedRectangle(cornerRadius: 8))
-    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
-    .padding(.top, 4)
+    .clipShape(RoundedRectangle(cornerRadius: TKCornerRadius.medium))
+    .tkShadowMedium()
+    .padding(.top, .xs)
   }
 }
 
@@ -278,5 +278,5 @@ struct RecipeSearchBar: View {
     onSearchSubmit: { _ in },
     suggestions: ["soup", "salad", "pasta"]
   )
-  .padding()
+  .padding(.medium)
 }

@@ -46,7 +46,7 @@ struct RecipeCreatorView: View, NavigatableView {
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 20) {
-        let imageSize = ImageUploadList.calculateImageSize(from: screenSize.width - 2 * .TKPagePadding)
+        let imageSize = ImageUploadList.calculateImageSize(from: screenSize.width - 2 * .pagePadding)
         imageUploadList
         #if DEBUG
           .frame(minHeight: 100)
@@ -211,12 +211,12 @@ struct RecipeCreatorView: View, NavigatableView {
       .TKFontBody1()
       .bold()
     TextEditor(text: $ingredients)
-      .lineSpacing(.TKLineSpacingIngredients)
+      .lineSpacing(.lineSpacing)
       .frame(minHeight: 68)
       .defaultTextBoxStyle(
         for: $ingredients,
         placeholder: "4 cod fillets\n1 cup all-purpose flour",
-        lineSpacing: .TKLineSpacingIngredients
+        lineSpacing: .lineSpacing
       )
   }
 

@@ -100,13 +100,13 @@ final class Recipe {
   }
 }
 
-struct IngredientList: Codable {
+struct IngredientList: Codable, Hashable {
   let id: String
   let text: String
   let recipeId: String?
 }
 
-struct PreparationStep: Codable {
+struct PreparationStep: Codable, Hashable {
   var id: String = UUID().uuidString
   let text: String
   var recipeId: String?
@@ -165,6 +165,115 @@ struct Photo: Codable, Hashable {
       return nil
     }
     return Image(uiImage: uiImage)
+  }
+}
+
+// MARK: - Codable Recipe for API Communication
+
+struct CodableRecipe: Codable, Hashable {
+  let recipeId: String?
+  let isPublic: Bool
+  let isArchived: Bool
+  let dateCreated: Date
+  
+  let parentRecipeId: String?
+  let childRecipeIds: [String]
+  
+  let title: String
+  let author: String?
+  let photos: [Photo]
+  let recipeDescription: String?
+  let recipeChangeDescription: String?
+  
+  // Social/Engagement properties
+  let likeCount: Int
+  let bookmarkCount: Int
+  let commentCount: Int
+  let isLiked: Bool
+  let isBookmarked: Bool
+  
+  // Recipe rating and status
+  let experimentScore: Double?
+  let recipeStatus: String?
+  let takeCount: Int
+  
+  let prepTime: String?
+  let cookTime: String?
+  let totalTime: String?
+  let ingredients: IngredientList?
+  let preparationSteps: [PreparationStep]
+  
+  init(from recipe: Recipe) {
+    self.recipeId = recipe.recipeId
+    self.isPublic = recipe.isPublic
+    self.isArchived = recipe.isArchived
+    self.dateCreated = recipe.dateCreated
+    
+    self.parentRecipeId = recipe.parentRecipe?.recipeId
+    self.childRecipeIds = recipe.childRecipes.compactMap { $0.recipeId }
+    
+    self.title = recipe.title
+    self.author = recipe.author
+    self.photos = recipe.photos
+    self.recipeDescription = recipe.recipeDescription
+    self.recipeChangeDescription = recipe.recipeChangeDescription
+    
+    self.likeCount = recipe.likeCount
+    self.bookmarkCount = recipe.bookmarkCount
+    self.commentCount = recipe.commentCount
+    self.isLiked = recipe.isLiked
+    self.isBookmarked = recipe.isBookmarked
+    
+    self.experimentScore = recipe.experimentScore
+    self.recipeStatus = recipe.recipeStatus
+    self.takeCount = recipe.takeCount
+    
+    self.prepTime = recipe.prepTime
+    self.cookTime = recipe.cookTime
+    self.totalTime = recipe.totalTime
+    self.ingredients = recipe.ingredients
+    self.preparationSteps = recipe.preparationSteps
+  }
+}
+
+// MARK: - Recipe Extensions
+
+extension Recipe {
+  func toCodableRecipe() -> CodableRecipe {
+    return CodableRecipe(from: self)
+  }
+  
+  static func fromCodable(_ codableRecipe: CodableRecipe) -> Recipe {
+    let recipe = Recipe(
+      title: codableRecipe.title,
+      author: codableRecipe.author,
+      recipeDescription: codableRecipe.recipeDescription,
+      photos: codableRecipe.photos,
+      prepTime: codableRecipe.prepTime,
+      cookTime: codableRecipe.cookTime,
+      totalTime: codableRecipe.totalTime,
+      ingredients: codableRecipe.ingredients,
+      preparationSteps: codableRecipe.preparationSteps.map { $0.text }
+    )
+    
+    // Set additional properties
+    recipe.recipeId = codableRecipe.recipeId
+    recipe.isPublic = codableRecipe.isPublic
+    recipe.isArchived = codableRecipe.isArchived
+    recipe.dateCreated = codableRecipe.dateCreated
+    recipe.recipeChangeDescription = codableRecipe.recipeChangeDescription
+    
+    recipe.likeCount = codableRecipe.likeCount
+    recipe.bookmarkCount = codableRecipe.bookmarkCount
+    recipe.commentCount = codableRecipe.commentCount
+    recipe.isLiked = codableRecipe.isLiked
+    recipe.isBookmarked = codableRecipe.isBookmarked
+    
+    recipe.experimentScore = codableRecipe.experimentScore
+    recipe.recipeStatus = codableRecipe.recipeStatus
+    recipe.takeCount = codableRecipe.takeCount
+    
+    return recipe
   }
 }
 

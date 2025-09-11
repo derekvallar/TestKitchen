@@ -122,61 +122,6 @@ struct PreparationStep: Codable {
   }
 }
 
-//protocol Highlightable: Identifiable {
-//  var id: String { get }
-//  var text: String { get }
-//  var recipeId: String? { get }
-//}
-
-// MARK: - Comment and User Models
-
-struct Comment: Codable, Hashable {
-  let id: String
-  let commentText: String
-  let user: User
-  let upvoteCount: Int
-  let downvoteCount: Int
-  let dateCreated: Date
-  let recipeId: String?
-  
-  init(
-    commentText: String,
-    user: User,
-    upvoteCount: Int = 0,
-    downvoteCount: Int = 0,
-    recipeId: String? = nil
-  ) {
-    self.id = UUID().uuidString
-    self.commentText = commentText
-    self.user = user
-    self.upvoteCount = upvoteCount
-    self.downvoteCount = downvoteCount
-    self.dateCreated = Date()
-    self.recipeId = recipeId
-  }
-}
-
-struct User: Codable, Hashable {
-  let userID: String
-  let username: String
-  let profileImage: Data?
-  let bio: String?
-  let joinDate: Date
-  
-  init(
-    userID: String,
-    username: String,
-    profileImage: Data? = nil,
-    bio: String? = nil
-  ) {
-    self.userID = userID
-    self.username = username
-    self.profileImage = profileImage
-    self.bio = bio
-    self.joinDate = Date()
-  }
-}
-
 enum Highlightable: Identifiable {
   case ingredients(IngredientList)
   case prepStep(PreparationStep)

@@ -7,21 +7,6 @@
 
 import SwiftUI
 
-
-struct User: Codable, Hashable {
-  let userID: String
-  let username: String
-  let profileImage: Data
-}
-
-struct Comment: Codable, Hashable {
-  var id = UUID()
-  let commentText: String
-  let user: User
-  let upvoteCount: Int
-  var dateCreated: Date? = Date()
-}
-
 struct RecipeHighlightView: View, NavigatableView {
   static let navigationTag: String = "recipeHighlightView"
 

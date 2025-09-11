@@ -40,3 +40,7 @@ struct RecipeTimeStackView: View {
     }
   }
 }
+
+#Preview {
+  RecipeTimeStackView(recipe: TestExamples.makeRecipes().first!)
+}

@@ -35,11 +35,8 @@ struct RecipeArticleView: View {
       height: 120
     )
     .background(Color.TKBackgroundDefault)
-//    .padding(.all, 10)
-//    .border(Color.TKBackgroundDefault, width: 10)
     .clipShape(RoundedRectangle(cornerRadius: 2))
     .TKShadow()
-//    .padding(.all, 10)
     .onTapGesture {
       navigationManager.path.append(
         Destination.recipeDetails(recipe: recipe)

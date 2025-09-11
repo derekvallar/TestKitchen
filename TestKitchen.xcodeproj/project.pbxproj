@@ -6,14 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		583BEBA32DB81D6400D69DE0 /* RecipeCreatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */; };
-		587406A72E6798E6005AD379 /* CircleIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587406A62E6798E6005AD379 /* CircleIcon.swift */; };
-		5885032E2E70879900828B4C /* SocialSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885032D2E70879900828B4C /* SocialSectionView.swift */; };
-		58AD67AD2DC53C340077C280 /* CardScrollViewClaude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD67AC2DC53C340077C280 /* CardScrollViewClaude.swift */; };
-		58F51C1F2DDCE80800B97157 /* RecipeCardView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F51C1E2DDCE80800B97157 /* RecipeCardView2.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		58DFA0132D74296B002F98F4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -32,14 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCreatorView.swift; sourceTree = "<group>"; };
-		587406A62E6798E6005AD379 /* CircleIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CircleIcon.swift; path = TestKitchen/AppContent/Recipes/CircleIcon.swift; sourceTree = "<group>"; };
-		5885032D2E70879900828B4C /* SocialSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SocialSectionView.swift; path = TestKitchen/AppContent/Recipes/SocialSectionView.swift; sourceTree = "<group>"; };
-		58AD67AC2DC53C340077C280 /* CardScrollViewClaude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScrollViewClaude.swift; sourceTree = "<group>"; };
 		58DF9FFF2D74296A002F98F4 /* TestKitchen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestKitchen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58DFA0122D74296B002F98F4 /* TestKitchenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestKitchenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		58DFA01C2D74296B002F98F4 /* TestKitchenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestKitchenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		58F51C1E2DDCE80800B97157 /* RecipeCardView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCardView2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -101,11 +88,6 @@
 		58DF9FF62D74296A002F98F4 = {
 			isa = PBXGroup;
 			children = (
-				5885032D2E70879900828B4C /* SocialSectionView.swift */,
-				587406A62E6798E6005AD379 /* CircleIcon.swift */,
-				58F51C1E2DDCE80800B97157 /* RecipeCardView2.swift */,
-				58AD67AC2DC53C340077C280 /* CardScrollViewClaude.swift */,
-				583BEBA22DB81D6400D69DE0 /* RecipeCreatorView.swift */,
 				58DFA0012D74296A002F98F4 /* TestKitchen */,
 				58DFA0152D74296B002F98F4 /* TestKitchenTests */,
 				58DFA01F2D74296B002F98F4 /* TestKitchenUITests */,
@@ -267,11 +249,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				587406A72E6798E6005AD379 /* CircleIcon.swift in Sources */,
-				5885032E2E70879900828B4C /* SocialSectionView.swift in Sources */,
-				58AD67AD2DC53C340077C280 /* CardScrollViewClaude.swift in Sources */,
-				583BEBA32DB81D6400D69DE0 /* RecipeCreatorView.swift in Sources */,
-				58F51C1F2DDCE80800B97157 /* RecipeCardView2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

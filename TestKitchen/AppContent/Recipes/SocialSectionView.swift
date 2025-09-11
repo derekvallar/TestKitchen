@@ -8,112 +8,22 @@
 import SwiftUI
 import Charts
 
-struct ChartData: Hashable {
-  enum DataType: String, Plottable {
-    case low = "Needs Experimentation"
-    case medium = "Solid Meal"
-    case high = "Exceptional Taste"
-  }
-
-  let type: DataType
-  let amount: Int
-}
-
-struct ExperimentStatusView: View {
-
-  let testChartData = [
-    ChartData(type: .low, amount: 20),
-    ChartData(type: .medium, amount: 72),
-    ChartData(type: .high, amount: 41),
-  ]
-
-  var body: some View {
-    VStack {
-      HStack(spacing: 12) {
-        Image(systemName: SFSymbols.test_tube)
-          .foregroundStyle(Color.gray)
-        CircleIcon(
-          systemName: SFSymbols.test_tube,
-          color: .blue,
-          isHighlighted: false
-        )
-        CircleIcon(
-          systemName: SFSymbols.fork_knife,
-          color: .TKGreen,
-          isHighlighted: false
-        )
-
-        CircleIcon(
-          systemName: SFSymbols.birthday_cake,
-          color: .orange,
-          isHighlighted: true
-        )
-      }
-
-      Chart {
-        ForEach(testChartData, id: \.self) { data in
-          BarMark(
-            x: .value("X", data.amount),
-            y: .value("Y", data.type),
-            height: 12
-          )
-          .barMarkStyling(for: data.type)
-        }
-      }
-      .chartXAxis {
-        AxisMarks(stroke: StrokeStyle(lineWidth: 0))
-      }
-      .chartYAxis {
-        AxisMarks(preset: .aligned, stroke: StrokeStyle(lineWidth: 0))
-      }
-      .frame(width: 200, height: 100)
-    }
-  }
-}
-
-extension BarMark {
-  func barMarkStyling(for style: ChartData.DataType) -> some ChartContent {
-    let color: Color
-    switch style {
-    case .low:
-      color = Color.TKDarkBlue
-    case .medium:
-      color = Color.green
-    case .high:
-      color = Color.TKOrange
-    }
-
-    return self
-      .clipShape(RoundedRectangle(cornerRadius: 6))
-      .foregroundStyle(color)
-  }
-}
-
-
-
-
 struct SocialSectionView: View {
 
   var recipe: Recipe
 
   var body: some View {
-    VStack {
-      HStack(spacing: 20) {
-        ExperimentStatusView()
-        LikeView
-        BookmarkView
-        Spacer()
-      }
-
+    VStack(alignment: .center, spacing: 12) {
       HStack(spacing: 20) {
         ExperimentScoreView
         StitchView
-        Spacer()
+//        Spacer()
       }
-      .padding(8)
+//      .padding(8)
+      RecipeChangeNoteView
     }
-    .padding(10)
-    .background(Color.TKBackgroundLightGray)
+//    .padding(10)
+    .background(Color.TKBackgroundDefault)
   }
 
   @ViewBuilder
@@ -130,7 +40,7 @@ struct SocialSectionView: View {
         }
       VStack(alignment: .leading) {
         Text("Status:")
-          .font(.system(size: 12))
+          .TKFontBody2()
           .fontWeight(.semibold)
         Text("Exceptional Recipe")
           .TKFontBody2Gray()
@@ -139,27 +49,6 @@ struct SocialSectionView: View {
     }
     .frame(width: 120, height: 60)
   }
-
-  @ViewBuilder
-  private var LikeView: some View {
-    HStack(spacing: 6) {
-      Image(systemName: SFSymbols.heart_fill)
-        .foregroundStyle(Color.TKRed)
-      Text("1.2k")
-        .TKFontBody1()
-    }
-  }
-
-  @ViewBuilder
-  private var BookmarkView: some View {
-    HStack(spacing: 6) {
-      Image(systemName: SFSymbols.bookmark_fill)
-        .foregroundStyle(Color.TKBlue)
-      Text("1.2k")
-        .TKFontBody1()
-    }
-  }
-
 
   @ViewBuilder
   private var StitchView: some View {
@@ -195,7 +84,7 @@ struct SocialSectionView: View {
         + Text(" 12 ")
           .font(.TKBody2)
           .fontWeight(.semibold)
-        + Text("\nvariations")
+        + Text("\nTakes")
           .TKFontBody2Gray()
         Image(systemName: SFSymbols.chevron_right_circle)
           .font(.system(size: 16))
@@ -207,25 +96,32 @@ struct SocialSectionView: View {
 
   }
 
-  @ViewBuilder
-  private var TestCount: some View {
-    HStack {
-      Text("21.1k tests")
-        .TKFontBody2()
 
-      if let totalTime = recipe.totalTime {
-        Text("|")
-          .TKFontBody2Gray()
-        HStack(spacing: 4) {
-          Image(systemName: SFSymbols.timer)
-            .foregroundStyle(Color.TKFontGray)
-            .font(.system(size: 12))
-          Text(totalTime)
-            .TKFontBody2()
-        }
+  /**
+   Unnecessary? They could already put the updates in the description
+   */
+  @ViewBuilder
+  private var RecipeChangeNoteView: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      HStack {
+        Text("Changes from the previous recipe:")
+          .TKFontBody1()
+          .fontWeight(.semibold)
+                .foregroundStyle(Color.TKFontDefault)
+        Image(systemName: SFSymbols.chevron_right_circle)
+          .foregroundStyle(Color.TKFontGray)
       }
-      Spacer()
+      Text("The potatoes were a good choice to add but we wanted to give them a little more flavor. Maillard browning the potatoes beforehand allows a little bit extra flavor to the edges.")
+        .TKFontBody1()
+        .foregroundStyle(Color.TKFontDefault)
     }
+//    .padding(12)
+//    .background {
+//      RoundedRectangle(cornerRadius: 8)
+//        .fill(Color.TKBackgroundDefault)
+//        .strokeBorder(lineWidth: 2)
+//        .foregroundStyle(Color.TKOrange)
+//    }
   }
 }
 

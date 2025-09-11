@@ -25,6 +25,22 @@ final class Recipe {
   var author: String?
   var photos: [Photo]
   var recipeDescription: String?
+  var recipeChangeDescription: String?
+  
+  // Social/Engagement properties
+  var likeCount: Int = 0
+  var bookmarkCount: Int = 0
+  var commentCount: Int = 0
+  var isLiked: Bool = false
+  var isBookmarked: Bool = false
+  
+  // Recipe rating and status
+  var experimentScore: Double?
+  var recipeStatus: String?
+  var takeCount: Int = 0
+  
+  // Recipe variations/takes
+  var takes: [Recipe] = []
 
   var prepTime: String?
   var cookTime: String?
@@ -55,6 +71,10 @@ final class Recipe {
     self.preparationSteps = preparationSteps.map {
       PreparationStep(text: $0)
     }
+    
+    // Initialize social properties with defaults
+    self.experimentScore = nil
+    self.recipeStatus = "New Recipe"
   }
 
   func update(
@@ -68,7 +88,7 @@ final class Recipe {
     ingredients: IngredientList? = nil,
     preparationSteps: [PreparationStep] = []
   ) {
-    print("Prep time: \(prepTime ?? "")")
+    // Remove debug print statement
     self.title = title
     self.author = author
     self.recipeDescription = description
@@ -89,7 +109,7 @@ struct IngredientList: Codable {
 struct PreparationStep: Codable {
   var id: String = UUID().uuidString
   let text: String
-  var recipeId: String? = "test123"
+  var recipeId: String?
   // This value should only be updated by the server
   let isTrending: Bool
 
@@ -107,6 +127,55 @@ struct PreparationStep: Codable {
 //  var text: String { get }
 //  var recipeId: String? { get }
 //}
+
+// MARK: - Comment and User Models
+
+struct Comment: Codable, Hashable {
+  let id: String
+  let commentText: String
+  let user: User
+  let upvoteCount: Int
+  let downvoteCount: Int
+  let dateCreated: Date
+  let recipeId: String?
+  
+  init(
+    commentText: String,
+    user: User,
+    upvoteCount: Int = 0,
+    downvoteCount: Int = 0,
+    recipeId: String? = nil
+  ) {
+    self.id = UUID().uuidString
+    self.commentText = commentText
+    self.user = user
+    self.upvoteCount = upvoteCount
+    self.downvoteCount = downvoteCount
+    self.dateCreated = Date()
+    self.recipeId = recipeId
+  }
+}
+
+struct User: Codable, Hashable {
+  let userID: String
+  let username: String
+  let profileImage: Data?
+  let bio: String?
+  let joinDate: Date
+  
+  init(
+    userID: String,
+    username: String,
+    profileImage: Data? = nil,
+    bio: String? = nil
+  ) {
+    self.userID = userID
+    self.username = username
+    self.profileImage = profileImage
+    self.bio = bio
+    self.joinDate = Date()
+  }
+}
 
 enum Highlightable: Identifiable {
   case ingredients(IngredientList)

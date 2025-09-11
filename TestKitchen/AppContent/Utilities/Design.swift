@@ -19,6 +19,7 @@ extension Color {
   public static var TKYellow = Color(red: 0.9725490196, green: 0.9215686275, blue: 0.4666666667)
 //  public static var TKOrange = Color(red: 1.0, green: 0.5764705882, blue: 0.3098039216)
   public static var TKOrange = Color(red: 1.0, green: 0.5058823529, blue: 0.2)
+  public static var TKLightOrange = Color(red: 1.0, green: 0.7529411765, blue: 0.4039215686)
   public static var TKGreen = Color(red: 0.1490196078, green: 0.662745098, blue: 0.4235294118)
   public static var TKBlue = Color(red: 0.0, green: 0.5333333333, blue: 1.0)
   public static var TKDarkBlue = Color(red: 0.03921568627, green: 0.06666666667, blue: 0.1568627451)
